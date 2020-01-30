@@ -2,7 +2,18 @@ import React from "react";
 import { StyleSheet, View } from "react-native";
 import Data from "./src/data";
 import { sampleSize, range, keyBy } from "lodash";
-import TodoList from "./src/todo";
+import TodoList from "./src/todolist";
+import { Asset } from 'expo-asset';
+import { AppLoading } from 'expo';
+
+const IMAGES = [
+  require("./assets/line1.png")
+]
+
+const FONTS = {
+  // "Megrim": require("./assets/fonts/megrim.ttf"),
+  // "Quicksand": require("./assets/fonts/Quicksand-Regular.ttf"),
+}
 
 const getTodos = (pack, n) => {
   return sampleSize(range(Data[pack].length), n).map(i => ({
@@ -13,12 +24,31 @@ const getTodos = (pack, n) => {
   }));
 };
 
-export default function App() {
-  return (
-    <View style={styles.container}>
-      <TodoList data={getTodos("basic", 6)} />
-    </View>
-  );
+
+class App extends React.Component {
+    state = { isReady: false };
+
+    async _loadAssetsAsync() {
+        const imageAssets = IMAGES.map(image =>
+            Asset.fromModule(image).downloadAsync()
+        );
+        // const fontAssets = Font.loadAsync(FONTS)
+        // await Promise.all([...imageAssets, fontAssets]);
+        await Promise.all([...imageAssets]);
+    }
+
+    render() {
+        if (!this.state.isReady) {
+            return (
+                <AppLoading
+                    startAsync={this._loadAssetsAsync}
+                    onFinish={() => this.setState({ isReady: true })}
+                    onError={console.warn}
+                />
+            );
+        }
+        return <TodoList data={getTodos("basic", 6)} />;
+    }
 }
 
 const styles = StyleSheet.create({
@@ -29,3 +59,5 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   }
 });
+
+export default App;
