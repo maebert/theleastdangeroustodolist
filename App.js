@@ -1,7 +1,5 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import Data from "./src/data";
-import { sampleSize, range, keyBy } from "lodash";
 import TodoList from "./src/todolist";
 import { Asset } from 'expo-asset';
 import { AppLoading } from 'expo';
@@ -14,16 +12,6 @@ const FONTS = {
   // "Megrim": require("./assets/fonts/megrim.ttf"),
   // "Quicksand": require("./assets/fonts/Quicksand-Regular.ttf"),
 }
-
-const getTodos = (pack, n) => {
-  return sampleSize(range(Data[pack].length), n).map(i => ({
-    index: i,
-    text: Data[pack][i],
-    done: false,
-    pack: pack
-  }));
-};
-
 
 class App extends React.Component {
     state = { isReady: false };
@@ -47,7 +35,7 @@ class App extends React.Component {
                 />
             );
         }
-        return <TodoList data={getTodos("basic", 6)} />;
+        return <TodoList />;
     }
 }
 

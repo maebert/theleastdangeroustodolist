@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, Animated } from "react-native";
+import { Text, Animated, View } from "react-native";
 import Constants from "./constants";
 
 const COLORS = [
@@ -21,6 +21,22 @@ const GREYS = [
 ];
 
 export default class Todo extends React.Component {
+  renderTag() {
+    return (
+      <View
+        style={{
+          fontSize: 14,
+          backgroundColor: "#fff3",
+          paddingHorizontal: 10,
+          lineHeight: 14,
+          borderRadius: 10
+        }}
+      >
+        <Text>#{this.props.pack}</Text>
+      </View>
+    );
+  }
+
   render() {
     const { text, index, done, fade } = this.props;
 
