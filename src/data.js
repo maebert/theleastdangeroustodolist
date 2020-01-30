@@ -1,4 +1,12 @@
 export default {
+    tutorial: [
+        "The satisfaction of checking things off your To Do list...",
+        "Minus the work of actually doing them.",
+        "Each day you get six new low-effort tasks.",
+        "Swipe to mark them done.\nTry it now",
+        "Swipe down for settings",
+        "Finish this list to get started"
+    ],
     basic: [
         "Leave the house",
         "Tell someone a joke",
@@ -16,6 +24,20 @@ export default {
         "Send a selfie to a friend",
         "Cut your nails or clean your ears",
         "Watch one movie that people cringe when you tell them you haven't seen",
-        
+        "Put on pants",
+        "Drink a glass of water",
+        "Check your email",
+        "Get out of bed",
+        "Take a dump",
+        "Brush your teeth",
+        "Check what's in the fridge",
+        "Open The Least Dangerous To Do List app",
+        "Find your keys",
+        "Yell short sentences without the letter 'A' in them",
+        "Anwswer a Robo-Call and press '2' to unsubscribe",
+        "Wear matching socks",
+        "Complete all tasks for today",
+        "Check off a task you haven't actually completed",
+        "Look into the mirror and compliment yourself",
     ]
 }

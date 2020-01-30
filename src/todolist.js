@@ -108,16 +108,26 @@ export default class TodoList extends React.Component {
     const newData = update(this.state.data, {
       [this.state.panTodo]: { done: { $set: true } }
     });
-
     this.setState(
       {
         useMarker: false,
         data: newData,
         lines: [...this.state.lines, newLine]
       },
-      () => this.save()
+      () => {
+        this.onCompleteTodo(this.state.panTodo);
+        this.save()
+      }
     );
   };
+
+  onCompleteTodo = (idx) => {
+    const allDone = this.state.data.map(d => d.done).every(Boolean)
+    if (allDone && this.state.isTutorial) {
+      Store.save("tutorialCompleted", true);
+      this.refreshTodos();
+    }
+  }
 
   onGestureStateChange = evt => {
     const { nativeEvent } = evt;
@@ -185,6 +195,11 @@ export default class TodoList extends React.Component {
   };
 
   load = async () => {
+    const tutorialCompleted = await Store.get("tutorialCompleted");
+    if (!tutorialCompleted) {
+      this.loadTutorial();
+      return;
+    }
     const result = await Store.get("currentState");
     if (result && result.date === this.getDate()) {
       this.setState(result);
@@ -192,6 +207,18 @@ export default class TodoList extends React.Component {
       this.refreshTodos();
     }
   };
+
+  loadTutorial = () => {
+    const data = Data.tutorial.map((text, index) => ({
+      index, text,
+      done: false,
+      pack: "tutorial"
+    }))
+    console.log(data)
+    this.setState({ data, lines: [], date: this.getDate(), isTutorial: true }, () =>
+      this.save()
+    );
+  }
 
   refreshTodos = () => {
     this.setState({ data: this.getTodos("basic", 6), lines: [], date: this.getDate(), panTodo: null }, () =>
