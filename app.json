@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "TLDTDL",
+    "name": "TLD TDL",
     "slug": "theleastdangeroustodolist",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -14,8 +14,8 @@
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
-      "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "resizeMode": "cover",
+      "backgroundColor": "#464152"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -24,7 +24,12 @@
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
-    }
+      "supportsTablet": true,
+      "buildNumber": "1",
+      "bundleIdentifier": "me.1450.tldtdl",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
   }
 }
