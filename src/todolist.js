@@ -121,6 +121,21 @@ export default class TodoList extends React.Component {
     );
   };
 
+  onMarkDone = (idx) => {
+    const newData = update(this.state.data, {
+      [idx]: { done: { $set: true } }
+    });
+    this.setState(
+      {
+        data: newData,
+      },
+      () => {
+        this.onCompleteTodo(idx);
+        this.save()
+      }
+    );
+  }
+
   onCompleteTodo = (idx) => {
     const allDone = this.state.data.map(d => d.done).every(Boolean)
     if (allDone && this.state.isTutorial) {
@@ -128,6 +143,8 @@ export default class TodoList extends React.Component {
       this.refreshTodos();
     }
   }
+
+
 
   onGestureStateChange = evt => {
     const { nativeEvent } = evt;
@@ -190,8 +207,8 @@ export default class TodoList extends React.Component {
   getDate = () => new Date().toISOString().substr(0, 10);
 
   save = () => {
-    const { data, lines, date } = this.state;
-    Store.save("currentState", { data, lines, date });
+    const { data, lines, date, palette } = this.state;
+    Store.save("currentState", { data, lines, date, palette });
   };
 
   load = async () => {
@@ -212,9 +229,9 @@ export default class TodoList extends React.Component {
     const data = Data.tutorial.map((text, index) => ({
       index, text,
       done: false,
-      pack: "tutorial"
+      pack: "tutorial",
+      palette: "basic"
     }))
-    console.log(data)
     this.setState({ data, lines: [], date: this.getDate(), isTutorial: true }, () =>
       this.save()
     );
@@ -226,13 +243,19 @@ export default class TodoList extends React.Component {
     );
   };
 
+  pickPalette = palette => {
+    this.setState({palette}, () => this.save())
+  }
+
   render() {
     const todos = this.state.data.map((todo, index) => (
       <Todo
         key={index.toString()}
+        palette={this.state.palette}
         {...todo}
         index={index}
         fade={this.state.panTodo === index ? this.fade : null}
+        onComplete={() => this.onMarkDone(index)}
       />
     ));
 
@@ -245,6 +268,8 @@ export default class TodoList extends React.Component {
           style={{ width: "100%", transform: [{ translateY: this.pull }] }}
         >
           <Settings
+            onPickPalette={this.pickPalette}
+            activePalette={this.state.palette}
             onReshuffle={() => this.refreshTodos()}
             style={{ position: "absolute", top: -Constants.screenHeight }}
           />

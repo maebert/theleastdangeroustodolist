@@ -3,14 +3,17 @@ import { StyleSheet, View } from "react-native";
 import TodoList from "./src/todolist";
 import { Asset } from 'expo-asset';
 import { AppLoading } from 'expo';
+import * as Font from "expo-font";
+
 
 const IMAGES = [
   require("./assets/line1.png")
 ]
 
 const FONTS = {
-  // "Megrim": require("./assets/fonts/megrim.ttf"),
-  // "Quicksand": require("./assets/fonts/Quicksand-Regular.ttf"),
+  "Lato Regular": require("./assets/fonts/Lato-Regular.ttf"),
+  "Lato Bold": require("./assets/fonts/Lato-Bold.ttf"),
+  "Lato Black": require("./assets/fonts/Lato-Black.ttf"),
 }
 
 class App extends React.Component {
@@ -20,9 +23,8 @@ class App extends React.Component {
         const imageAssets = IMAGES.map(image =>
             Asset.fromModule(image).downloadAsync()
         );
-        // const fontAssets = Font.loadAsync(FONTS)
-        // await Promise.all([...imageAssets, fontAssets]);
-        await Promise.all([...imageAssets]);
+        const fontAssets = Font.loadAsync(FONTS)
+        await Promise.all([...imageAssets, fontAssets]);
     }
 
     render() {
