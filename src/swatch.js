@@ -3,11 +3,11 @@ import { Text, View, ScrollView, StyleSheet, TouchableOpacity } from "react-nati
 import Palette from "./palette";
 
 const options = {
-    basic: "Basic",
+    default: "Least Dangerous",
     haze: "Toxic Fumes",
     floss: "Floss Daily",
     clear: "Cease & Desist",
-    pride: "Gimme a label",
+    pride: "The Letter People",
     lsd: "I think it's working",
 }
 

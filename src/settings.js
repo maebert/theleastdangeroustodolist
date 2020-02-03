@@ -10,7 +10,7 @@ export default class Settings extends React.Component {
                 <View style={{marginTop: Constants.statusBarHeight + 40, marginBottom: 40}}>
                     <Text style={styles.title}>The Least</Text>
                     <Text style={[styles.title, styles.titleBold]}>Dangerous</Text>
-                    <Text style={styles.title}>To-Do list</Text>
+                    <Text style={styles.title}>To Do List</Text>
                     <Text style={styles.subtitle}>
                         A charmingly antagonistic app{"\n"}by Kari Tarr & Manu Ebert
                     </Text>

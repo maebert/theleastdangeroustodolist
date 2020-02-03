@@ -10,6 +10,7 @@ import Store from "./store";
 import * as Haptics from "expo-haptics";
 import Marker from "./marker";
 import Settings from "./settings";
+import {track, events, identify} from "./analytics"
 
 export default class TodoList extends React.Component {
   lineWidth = new Animated.Value(0);
@@ -30,7 +31,9 @@ export default class TodoList extends React.Component {
     this.load();
   }
 
-  componentDidMount() {}
+  componentDidMount() {
+    identify()
+  }
 
   handleGesture = evt => {
     if (this.state.useMarker) {
@@ -53,12 +56,12 @@ export default class TodoList extends React.Component {
     const panTodo = Math.floor(
       ((evt.y - Constants.statusBarHeight + 10) /
         (Constants.screenHeight - Constants.statusBarHeight)) *
-        6
+        Constants.todos
     );
     this.setState({
       useMarker: true,
       showSettings: false,
-      style: Math.floor(Math.random() * 6),
+      style: Math.floor(Math.random() * Constants.todos),
       panTodo
     });
   };
@@ -137,14 +140,15 @@ export default class TodoList extends React.Component {
   }
 
   onCompleteTodo = (idx) => {
+    const {index, pack, text} = this.state.data[idx];
     const allDone = this.state.data.map(d => d.done).every(Boolean)
+    track(events.COMPLETE, {index, pack, text})
     if (allDone && this.state.isTutorial) {
+      track(events.COMPLETE_TUTORIAL)
       Store.save("tutorialCompleted", true);
       this.refreshTodos();
     }
   }
-
-
 
   onGestureStateChange = evt => {
     const { nativeEvent } = evt;
@@ -159,6 +163,7 @@ export default class TodoList extends React.Component {
       }
     }
     if (nativeEvent.oldState === 4 && nativeEvent.state === 5) {
+      const up = this.state.showSettings ? -1 : 1
       if (this.state.useMarker) {
         if (Math.abs(nativeEvent.translationX) < Constants.screenWidth * 0.2) {
           this.onCancelSwipe();
@@ -166,12 +171,9 @@ export default class TodoList extends React.Component {
           this.onEndSwipe();
         }
       } else {
-        console.log(nativeEvent.translationY);
-        if (Math.abs(nativeEvent.translationY) < 150) {
-          console.log("CANCEL");
+        if (nativeEvent.translationY * up < 150) {
           this.onCancelPull();
         } else {
-          console.log("END");
           this.onEndPull();
         }
       }
@@ -208,7 +210,7 @@ export default class TodoList extends React.Component {
 
   save = () => {
     const { data, lines, date, palette } = this.state;
-    Store.save("currentState", { data, lines, date, palette });
+    Store.save(Constants.namespace, { data, lines, date, palette });
   };
 
   load = async () => {
@@ -217,7 +219,7 @@ export default class TodoList extends React.Component {
       this.loadTutorial();
       return;
     }
-    const result = await Store.get("currentState");
+    const result = await Store.get(Constants.namespace);
     if (result && result.date === this.getDate()) {
       this.setState(result);
     } else {
@@ -229,22 +231,20 @@ export default class TodoList extends React.Component {
     const data = Data.tutorial.map((text, index) => ({
       index, text,
       done: false,
-      pack: "tutorial",
-      palette: "basic"
+      pack: "tutorial"
     }))
-    this.setState({ data, lines: [], date: this.getDate(), isTutorial: true }, () =>
-      this.save()
-    );
+    this.setState({ data, lines: [], date: this.getDate(), isTutorial: true, palette: "default" });
   }
 
   refreshTodos = () => {
-    this.setState({ data: this.getTodos("basic", 6), lines: [], date: this.getDate(), panTodo: null }, () =>
-      this.save()
-    );
+    this.setState({ data: this.getTodos("basic", Constants.todos), lines: [], date: this.getDate(), panTodo: null }, () => {
+      this.save();
+    });
   };
 
   pickPalette = palette => {
     this.setState({palette}, () => this.save())
+    this.onEndPull();
   }
 
   render() {
@@ -270,7 +270,7 @@ export default class TodoList extends React.Component {
           <Settings
             onPickPalette={this.pickPalette}
             activePalette={this.state.palette}
-            onReshuffle={() => this.refreshTodos()}
+            onReshuffle={() => {this.refreshTodos(); this.onEndPull();}}
             style={{ position: "absolute", top: -Constants.screenHeight }}
           />
           {todos}
