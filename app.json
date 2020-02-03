@@ -26,7 +26,7 @@
     ],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "4",
+      "buildNumber": "5",
       "bundleIdentifier": "me.1450.tldtdl",
       "config": {
         "usesNonExemptEncryption": false
