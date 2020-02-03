@@ -238,7 +238,6 @@ export default class TodoList extends React.Component {
 
   refreshTodos = () => {
     this.setState({ data: this.getTodos("basic", Constants.todos), lines: [], date: this.getDate(), panTodo: null }, () => {
-      console.log(this.state.data)
       this.forceUpdate();
       this.save();
     });

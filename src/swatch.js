@@ -26,7 +26,7 @@ const Swatch = ({ name, colors, active, onPress }) => (
 
 export default ({active, onChoose }) => (
     <View style={styles.container}>
-        <ScrollView horizontal={true} pagingEnabled={true}>
+        <ScrollView horizontal={true} snapToInterval={140} decelerationRate="fast" showsHorizontalScrollIndicator={false}>
         {Object.keys(options).map(o => <Swatch active={active===o} onPress={() => onChoose(o)} key={o} name={options[o]} colors={Palette[o]} />)}
         </ScrollView>
     </View>
