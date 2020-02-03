@@ -27,7 +27,7 @@ export default class Todo extends React.Component {
   static getDerivedStateFromProps(props, state) {
     const url = props.text.match(URL_REGEX);
     if (url) return { text: props.text.replace(URL_REGEX, ""), url: url[0] };
-    return { text: props.text }
+    return { text: props.text, url: null }
   }
 
 
@@ -160,7 +160,6 @@ const styles = StyleSheet.create({
   todo: {
     width: "100%",
     paddingHorizontal: 30,
-    // justifyContent: "left",
     alignItems: "center",
     flexDirection: "row",
     height: "100%"

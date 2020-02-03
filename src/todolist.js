@@ -10,7 +10,8 @@ import Store from "./store";
 import * as Haptics from "expo-haptics";
 import Marker from "./marker";
 import Settings from "./settings";
-import {track, events, identify} from "./analytics"
+import { track, events, identify } from "./analytics";
+import Palette from "./palette";
 
 export default class TodoList extends React.Component {
   lineWidth = new Animated.Value(0);
@@ -18,6 +19,7 @@ export default class TodoList extends React.Component {
   pull = new Animated.Value(0);
   lineX = new Animated.Value(0);
   lineY = new Animated.Value(0);
+  mask = new Animated.Value(0);
 
   constructor(props) {
     super(props);
@@ -26,13 +28,14 @@ export default class TodoList extends React.Component {
       style: 0,
       lines: [],
       panRight: false,
-      panTodo: 0
+      panTodo: 0,
+      palette: "default"
     };
     this.load();
   }
 
   componentDidMount() {
-    identify()
+    identify();
   }
 
   handleGesture = evt => {
@@ -88,7 +91,7 @@ export default class TodoList extends React.Component {
   onCancelSwipe = evt => {
     Animated.timing(this.lineWidth, {
       toValue: 0,
-      duration: 500
+      duration: 100
     }).start();
     Animated.timing(this.fade, {
       toValue: 0,
@@ -119,36 +122,49 @@ export default class TodoList extends React.Component {
       },
       () => {
         this.onCompleteTodo(this.state.panTodo);
-        this.save()
+        this.save();
       }
     );
   };
 
-  onMarkDone = (idx) => {
+  onMarkDone = idx => {
     const newData = update(this.state.data, {
       [idx]: { done: { $set: true } }
     });
     this.setState(
       {
-        data: newData,
+        data: newData
       },
       () => {
         this.onCompleteTodo(idx);
-        this.save()
+        this.save();
       }
     );
-  }
+  };
 
-  onCompleteTodo = (idx) => {
-    const {index, pack, text} = this.state.data[idx];
-    const allDone = this.state.data.map(d => d.done).every(Boolean)
-    track(events.COMPLETE, {index, pack, text})
-    if (allDone && this.state.isTutorial) {
-      track(events.COMPLETE_TUTORIAL)
-      Store.save("tutorialCompleted", true);
+  replaceTodos = () => {
+    Animated.timing(this.mask, {
+      toValue: 1,
+      duration: 500
+    }).start(() => {
       this.refreshTodos();
+      Animated.timing(this.mask, {
+        toValue: 0.0,
+        duration: 500
+      }).start();
+    });
+  };
+
+  onCompleteTodo = idx => {
+    const { index, pack, text } = this.state.data[idx];
+    const allDone = this.state.data.map(d => d.done).every(Boolean);
+    track(events.COMPLETE, { index, pack, text });
+    if (allDone && this.state.isTutorial) {
+      track(events.COMPLETE_TUTORIAL);
+      Store.save("tutorialCompleted", true);
+      this.replaceTodos();
     }
-  }
+  };
 
   onGestureStateChange = evt => {
     const { nativeEvent } = evt;
@@ -163,7 +179,7 @@ export default class TodoList extends React.Component {
       }
     }
     if (nativeEvent.oldState === 4 && nativeEvent.state === 5) {
-      const up = this.state.showSettings ? -1 : 1
+      const up = this.state.showSettings ? -1 : 1;
       if (this.state.useMarker) {
         if (Math.abs(nativeEvent.translationX) < Constants.screenWidth * 0.2) {
           this.onCancelSwipe();
@@ -229,24 +245,68 @@ export default class TodoList extends React.Component {
 
   loadTutorial = () => {
     const data = Data.tutorial.map((text, index) => ({
-      index, text,
+      index,
+      text,
       done: false,
       pack: "tutorial"
-    }))
-    this.setState({ data, lines: [], date: this.getDate(), isTutorial: true, palette: "default" });
-  }
-
-  refreshTodos = () => {
-    this.setState({ data: this.getTodos("basic", Constants.todos), lines: [], date: this.getDate(), panTodo: null }, () => {
-      this.forceUpdate();
-      this.save();
+    }));
+    this.setState({
+      data,
+      lines: [],
+      date: this.getDate(),
+      isTutorial: true,
+      palette: "default"
     });
   };
 
+  refreshTodos = () => {
+    this.setState(
+      {
+        data: this.getTodos("basic", Constants.todos),
+        lines: [],
+        date: this.getDate(),
+        panTodo: null
+      },
+      () => {
+        this.forceUpdate();
+        this.save();
+      }
+    );
+  };
+
   pickPalette = palette => {
-    this.setState({palette}, () => this.save())
-    track(events.PICK_THEME, {palette})
+    this.setState({ palette }, () => this.save());
+    track(events.PICK_THEME, { palette });
     this.onEndPull();
+  };
+
+  renderMask() {
+    return (
+      <Animated.View
+      pointerEvents="none"
+        style={{
+          opacity: this.mask,
+          position: "absolute",
+          top: 0,
+          left: 0,
+          height: Constants.screenHeight,
+          width: Constants.screenWidth
+        }}
+      >
+        {Palette[this.state.palette].map((color, index) => (
+          <View
+            style={{
+              backgroundColor: color,
+              paddingTop: index === 0 ? Constants.statusBarHeight : 0,
+              height:
+                Constants.itemHeight +
+                (index === 0 ? Constants.statusBarHeight : 0)
+            }}
+            key={color}
+          />
+        ))}
+      </Animated.View>
+    );
   }
 
   render() {
@@ -272,7 +332,10 @@ export default class TodoList extends React.Component {
           <Settings
             onPickPalette={this.pickPalette}
             activePalette={this.state.palette}
-            onReshuffle={() => {this.refreshTodos(); this.onEndPull();}}
+            onReshuffle={() => {
+              this.refreshTodos();
+              this.onEndPull();
+            }}
             style={{ position: "absolute", top: -Constants.screenHeight }}
           />
           {todos}
@@ -280,6 +343,7 @@ export default class TodoList extends React.Component {
             <Marker {...line} key={idx.toString()} />
           ))}
           {this.renderMarker()}
+          {this.renderMask()}
         </Animated.View>
       </PanGestureHandler>
     );
