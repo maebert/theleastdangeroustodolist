@@ -214,7 +214,7 @@ export default class TodoList extends React.Component {
   };
 
   load = async () => {
-    const tutorialCompleted = await Store.get("tutorialCompleted2");
+    const tutorialCompleted = await Store.get("tutorialCompleted");
     if (!tutorialCompleted) {
       this.loadTutorial();
       return;
@@ -238,6 +238,8 @@ export default class TodoList extends React.Component {
 
   refreshTodos = () => {
     this.setState({ data: this.getTodos("basic", Constants.todos), lines: [], date: this.getDate(), panTodo: null }, () => {
+      console.log(this.state.data)
+      this.forceUpdate();
       this.save();
     });
   };

@@ -4,7 +4,7 @@ export default {
         "Minus the work of actually doing them.",
         "Each day you get six new low-effort tasks.",
         "Swipe to mark them done.\nTry it now",
-        "Swipe down for settings tldtdl://review",
+        "Swipe down for settings",
         "Finish this list to get started"
     ],
     basic: [
@@ -54,7 +54,7 @@ export default {
         "Restart your computer",
         "Restart your phone",
         "Charge your phone",
-        "Give this app a 5 star rating ;) tldtdl://review",
+        "Give this app a 5 star rating tldtdl://review",
         "Use an emoji you've never used before",
         "Change your toothbrush head or entire toothbrush",
         "Make plans with someone",

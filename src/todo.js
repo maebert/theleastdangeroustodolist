@@ -22,16 +22,14 @@ export default class Todo extends React.Component {
     fade: null
   };
 
-  constructor(props) {
-    super(props);
-    const { text } = this.props;
-    const url = text.match(URL_REGEX);
-    if (url) {
-      this.state = { text: text.replace(URL_REGEX, ""), url: url[0] };
-    } else {
-      this.state = { text };
-    }
+  state = {}
+
+  static getDerivedStateFromProps(props, state) {
+    const url = props.text.match(URL_REGEX);
+    if (url) return { text: props.text.replace(URL_REGEX, ""), url: url[0] };
+    return { text: props.text }
   }
+
 
   renderTag() {
     return (
@@ -69,13 +67,13 @@ export default class Todo extends React.Component {
     );
   }
 
-  getOpacity = () => {
+  getOpacity = (range) => {
     const { done, fade } = this.props;
     if (done) return 0.5;
     if (fade === null) return 1;
     return fade.interpolate({
       inputRange: [0, 0.2, 0.2],
-      outputRange: [1, 0.5, 0.5]
+      outputRange: [1, range, range]
     });
   };
 
@@ -98,7 +96,7 @@ export default class Todo extends React.Component {
       <Animated.Image
         source={require("../assets/url.png")}
         style={{
-          opacity: this.getOpacity(),
+          opacity: this.getOpacity(0),
           height: 30,
           width: 30,
           right: 30,
@@ -108,14 +106,11 @@ export default class Todo extends React.Component {
     );
   }
 
-  renderInner() {
+  renderText() {
     return (
-      <React.Fragment>
-        <Animated.Text style={[styles.text, { opacity: this.getOpacity() }]}>
+        <Animated.Text style={[styles.text, { opacity: this.getOpacity(.5) }]}>
           {this.state.text}
         </Animated.Text>
-        {this.state.url && this.renderUrl()}
-      </React.Fragment>
     );
   }
 
@@ -131,14 +126,17 @@ export default class Todo extends React.Component {
         style={styles.todo}
         onPress={action}
       >
+        <React.Fragment>
         {inner}
+        {this.renderUrl()}
+        </React.Fragment>
       </TouchableHighlight>
     );
   }
 
   render() {
     const { index } = this.props;
-    const inner = this.renderInner();
+    const inner = this.renderText();
     return (
       <Animated.View
         style={{
@@ -148,7 +146,7 @@ export default class Todo extends React.Component {
             Constants.itemHeight + (index === 0 ? Constants.statusBarHeight : 0)
         }}
       >
-        {this.state.url ? (
+        {this.state.url && !this.props.done ? (
           this.renderTouchable(inner)
         ) : (
           <View style={styles.todo}>{inner}</View>
