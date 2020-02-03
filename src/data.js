@@ -39,5 +39,28 @@ export default {
         "Complete all tasks for today",
         "Check off a task you haven't actually completed",
         "Look into the mirror and compliment yourself",
+        "Do a 15 second calf stretch",
+        "Take 1 deep breath",
+        "Ignore someone's advice",
+        "Sit up straight, right now.",
+        "Clear your browser history",
+        "Close all the open tabls of articles you haven't read yet or work you haven't finished",
+        "Throw away something in your fridge",
+        "Self a selfie to a parent",
+        "Don't today. And don't feel guilty about it",
+        "Read a random wikipedia article",
+        "flake out on your plans tonight and do something lazy",
+        "clean the lint trap in your dryer",
+        "Restart your computer",
+        "Restart your phone",
+        "Charge your phone",
+        "Give this app a 5 star rating ;)",
+        "Use an emoji you've never used before",
+        "Change your toothbrush head or entire toothbrush",
+        "Make plans with someone",
+        "Eat one thing that isn't brown",
+        "Unfollow the first person in your FB feed who posts something negative",
+        "Don't check the news today"
+        
     ]
 }
