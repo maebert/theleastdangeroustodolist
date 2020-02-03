@@ -3,19 +3,34 @@ import {
   Text,
   Animated,
   View,
+  Linking,
   TouchableHighlight,
   StyleSheet
 } from "react-native";
 import Constants from "./constants";
 import Palette from "./palette";
+import {handleAction} from './util'
+
+const URL_REGEX = /((https?|tldtdl):\/\/[^\s]+)/g;
 
 export default class Todo extends React.Component {
-    static defaultProps = {
+  static defaultProps = {
     palette: "default",
     done: false,
     text: "",
     index: 0,
     fade: null
+  };
+
+  constructor(props) {
+    super(props);
+    const { text } = this.props;
+    const url = text.match(URL_REGEX);
+    if (url) {
+      this.state = { text: text.replace(URL_REGEX, ""), url: url[0] };
+    } else {
+      this.state = { text };
+    }
   }
 
   renderTag() {
@@ -78,25 +93,66 @@ export default class Todo extends React.Component {
     });
   };
 
-  render() {
-    const { text, index } = this.props;
+  renderUrl() {
+    return (
+      <Animated.Image
+        source={require("../assets/url.png")}
+        style={{
+          opacity: this.getOpacity(),
+          height: 30,
+          width: 30,
+          right: 30,
+          position: "absolute"
+        }}
+      />
+    );
+  }
+
+  renderInner() {
+    return (
+      <React.Fragment>
+        <Animated.Text style={[styles.text, { opacity: this.getOpacity() }]}>
+          {this.state.text}
+        </Animated.Text>
+        {this.state.url && this.renderUrl()}
+      </React.Fragment>
+    );
+  }
+
+  renderTouchable(inner) {
+    const action = this.state.url.startsWith("tldtdl://")
+      ? () => handleAction(this.state.url)
+      : () => Linking.openURL(this.state.url);
 
     return (
-      <Animated.View
-        style={[
-          styles.todo,
-          {
-            backgroundColor: this.getColor(),
-            paddingTop: index === 0 ? Constants.statusBarHeight : 0,
-            height:
-              Constants.itemHeight +
-              (index === 0 ? Constants.statusBarHeight : 0)
-          }
-        ]}
+      <TouchableHighlight
+        underlayColor="#fff4"
+        activeOpacity={0.2}
+        style={styles.todo}
+        onPress={action}
       >
-        <Animated.Text style={[styles.text, { opacity: this.getOpacity() }]}>
-          {text}
-        </Animated.Text>
+        {inner}
+      </TouchableHighlight>
+    );
+  }
+
+  render() {
+    const { index } = this.props;
+    const inner = this.renderInner();
+    return (
+      <Animated.View
+        style={{
+          backgroundColor: this.getColor(),
+          paddingTop: index === 0 ? Constants.statusBarHeight : 0,
+          height:
+            Constants.itemHeight + (index === 0 ? Constants.statusBarHeight : 0)
+        }}
+      >
+        {this.state.url ? (
+          this.renderTouchable(inner)
+        ) : (
+          <View style={styles.todo}>{inner}</View>
+        )}
       </Animated.View>
     );
   }
@@ -108,7 +164,8 @@ const styles = StyleSheet.create({
     paddingHorizontal: 30,
     // justifyContent: "left",
     alignItems: "center",
-    flexDirection: "row"
+    flexDirection: "row",
+    height: "100%"
   },
   text: {
     fontFamily: "Lato Bold",

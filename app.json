@@ -1,6 +1,7 @@
 {
   "expo": {
     "name": "TLD TDL",
+    "scheme": "tldtdl",
     "slug": "theleastdangeroustodolist",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -31,5 +32,17 @@
         "usesNonExemptEncryption": false
       }
     }
-  }
+  },
+      "hooks": {
+      "postPublish": [
+        {
+          "file": "sentry-expo/upload-sourcemaps",
+          "config": {
+            "organization": "tiny-guru",
+            "project": "tiny-guru",
+            "authToken": "61d12cd55cf84d09a607ab3e1218cd3aefd19cf8d07e40199fa287de1276caec"
+          }
+        }
+      ]
+    }
 }

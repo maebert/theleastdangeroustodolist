@@ -214,7 +214,7 @@ export default class TodoList extends React.Component {
   };
 
   load = async () => {
-    const tutorialCompleted = await Store.get("tutorialCompleted");
+    const tutorialCompleted = await Store.get("tutorialCompleted2");
     if (!tutorialCompleted) {
       this.loadTutorial();
       return;
@@ -244,6 +244,7 @@ export default class TodoList extends React.Component {
 
   pickPalette = palette => {
     this.setState({palette}, () => this.save())
+    track(events.PICK_THEME, {palette})
     this.onEndPull();
   }
 

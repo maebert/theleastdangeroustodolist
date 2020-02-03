@@ -7,7 +7,8 @@ import * as Font from "expo-font";
 
 
 const IMAGES = [
-  require("./assets/line1.png")
+  require("./assets/line1.png"),
+  require("./assets/url.png")
 ]
 
 const FONTS = {
