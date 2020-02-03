@@ -1,4 +1,6 @@
-# The Least Dangerous To Do List
+<h1> <img src="https://github.com/maebert/theleastdangeroustodolist/raw/master/assets/icon.png" height=64 /> The Least Dangerous To Do List</h1>
+
+
 
 ## Stack
 
