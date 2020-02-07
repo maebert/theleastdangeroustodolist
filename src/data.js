@@ -23,7 +23,6 @@ export default {
         "Comment something positive on a social media post",
         "Send a selfie to a friend",
         "Put on pants",
-        "Drink a glass of water",
         "Check your email",
         "Get out of bed",
         "Take a dump",
@@ -63,6 +62,8 @@ export default {
         "Clean your ears",
         "Clip your nails",
         "Feel okay about not flossing",
-        "Delete an app you haven't used in a month"
+        "Delete an app you haven't used in a month",
+        "Make eye contact with someone",
+        "Ask someone how their weekend was or about their weekend plans"
     ]
 };
