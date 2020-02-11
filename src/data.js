@@ -64,6 +64,10 @@ export default {
         "Feel okay about not flossing",
         "Delete an app you haven't used in a month",
         "Make eye contact with someone",
-        "Ask someone how their weekend was or about their weekend plans"
+        "Ask someone how their weekend was or about their weekend plans",
+        "Think of someone's family",
+        "Pay full price for something",
+        "Tip someone",
+        "Eat something without looking at a screen"
     ]
 };
