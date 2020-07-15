@@ -13,15 +13,16 @@ import Store from "./store";
 import Marker, { useMarker } from "./marker";
 import Settings from "./settings";
 import { track, events, identify } from "./analytics";
-import Themes from "./themes";
+import useMask from "./mask";
 
 const TodoList = () => {
   fade = useRef(new Animated.Value(0)).current;
   pull = useRef(new Animated.Value(0)).current;
-  mask = useRef(new Animated.Value(0)).current;
 
   const getDate = () => new Date().toISOString().substr(0, 10);
   const marker = useMarker();
+  const ActiveMarker = marker.render;
+  const { conceal, Mask } = useMask();
 
   const [data, setData] = useState(null);
   const [isTutorial, setIsTutorial] = useState(false);
@@ -47,6 +48,21 @@ const TodoList = () => {
     identify();
   });
 
+  useEffect(() => {
+    if (!data) return;
+    const allDone = data.map((d) => d.done).every(Boolean);
+    if (allDone) {
+      track(events.COMPLETE_TUTORIAL);
+      Store.save("tutorialCompleted", true);
+      replaceTodos();
+    }
+  }, [data, track, Store, replaceTodos, save]);
+
+  useEffect(() => {
+    if (!data || !lines) return;
+    save();
+  }, [data, lines, save]);
+
   const handleGesture = (evt) => {
     if (marker.isDrawing) {
       const length = evt.nativeEvent.translationX;
@@ -64,18 +80,18 @@ const TodoList = () => {
   };
 
   const onCancelPull = () => {
-    console.log("cancel pull");
     Animated.spring(pull, {
       toValue: showSettings ? Constants.screenHeight : 0,
       duration: 200,
+      useNativeDriver: true,
     }).start();
   };
 
   const onEndPull = () => {
-    console.log("end pull");
     Animated.timing(pull, {
       toValue: showSettings ? 0 : Constants.screenHeight,
       duration: 300,
+      useNativeDriver: true,
     }).start();
     setShowSettings(!showSettings);
   };
@@ -86,37 +102,30 @@ const TodoList = () => {
     });
     setData(newData);
     onCompleteTodo(idx);
-    save();
   };
 
   const replaceTodos = () => {
-    Animated.timing(mask, {
-      toValue: 1,
-      duration: 500,
-    }).start(() => {
-      refreshTodos();
-      Animated.timing(mask, {
-        toValue: 0.0,
-        duration: 500,
-      }).start();
-    });
+    conceal(refreshTodos);
   };
 
   const onCompleteTodo = (idx) => {
     const { index, pack, text } = data[idx];
-    const allDone = data.map((d) => d.done).every(Boolean);
     track(events.COMPLETE, { index, pack, text });
-    if (allDone && isTutorial) {
-      track(events.COMPLETE_TUTORIAL);
-      Store.save("tutorialCompleted", true);
-      replaceTodos();
-    }
   };
 
   const onEndDrawing = () => {
     const newLine = marker.endDrawing();
     setLines((prev) => [...prev, newLine]);
     onMarkDone(marker.activeTodo);
+  };
+
+  const onCancelDrawing = () => {
+    Animated.timing(fade, {
+      toValue: 0,
+      duration: 500,
+      useNativeDriver: false,
+    }).start();
+    marker.cancelDrawing();
   };
 
   const onGestureStateChange = (evt) => {
@@ -141,7 +150,7 @@ const TodoList = () => {
       const up = showSettings ? -1 : 1;
       if (marker.isDrawing) {
         if (Math.abs(nativeEvent.translationX) < Constants.screenWidth * 0.2) {
-          marker.cancelDrawing();
+          onCancelDrawing();
         } else {
           onEndDrawing();
         }
@@ -203,7 +212,6 @@ const TodoList = () => {
     setData(getTodos("basic", Constants.todos));
     setLines([]);
     setDate(getDate());
-    save();
   };
 
   const pickTheme = (theme) => {
@@ -212,33 +220,6 @@ const TodoList = () => {
     track(events.PICK_THEME, { theme });
     onEndPull();
   };
-
-  const renderMask = () => (
-    <Animated.View
-      pointerEvents="none"
-      style={{
-        opacity: mask,
-        position: "absolute",
-        top: 0,
-        left: 0,
-        height: Constants.screenHeight,
-        width: Constants.screenWidth,
-      }}
-    >
-      {Themes[theme || "default"].map((color, index) => (
-        <View
-          style={{
-            backgroundColor: color,
-            paddingTop: index === 0 ? Constants.statusBarHeight : 0,
-            height:
-              Constants.itemHeight +
-              (index === 0 ? Constants.statusBarHeight : 0),
-          }}
-          key={color}
-        />
-      ))}
-    </Animated.View>
-  );
 
   return (
     <PanGestureHandler
@@ -261,8 +242,8 @@ const TodoList = () => {
         {lines.map((line, idx) => (
           <Marker {...line} key={idx.toString()} />
         ))}
-        {marker.render()}
-        {renderMask()}
+        <ActiveMarker />
+        <Mask theme={theme} />
       </Animated.View>
     </PanGestureHandler>
   );

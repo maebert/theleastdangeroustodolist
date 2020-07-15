@@ -3,12 +3,12 @@ import { Animated, Image } from "react-native";
 import Constants from "./constants";
 import * as Haptics from "expo-haptics";
 
-const Marker = ({ startX, startY, width, direction, style }) => (
+const Marker = ({ startX, startY, length, direction, style }) => (
   <Animated.View
     style={[
       {
         height: (Constants.screenWidth - 80) / 10,
-        width: width,
+        width: length,
         position: "absolute",
         top: startY,
       },
@@ -40,7 +40,7 @@ const Marker = ({ startX, startY, width, direction, style }) => (
 );
 
 export const useMarker = () => {
-  lineWidth = useRef(new Animated.Value(0)).current;
+  length = useRef(new Animated.Value(0)).current;
   lineX = useRef(new Animated.Value(0)).current;
   lineY = useRef(new Animated.Value(0)).current;
 
@@ -51,7 +51,7 @@ export const useMarker = () => {
 
   const startDrawing = (x, y) => {
     Haptics.selectionAsync();
-    lineWidth.setValue(0);
+    length.setValue(0);
     lineX.setValue(x);
     lineY.setValue(y);
     const activeTodo = Math.floor(
@@ -65,19 +65,16 @@ export const useMarker = () => {
     return activeTodo;
   };
 
-  const setLength = (length) => {
-    setDirection(length > 0);
-    lineWidth.setValue(Math.abs(length));
+  const setLength = (dirLength) => {
+    setDirection(dirLength > 0);
+    length.setValue(Math.abs(dirLength));
   };
 
   const cancelDrawing = () => {
-    Animated.timing(lineWidth, {
+    Animated.timing(length, {
       toValue: 0,
       duration: 100,
-    }).start();
-    Animated.timing(fade, {
-      toValue: 0,
-      duration: 500,
+      useNativeDriver: false,
     }).start();
     setIsDrawing(false);
   };
@@ -86,23 +83,24 @@ export const useMarker = () => {
     const newLine = {
       startX: direction ? lineX._value : Constants.screenWidth - lineX._value,
       startY: lineY._value,
-      width: lineWidth._value,
+      length: length._value,
       style: style,
       direction: direction,
     };
-
+    setActiveTodo(null);
     setIsDrawing(false);
     return newLine;
   };
 
   const render = () => {
+    if (!isDrawing) return null;
     return (
       <Marker
         startX={
           direction ? lineX : Animated.subtract(Constants.screenWidth, lineX)
         }
         startY={lineY}
-        width={lineWidth}
+        length={length}
         direction={direction}
         style={style}
       />

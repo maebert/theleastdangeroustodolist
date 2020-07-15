@@ -9,12 +9,12 @@ import {
 import Themes from "./themes";
 
 const options = {
-  default: "Least Dangerous",
-  haze: "Toxic Fumes",
-  floss: "Floss Daily",
-  clear: "Cease & Desist",
+  default: "Least\nDangerous",
+  haze: "Toxic\nFumes",
+  floss: "Floss\nDaily",
+  clear: "Cease &\nDesist",
   pride: "The Letter People",
-  lsd: "I think it's working",
+  lsd: "I think\nit's working",
 };
 
 const Swatch = ({ name, colors, active, onPress }) => (
@@ -78,12 +78,12 @@ const styles = StyleSheet.create({
   },
   label: {
     fontFamily: "Lato Bold",
-    lineHeight: 40,
+    lineHeight: 20,
     fontSize: 20,
     textAlign: "center",
     color: "white",
     paddingHorizontal: 5,
-    top: 30,
+    top: 40,
     position: "absolute",
     width: "100%",
   },

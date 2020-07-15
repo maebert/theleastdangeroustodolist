@@ -6,7 +6,7 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 
 export default {
   todos: 6,
-  namespace: "TLDTLD",
+  namespace: "TLDTLD-2",
   screenWidth,
   screenHeight,
   itemHeight: (screenHeight - Constants.statusBarHeight) / 6,
