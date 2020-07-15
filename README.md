@@ -1,7 +1,5 @@
 <h1> <img src="https://github.com/maebert/theleastdangeroustodolist/raw/master/assets/icon.png" height=64 /> The Least Dangerous To Do List</h1>
 
-
-
 ## Stack
 
 ### Crashes
@@ -25,4 +23,3 @@
 <a href="https://appstoreconnect.apple.com/WebObjects/iTunesConnect.woa/ra/ng/app/1497061114/testflight?section=group&subsection=builds&id=9e4a47a0-1ee8-4396-b8e8-2825cb5d2159">
   <img src="https://t5n3m8p8.stackpathcdn.com/wp-content/uploads/2013/07/testflight-logo11-300x90.png" height=60 />
 </a>
-

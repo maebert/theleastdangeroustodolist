@@ -1,351 +1,271 @@
-import React from "react";
-import { Text, View, Animated, Image } from "react-native";
+import React, { useState, useEffect, useRef } from "react";
+import { View, Animated } from "react-native";
 import Constants from "./constants";
 import update from "immutability-helper";
-import { PanGestureHandler } from "react-native-gesture-handler";
+import {
+  PanGestureHandler,
+  State as GestureState,
+} from "react-native-gesture-handler";
 import Todo from "./todo";
 import Data from "../src/data";
 import { sampleSize, range } from "lodash";
 import Store from "./store";
-import * as Haptics from "expo-haptics";
-import Marker from "./marker";
+import Marker, { useMarker } from "./marker";
 import Settings from "./settings";
 import { track, events, identify } from "./analytics";
-import Palette from "./palette";
+import Themes from "./themes";
 
-export default class TodoList extends React.Component {
-  lineWidth = new Animated.Value(0);
-  fade = new Animated.Value(0);
-  pull = new Animated.Value(0);
-  lineX = new Animated.Value(0);
-  lineY = new Animated.Value(0);
-  mask = new Animated.Value(0);
+const TodoList = () => {
+  fade = useRef(new Animated.Value(0)).current;
+  pull = useRef(new Animated.Value(0)).current;
+  mask = useRef(new Animated.Value(0)).current;
 
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: [],
-      style: 0,
-      lines: [],
-      panRight: false,
-      panTodo: 0,
-      palette: "default"
-    };
-    this.load();
-  }
+  const getDate = () => new Date().toISOString().substr(0, 10);
+  const marker = useMarker();
 
-  componentDidMount() {
+  const [data, setData] = useState(null);
+  const [isTutorial, setIsTutorial] = useState(false);
+  const [date, setDate] = useState(getDate());
+  const [lines, setLines] = useState([]);
+  const [theme, setTheme] = useState("default");
+  const [showSettings, setShowSettings] = useState(false);
+
+  const todos = data?.map((todo, index) => (
+    <Todo
+      key={index.toString()}
+      theme={theme}
+      {...todo}
+      index={index}
+      fade={marker.activeTodo === index ? fade : null}
+      onComplete={() => onMarkDone(index)}
+    />
+  ));
+
+  useEffect(() => {
+    if (data !== null) return;
+    load();
     identify();
-  }
+  });
 
-  handleGesture = evt => {
-    if (this.state.useMarker) {
-      this.lineWidth.setValue(Math.abs(evt.nativeEvent.translationX));
-      this.fade.setValue(
-        Math.abs(evt.nativeEvent.translationX) / Constants.screenWidth
-      );
-      this.setState({ panRight: evt.nativeEvent.translationX > 0 });
-    } else if (!this.state.showSettings && evt.nativeEvent.translationY > 0) {
-      this.pull.setValue(evt.nativeEvent.translationY);
-    } else if (this.state.showSettings && evt.nativeEvent.translationY < 0) {
-      this.pull.setValue(Constants.screenHeight + evt.nativeEvent.translationY);
+  const handleGesture = (evt) => {
+    if (marker.isDrawing) {
+      const length = evt.nativeEvent.translationX;
+      marker.setLength(length);
+      fade.setValue(Math.abs(length) / Constants.screenWidth);
+    } else if (!showSettings && evt.nativeEvent.translationY > 0) {
+      pull.setValue(evt.nativeEvent.translationY);
+    } else if (showSettings && evt.nativeEvent.translationY < 0) {
+      pull.setValue(Constants.screenHeight + evt.nativeEvent.translationY);
     }
   };
 
-  onStartSwipe = evt => {
-    Haptics.selectionAsync();
-    this.lineX.setValue(evt.x);
-    this.lineY.setValue(evt.y);
-    const panTodo = Math.floor(
-      ((evt.y - Constants.statusBarHeight + 10) /
-        (Constants.screenHeight - Constants.statusBarHeight)) *
-        Constants.todos
-    );
-    this.setState({
-      useMarker: true,
-      showSettings: false,
-      style: Math.floor(Math.random() * Constants.todos),
-      panTodo
+  const onStartPull = (evt) => {
+    // setState({ useMarker: false});
+  };
+
+  const onCancelPull = () => {
+    console.log("cancel pull");
+    Animated.spring(pull, {
+      toValue: showSettings ? Constants.screenHeight : 0,
+      duration: 200,
+    }).start();
+  };
+
+  const onEndPull = () => {
+    console.log("end pull");
+    Animated.timing(pull, {
+      toValue: showSettings ? 0 : Constants.screenHeight,
+      duration: 300,
+    }).start();
+    setShowSettings(!showSettings);
+  };
+
+  const onMarkDone = (idx) => {
+    const newData = update(data, {
+      [idx]: { done: { $set: true } },
     });
+    setData(newData);
+    onCompleteTodo(idx);
+    save();
   };
 
-  onStartPull = evt => {
-    // this.setState({ useMarker: false});
-  };
-
-  onCancelPull = () => {
-    Animated.spring(this.pull, {
-      toValue: this.state.showSettings ? Constants.screenHeight : 0,
-      duration: 200
-    }).start();
-  };
-
-  onEndPull = () => {
-    Animated.timing(this.pull, {
-      toValue: this.state.showSettings ? 0 : Constants.screenHeight,
-      duration: 300
-    }).start();
-    this.setState(prevState => ({ showSettings: !prevState.showSettings }));
-  };
-
-  onCancelSwipe = evt => {
-    Animated.timing(this.lineWidth, {
-      toValue: 0,
-      duration: 100
-    }).start();
-    Animated.timing(this.fade, {
-      toValue: 0,
-      duration: 500
-    }).start();
-    this.setState({ useMarker: false });
-  };
-
-  onEndSwipe = evt => {
-    const newLine = {
-      startX: this.state.panRight
-        ? this.lineX._value
-        : Constants.screenWidth - this.lineX._value,
-      startY: this.lineY._value,
-      width: this.lineWidth._value,
-      style: this.state.style,
-      direction: this.state.panRight
-    };
-    this.lineWidth.setValue(0);
-    const newData = update(this.state.data, {
-      [this.state.panTodo]: { done: { $set: true } }
-    });
-    this.setState(
-      {
-        useMarker: false,
-        data: newData,
-        lines: [...this.state.lines, newLine]
-      },
-      () => {
-        this.onCompleteTodo(this.state.panTodo);
-        this.save();
-      }
-    );
-  };
-
-  onMarkDone = idx => {
-    const newData = update(this.state.data, {
-      [idx]: { done: { $set: true } }
-    });
-    this.setState(
-      {
-        data: newData
-      },
-      () => {
-        this.onCompleteTodo(idx);
-        this.save();
-      }
-    );
-  };
-
-  replaceTodos = () => {
-    Animated.timing(this.mask, {
+  const replaceTodos = () => {
+    Animated.timing(mask, {
       toValue: 1,
-      duration: 500
+      duration: 500,
     }).start(() => {
-      this.refreshTodos();
-      Animated.timing(this.mask, {
+      refreshTodos();
+      Animated.timing(mask, {
         toValue: 0.0,
-        duration: 500
+        duration: 500,
       }).start();
     });
   };
 
-  onCompleteTodo = idx => {
-    const { index, pack, text } = this.state.data[idx];
-    const allDone = this.state.data.map(d => d.done).every(Boolean);
+  const onCompleteTodo = (idx) => {
+    const { index, pack, text } = data[idx];
+    const allDone = data.map((d) => d.done).every(Boolean);
     track(events.COMPLETE, { index, pack, text });
-    if (allDone && this.state.isTutorial) {
+    if (allDone && isTutorial) {
       track(events.COMPLETE_TUTORIAL);
       Store.save("tutorialCompleted", true);
-      this.replaceTodos();
+      replaceTodos();
     }
   };
 
-  onGestureStateChange = evt => {
+  const onEndDrawing = () => {
+    const newLine = marker.endDrawing();
+    setLines((prev) => [...prev, newLine]);
+    onMarkDone(marker.activeTodo);
+  };
+
+  const onGestureStateChange = (evt) => {
     const { nativeEvent } = evt;
-    if (nativeEvent.oldState === 0 && nativeEvent.state === 2) {
+    if (
+      nativeEvent.oldState === GestureState.UNDETERMINED &&
+      nativeEvent.state === GestureState.BEGAN
+    ) {
       if (
-        !this.state.showSettings &&
+        !showSettings &&
         Math.abs(nativeEvent.velocityX) > Math.abs(nativeEvent.velocityY) * 0.6
       ) {
-        this.onStartSwipe(nativeEvent);
+        marker.startDrawing(nativeEvent.x, nativeEvent.y);
       } else if (nativeEvent.velocityY > 0) {
-        this.onStartPull(nativeEvent);
+        onStartPull(nativeEvent);
       }
     }
-    if (nativeEvent.oldState === 4 && nativeEvent.state === 5) {
-      const up = this.state.showSettings ? -1 : 1;
-      if (this.state.useMarker) {
+    if (
+      nativeEvent.oldState === GestureState.ACTIVE &&
+      nativeEvent.state === GestureState.END
+    ) {
+      const up = showSettings ? -1 : 1;
+      if (marker.isDrawing) {
         if (Math.abs(nativeEvent.translationX) < Constants.screenWidth * 0.2) {
-          this.onCancelSwipe();
+          marker.cancelDrawing();
         } else {
-          this.onEndSwipe();
+          onEndDrawing();
         }
       } else {
         if (nativeEvent.translationY * up < 150) {
-          this.onCancelPull();
+          onCancelPull();
         } else {
-          this.onEndPull();
+          onEndPull();
         }
       }
     }
   };
 
-  renderMarker() {
-    const { panRight } = this.state;
-    return (
-      <Marker
-        startX={
-          panRight
-            ? this.lineX
-            : Animated.subtract(Constants.screenWidth, this.lineX)
-        }
-        startY={this.lineY}
-        width={this.lineWidth}
-        direction={panRight}
-        style={this.state.style}
-      />
-    );
-  }
-
-  getTodos = (pack, n) => {
-    return sampleSize(range(Data[pack].length), n).map(i => ({
+  const getTodos = (pack, n) =>
+    sampleSize(range(Data[pack].length), n).map((i) => ({
       index: i,
       text: Data[pack][i],
       done: false,
-      pack: pack
+      pack: pack,
     }));
+
+  const save = () => {
+    Store.save(Constants.namespace, { data, lines, date, theme });
   };
 
-  getDate = () => new Date().toISOString().substr(0, 10);
-
-  save = () => {
-    const { data, lines, date, palette } = this.state;
-    Store.save(Constants.namespace, { data, lines, date, palette });
-  };
-
-  load = async () => {
+  const load = async () => {
     const tutorialCompleted = await Store.get("tutorialCompleted");
     if (!tutorialCompleted) {
-      this.loadTutorial();
+      loadTutorial();
       return;
     }
     const result = await Store.get(Constants.namespace);
-    if (result && result.date === this.getDate()) {
-      this.setState(result);
+    if (result && result.date === getDate()) {
+      const { data, date, lines, theme } = result;
+      setData(data);
+      setDate(date);
+      setLines(lines);
+      setTheme(theme);
     } else {
-      this.refreshTodos();
+      refreshTodos();
     }
   };
 
-  loadTutorial = () => {
+  const loadTutorial = () => {
     const data = Data.tutorial.map((text, index) => ({
       index,
       text,
       done: false,
-      pack: "tutorial"
+      pack: "tutorial",
     }));
-    this.setState({
-      data,
-      lines: [],
-      date: this.getDate(),
-      isTutorial: true,
-      palette: "default"
-    });
+    setData(data);
+    setLines([]);
+    setDate(getDate());
+    setIsTutorial(true);
+    setTheme("default");
   };
 
-  refreshTodos = () => {
-    this.setState(
-      {
-        data: this.getTodos("basic", Constants.todos),
-        lines: [],
-        date: this.getDate(),
-        panTodo: null
-      },
-      () => {
-        this.forceUpdate();
-        this.save();
-      }
-    );
+  const refreshTodos = () => {
+    setData(getTodos("basic", Constants.todos));
+    setLines([]);
+    setDate(getDate());
+    save();
   };
 
-  pickPalette = palette => {
-    this.setState({ palette }, () => this.save());
-    track(events.PICK_THEME, { palette });
-    this.onEndPull();
+  const pickTheme = (theme) => {
+    setTheme(theme);
+    save();
+    track(events.PICK_THEME, { theme });
+    onEndPull();
   };
 
-  renderMask() {
-    return (
-      <Animated.View
+  const renderMask = () => (
+    <Animated.View
       pointerEvents="none"
-        style={{
-          opacity: this.mask,
-          position: "absolute",
-          top: 0,
-          left: 0,
-          height: Constants.screenHeight,
-          width: Constants.screenWidth
-        }}
+      style={{
+        opacity: mask,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        height: Constants.screenHeight,
+        width: Constants.screenWidth,
+      }}
+    >
+      {Themes[theme || "default"].map((color, index) => (
+        <View
+          style={{
+            backgroundColor: color,
+            paddingTop: index === 0 ? Constants.statusBarHeight : 0,
+            height:
+              Constants.itemHeight +
+              (index === 0 ? Constants.statusBarHeight : 0),
+          }}
+          key={color}
+        />
+      ))}
+    </Animated.View>
+  );
+
+  return (
+    <PanGestureHandler
+      onGestureEvent={handleGesture}
+      onHandlerStateChange={onGestureStateChange}
+    >
+      <Animated.View
+        style={{ width: "100%", transform: [{ translateY: pull }] }}
       >
-        {Palette[this.state.palette].map((color, index) => (
-          <View
-            style={{
-              backgroundColor: color,
-              paddingTop: index === 0 ? Constants.statusBarHeight : 0,
-              height:
-                Constants.itemHeight +
-                (index === 0 ? Constants.statusBarHeight : 0)
-            }}
-            key={color}
-          />
+        <Settings
+          onPickTheme={pickTheme}
+          activeTheme={theme}
+          onReshuffle={() => {
+            refreshTodos();
+            onEndPull();
+          }}
+          style={{ position: "absolute", top: -Constants.screenHeight }}
+        />
+        {todos}
+        {lines.map((line, idx) => (
+          <Marker {...line} key={idx.toString()} />
         ))}
+        {marker.render()}
+        {renderMask()}
       </Animated.View>
-    );
-  }
+    </PanGestureHandler>
+  );
+};
 
-  render() {
-    const todos = this.state.data.map((todo, index) => (
-      <Todo
-        key={index.toString()}
-        palette={this.state.palette}
-        {...todo}
-        index={index}
-        fade={this.state.panTodo === index ? this.fade : null}
-        onComplete={() => this.onMarkDone(index)}
-      />
-    ));
-
-    return (
-      <PanGestureHandler
-        onGestureEvent={this.handleGesture}
-        onHandlerStateChange={this.onGestureStateChange}
-      >
-        <Animated.View
-          style={{ width: "100%", transform: [{ translateY: this.pull }] }}
-        >
-          <Settings
-            onPickPalette={this.pickPalette}
-            activePalette={this.state.palette}
-            onReshuffle={() => {
-              this.refreshTodos();
-              this.onEndPull();
-            }}
-            style={{ position: "absolute", top: -Constants.screenHeight }}
-          />
-          {todos}
-          {this.state.lines.map((line, idx) => (
-            <Marker {...line} key={idx.toString()} />
-          ))}
-          {this.renderMarker()}
-          {this.renderMask()}
-        </Animated.View>
-      </PanGestureHandler>
-    );
-  }
-}
+export default TodoList;
