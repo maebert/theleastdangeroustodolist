@@ -2,9 +2,16 @@ import React from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 import Constants from "./constants";
 import Swatch from "./swatch";
+import { Theme } from "./themes";
 
-const Settings = ({ onPickTheme, style, activeTheme, onReshuffle }) => (
-  <View style={[styles.container, style]}>
+type SettingsProps = {
+  onPickTheme: (theme: Theme) => any;
+  onReshuffle: () => any;
+  activeTheme: Theme;
+};
+
+const Settings = ({ onPickTheme, activeTheme, onReshuffle }: SettingsProps) => (
+  <View style={styles.container}>
     <View
       style={{ marginTop: Constants.statusBarHeight + 40, marginBottom: 40 }}
     >
@@ -16,7 +23,7 @@ const Settings = ({ onPickTheme, style, activeTheme, onReshuffle }) => (
       </Text>
     </View>
     <View style={{ flex: 1 }}>
-      <Swatch onChoose={(id) => onPickTheme(id)} active={activeTheme} />
+      <Swatch onChoose={(id: Theme) => onPickTheme(id)} active={activeTheme} />
     </View>
     <View style={{ marginBottom: 40 }}>
       <Button onPress={onReshuffle} title="Gimme something new" />
@@ -26,6 +33,8 @@ const Settings = ({ onPickTheme, style, activeTheme, onReshuffle }) => (
 
 const styles = StyleSheet.create({
   container: {
+    position: "absolute",
+    top: -Constants.screenHeight,
     height: Constants.screenHeight,
     width: "100%",
     backgroundColor: "#fffefa",
@@ -42,7 +51,7 @@ const styles = StyleSheet.create({
   },
   titleBold: {
     fontFamily: "Lato Black",
-    color: "#f45654",
+    color: "#B64B5A",
   },
   subtitle: {
     textAlign: "left",

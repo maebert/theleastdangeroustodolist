@@ -8,14 +8,23 @@ import {
   StyleSheet,
 } from "react-native";
 import Constants from "./constants";
-import Themes from "./themes";
+import Colors, { Theme } from "./themes";
 import { handleAction } from "./util";
 
 const URL_REGEX = /((https?|tldtdl):\/\/[^\s]+)/g;
 
-const Todo = ({ theme, done, text, index, fade, onComplete }) => {
+type TodoProps = {
+  theme: Theme;
+  done: boolean;
+  text: string;
+  index: number;
+  fade: Animated.Value | null;
+  onComplete: () => any;
+};
+
+const Todo = ({ theme, done, text, index, fade, onComplete }: TodoProps) => {
   const urlMatch = text.match(URL_REGEX);
-  let url = null,
+  let url: string | null = null,
     displayText = text;
 
   if (urlMatch) {
@@ -49,7 +58,7 @@ const Todo = ({ theme, done, text, index, fade, onComplete }) => {
     </TouchableHighlight>
   );
 
-  const getOpacity = (range) => {
+  const getOpacity = (range: number) => {
     if (done) return 0.5;
     if (fade === null) return 1;
     return fade.interpolate({
@@ -59,14 +68,14 @@ const Todo = ({ theme, done, text, index, fade, onComplete }) => {
   };
 
   const getColor = () => {
-    if (done) return Themes.greys[index];
-    if (fade === null) return Themes[theme][index];
+    if (done) return Colors[Theme.Greys][index];
+    if (fade === null) return Colors[theme][index];
     return fade.interpolate({
       inputRange: [0, 0.2, 0.2],
       outputRange: [
-        Themes[theme][index],
-        Themes.greys[index],
-        Themes.greys[index],
+        Colors[theme][index],
+        Colors[Theme.Greys][index],
+        Colors[Theme.Greys][index],
       ],
     });
   };
@@ -90,10 +99,11 @@ const Todo = ({ theme, done, text, index, fade, onComplete }) => {
     </Animated.Text>
   );
 
-  const renderTouchable = (inner) => {
+  const renderTouchable = (inner: React.ReactNode) => {
+    if (!url) return null;
     const action = url.startsWith("tldtdl://")
-      ? () => handleAction(url)
-      : () => Linking.openURL(url);
+      ? () => handleAction(url as string)
+      : () => Linking.openURL(url as string);
 
     return (
       <TouchableHighlight
@@ -130,7 +140,7 @@ const Todo = ({ theme, done, text, index, fade, onComplete }) => {
 };
 
 Todo.defaultProps = {
-  theme: "default",
+  theme: Theme.Default,
   done: false,
   text: "",
   index: 0,

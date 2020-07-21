@@ -3,7 +3,15 @@ import { Animated, Image } from "react-native";
 import Constants from "./constants";
 import * as Haptics from "expo-haptics";
 
-const Marker = ({ startX, startY, length, direction, style }) => (
+export type Line = {
+  startX: number | Animated.Value;
+  startY: number | Animated.Value;
+  length: number | Animated.Value;
+  direction: boolean;
+  style: number;
+};
+
+const Marker = ({ startX, startY, length, direction, style }: Line) => (
   <Animated.View
     style={[
       {
@@ -14,7 +22,7 @@ const Marker = ({ startX, startY, length, direction, style }) => (
       },
       direction ? { left: startX } : { right: startX },
     ]}
-    overflow={"hidden"}
+    overflow="hidden"
   >
     <Image
       source={require("../assets/line1.png")}
@@ -40,12 +48,12 @@ const Marker = ({ startX, startY, length, direction, style }) => (
 );
 
 export const useMarker = () => {
-  length = useRef(new Animated.Value(0)).current;
-  lineX = useRef(new Animated.Value(0)).current;
-  lineY = useRef(new Animated.Value(0)).current;
+  const length = useRef(new Animated.Value(0)).current;
+  const lineX = useRef(new Animated.Value(0)).current;
+  const lineY = useRef(new Animated.Value(0)).current;
 
   const [style, setStyle] = useState(0);
-  const [activeTodo, setActiveTodo] = useState(null);
+  const [activeTodo, setActiveTodo] = useState<number | null>(null);
   const [isDrawing, setIsDrawing] = useState(false);
   const [direction, setDirection] = useState(false);
 
@@ -65,7 +73,7 @@ export const useMarker = () => {
     return activeTodo;
   };
 
-  const setLength = (dirLength) => {
+  const setLength = (dirLength: number) => {
     setDirection(dirLength > 0);
     length.setValue(Math.abs(dirLength));
   };

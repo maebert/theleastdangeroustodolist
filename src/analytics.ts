@@ -51,12 +51,12 @@ const maybeInitialize = () => {
   if (!sentryInitialized) initializeSentry();
 };
 
-const identify = (id: ?string, options?: ?Object = null) => {
+const identify = (id?: string) => {
   maybeInitialize();
-  Segment.identify();
+  Segment.identify(id || null);
 };
 
-const alias = (id: ?string) => {
+const alias = (id: string) => {
   maybeInitialize();
   Segment.alias(id);
 };

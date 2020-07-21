@@ -1,37 +1,47 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Animated } from "react-native";
+import { View, Animated, GestureResponderEvent } from "react-native";
 import Constants from "./constants";
 import update from "immutability-helper";
 import {
   PanGestureHandler,
   State as GestureState,
+  PanGestureHandlerGestureEvent,
+  PanGestureHandlerStateChangeEvent,
 } from "react-native-gesture-handler";
 import Todo from "./todo";
-import Data from "../src/data";
+import Data, { Pack } from "./data";
 import { sampleSize, range } from "lodash";
 import Store from "./store";
-import Marker, { useMarker } from "./marker";
+import Marker, { useMarker, Line } from "./marker";
 import Settings from "./settings";
 import { track, events, identify } from "./analytics";
 import useMask from "./mask";
+import { Theme } from "./themes";
+
+type TodoData = {
+  index: number;
+  text: string;
+  done: boolean;
+  pack: string;
+};
 
 const TodoList = () => {
-  fade = useRef(new Animated.Value(0)).current;
-  pull = useRef(new Animated.Value(0)).current;
+  const fade = useRef(new Animated.Value(0)).current;
+  const pull = useRef(new Animated.Value(0)).current;
 
   const getDate = () => new Date().toISOString().substr(0, 10);
   const marker = useMarker();
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
 
-  const [data, setData] = useState(null);
+  const [data, setData] = useState<TodoData[] | null>(null);
   const [isTutorial, setIsTutorial] = useState(false);
   const [date, setDate] = useState(getDate());
-  const [lines, setLines] = useState([]);
-  const [theme, setTheme] = useState("default");
+  const [lines, setLines] = useState<Line[]>([]);
+  const [theme, setTheme] = useState<Theme>(Theme.Default);
   const [showSettings, setShowSettings] = useState(false);
 
-  const todos = data?.map((todo, index) => (
+  const todos = data?.map((todo: TodoData, index: number) => (
     <Todo
       key={index.toString()}
       theme={theme}
@@ -42,28 +52,7 @@ const TodoList = () => {
     />
   ));
 
-  useEffect(() => {
-    if (data !== null) return;
-    load();
-    identify();
-  });
-
-  useEffect(() => {
-    if (!data) return;
-    const allDone = data.map((d) => d.done).every(Boolean);
-    if (allDone) {
-      track(events.COMPLETE_TUTORIAL);
-      Store.save("tutorialCompleted", true);
-      replaceTodos();
-    }
-  }, [data, track, Store, replaceTodos, save]);
-
-  useEffect(() => {
-    if (!data || !lines) return;
-    save();
-  }, [data, lines, save]);
-
-  const handleGesture = (evt) => {
+  const handleGesture = (evt: PanGestureHandlerGestureEvent) => {
     if (marker.isDrawing) {
       const length = evt.nativeEvent.translationX;
       marker.setLength(length);
@@ -75,14 +64,13 @@ const TodoList = () => {
     }
   };
 
-  const onStartPull = (evt) => {
+  const onStartPull = () => {
     // setState({ useMarker: false});
   };
 
   const onCancelPull = () => {
     Animated.spring(pull, {
       toValue: showSettings ? Constants.screenHeight : 0,
-      duration: 200,
       useNativeDriver: true,
     }).start();
   };
@@ -96,7 +84,7 @@ const TodoList = () => {
     setShowSettings(!showSettings);
   };
 
-  const onMarkDone = (idx) => {
+  const onMarkDone = (idx: number) => {
     const newData = update(data, {
       [idx]: { done: { $set: true } },
     });
@@ -108,7 +96,8 @@ const TodoList = () => {
     conceal(refreshTodos);
   };
 
-  const onCompleteTodo = (idx) => {
+  const onCompleteTodo = (idx: number) => {
+    if (!data) return;
     const { index, pack, text } = data[idx];
     track(events.COMPLETE, { index, pack, text });
   };
@@ -116,7 +105,7 @@ const TodoList = () => {
   const onEndDrawing = () => {
     const newLine = marker.endDrawing();
     setLines((prev) => [...prev, newLine]);
-    onMarkDone(marker.activeTodo);
+    marker.activeTodo && onMarkDone(marker.activeTodo);
   };
 
   const onCancelDrawing = () => {
@@ -128,7 +117,7 @@ const TodoList = () => {
     marker.cancelDrawing();
   };
 
-  const onGestureStateChange = (evt) => {
+  const onGestureStateChange = (evt: PanGestureHandlerStateChangeEvent) => {
     const { nativeEvent } = evt;
     if (
       nativeEvent.oldState === GestureState.UNDETERMINED &&
@@ -140,7 +129,7 @@ const TodoList = () => {
       ) {
         marker.startDrawing(nativeEvent.x, nativeEvent.y);
       } else if (nativeEvent.velocityY > 0) {
-        onStartPull(nativeEvent);
+        onStartPull();
       }
     }
     if (
@@ -164,10 +153,10 @@ const TodoList = () => {
     }
   };
 
-  const getTodos = (pack, n) =>
+  const getTodos = (pack: Pack, n: number): TodoData[] =>
     sampleSize(range(Data[pack].length), n).map((i) => ({
       index: i,
-      text: Data[pack][i],
+      text: Data[pack][i].text,
       done: false,
       pack: pack,
     }));
@@ -195,9 +184,9 @@ const TodoList = () => {
   };
 
   const loadTutorial = () => {
-    const data = Data.tutorial.map((text, index) => ({
+    const data = Data.tutorial.map((todo, index) => ({
       index,
-      text,
+      text: todo.text,
       done: false,
       pack: "tutorial",
     }));
@@ -205,7 +194,7 @@ const TodoList = () => {
     setLines([]);
     setDate(getDate());
     setIsTutorial(true);
-    setTheme("default");
+    setTheme(Theme.Default);
   };
 
   const refreshTodos = () => {
@@ -214,12 +203,33 @@ const TodoList = () => {
     setDate(getDate());
   };
 
-  const pickTheme = (theme) => {
+  const pickTheme = (theme: Theme) => {
     setTheme(theme);
     save();
     track(events.PICK_THEME, { theme });
     onEndPull();
   };
+
+  useEffect(() => {
+    if (data !== null) return;
+    load();
+    identify();
+  });
+
+  useEffect(() => {
+    if (!data) return;
+    const allDone = data.map((d) => d.done).every(Boolean);
+    if (allDone) {
+      track(events.COMPLETE_TUTORIAL);
+      Store.save("tutorialCompleted", true);
+      replaceTodos();
+    }
+  }, [data, track, Store, replaceTodos, save]);
+
+  useEffect(() => {
+    if (!data || !lines) return;
+    save();
+  }, [data, lines, save]);
 
   return (
     <PanGestureHandler
@@ -236,12 +246,12 @@ const TodoList = () => {
             refreshTodos();
             onEndPull();
           }}
-          style={{ position: "absolute", top: -Constants.screenHeight }}
         />
         {todos}
         {lines.map((line, idx) => (
-          <Marker {...line} key={idx.toString()} />
+          <Marker {...line} key={idx} />
         ))}
+
         <ActiveMarker />
         <Mask theme={theme} />
       </Animated.View>

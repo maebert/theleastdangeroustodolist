@@ -6,22 +6,28 @@ import {
   StyleSheet,
   TouchableOpacity,
 } from "react-native";
-import Themes from "./themes";
+import Colors, { Theme, ThemeDef } from "./themes";
 
-const options = {
-  default: "Least\nDangerous",
-  haze: "Toxic\nFumes",
-  floss: "Floss\nDaily",
-  clear: "Cease &\nDesist",
-  pride: "The Letter People",
-  lsd: "I think\nit's working",
+const AvailableThemes = [
+  Theme.Default,
+  Theme.Clear,
+  Theme.Haze,
+  Theme.LSD,
+  Theme.Pride,
+  Theme.Floss,
+];
+
+type SingleSwatchProps = {
+  name: string;
+  colors: ThemeDef;
+  active: boolean;
+  onPress: () => any;
 };
 
-const Swatch = ({ name, colors, active, onPress }) => (
+const SingleSwatch = ({ name, colors, active, onPress }: SingleSwatchProps) => (
   <View style={styles.swatchView}>
     <TouchableOpacity
       style={[styles.swatch, active && styles.activeSwatch]}
-      overflow="hidden"
       onPress={onPress}
     >
       {colors.map((c) => (
@@ -32,7 +38,12 @@ const Swatch = ({ name, colors, active, onPress }) => (
   </View>
 );
 
-export default ({ active, onChoose }) => (
+type SwatchProps = {
+  active: Theme;
+  onChoose: (theme: Theme) => any;
+};
+
+const Swatch = ({ active, onChoose }: SwatchProps) => (
   <View style={styles.container}>
     <ScrollView
       horizontal={true}
@@ -40,18 +51,20 @@ export default ({ active, onChoose }) => (
       decelerationRate="fast"
       showsHorizontalScrollIndicator={false}
     >
-      {Object.keys(options).map((o) => (
-        <Swatch
+      {AvailableThemes.map((o) => (
+        <SingleSwatch
           active={active === o}
           onPress={() => onChoose(o)}
           key={o}
-          name={options[o]}
-          colors={Themes[o]}
+          name={o} //Theme[o] as string
+          colors={Colors[o]}
         />
       ))}
     </ScrollView>
   </View>
 );
+
+export default Swatch;
 
 const styles = StyleSheet.create({
   container: {
