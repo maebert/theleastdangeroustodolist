@@ -1,6 +1,5 @@
 import React from "react";
 import {
-  Text,
   Animated,
   View,
   Linking,
@@ -19,10 +18,9 @@ type TodoProps = {
   text: string;
   index: number;
   fade: Animated.Value | null;
-  onComplete: () => any;
 };
 
-const Todo = ({ theme, done, text, index, fade, onComplete }: TodoProps) => {
+const Todo = ({ theme, done, text, index, fade }: TodoProps) => {
   const urlMatch = text.match(URL_REGEX);
   let url: string | null = null,
     displayText = text;
@@ -31,32 +29,6 @@ const Todo = ({ theme, done, text, index, fade, onComplete }: TodoProps) => {
     url = urlMatch[0];
     displayText = text.replace(URL_REGEX, "");
   }
-
-  const renderBox = () => (
-    <TouchableHighlight
-      underlayColor="white"
-      style={{
-        height: 32,
-        width: 32,
-        borderRadius: 4,
-        borderWidth: 2,
-        borderColor: "white",
-        marginRight: 15,
-        opacity: done ? 0.5 : 1,
-        padding: 3,
-      }}
-      onPress={() => onComplete()}
-    >
-      <View
-        style={{
-          backgroundColor: done ? "#ffff" : "#fff0",
-          width: "100%",
-          height: "100%",
-          borderRadius: 2,
-        }}
-      />
-    </TouchableHighlight>
-  );
 
   const getOpacity = (range: number) => {
     if (done) return 0.5;

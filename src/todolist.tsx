@@ -48,7 +48,6 @@ const TodoList = () => {
       {...todo}
       index={index}
       fade={marker.activeTodo === index ? fade : null}
-      onComplete={() => onMarkDone(index)}
     />
   ));
 
@@ -105,7 +104,7 @@ const TodoList = () => {
   const onEndDrawing = () => {
     const newLine = marker.endDrawing();
     setLines((prev) => [...prev, newLine]);
-    marker.activeTodo && onMarkDone(marker.activeTodo);
+    marker.activeTodo !== null && onMarkDone(marker.activeTodo);
   };
 
   const onCancelDrawing = () => {
@@ -211,12 +210,14 @@ const TodoList = () => {
   };
 
   useEffect(() => {
+    // load
     if (data !== null) return;
     load();
     identify();
   });
 
   useEffect(() => {
+    // all done
     if (!data) return;
     const allDone = data.map((d) => d.done).every(Boolean);
     if (allDone) {
@@ -227,6 +228,7 @@ const TodoList = () => {
   }, [data, track, Store, replaceTodos, save]);
 
   useEffect(() => {
+    // save when new data or lines change
     if (!data || !lines) return;
     save();
   }, [data, lines, save]);
