@@ -4,6 +4,7 @@ import Constants from "./constants";
 import * as Haptics from "expo-haptics";
 
 export type Line = {
+  todo: number | null;
   startX: number | Animated.Value;
   startY: number | Animated.Value;
   length: number | Animated.Value;
@@ -23,6 +24,7 @@ const Marker = ({ startX, startY, length, direction, style }: Line) => (
       direction ? { left: startX } : { right: startX },
     ]}
     overflow="hidden"
+    pointerEvents="none"
   >
     <Image
       source={require("../assets/line1.png")}
@@ -89,6 +91,7 @@ export const useMarker = () => {
 
   const endDrawing = () => {
     const newLine = {
+      todo: activeTodo,
       startX: direction ? lineX._value : Constants.screenWidth - lineX._value,
       startY: lineY._value,
       length: length._value,

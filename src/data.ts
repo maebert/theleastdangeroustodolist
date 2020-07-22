@@ -431,11 +431,6 @@ const data: { [key in Pack]: Todo[] } = {
       tags: ["cleaning"],
       rating: 2,
     },
-    {
-      text: "",
-      tags: [],
-      rating: 2,
-    },
   ],
 };
 

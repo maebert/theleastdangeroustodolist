@@ -3,7 +3,7 @@ import {
   Animated,
   View,
   Linking,
-  TouchableHighlight,
+  TouchableOpacity,
   StyleSheet,
 } from "react-native";
 import Constants from "./constants";
@@ -13,14 +13,15 @@ import { handleAction } from "./util";
 const URL_REGEX = /((https?|tldtdl):\/\/[^\s]+)/g;
 
 type TodoProps = {
-  theme: Theme;
+  color: string;
   done: boolean;
   text: string;
   index: number;
   fade: Animated.Value | null;
+  onUndo: () => any;
 };
 
-const Todo = ({ theme, done, text, index, fade }: TodoProps) => {
+const Todo = ({ onUndo, color, done, text, index, fade }: TodoProps) => {
   const urlMatch = text.match(URL_REGEX);
   let url: string | null = null,
     displayText = text;
@@ -41,16 +42,18 @@ const Todo = ({ theme, done, text, index, fade }: TodoProps) => {
 
   const getColor = () => {
     if (done) return Colors[Theme.Greys][index];
-    if (fade === null) return Colors[theme][index];
+    if (fade === null) return color;
     return fade.interpolate({
       inputRange: [0, 0.2, 0.2],
       outputRange: [
-        Colors[theme][index],
+        color,
         Colors[Theme.Greys][index],
         Colors[Theme.Greys][index],
       ],
     });
   };
+
+  const computedColor = getColor();
 
   const renderUrl = () => (
     <Animated.Image
@@ -65,58 +68,37 @@ const Todo = ({ theme, done, text, index, fade }: TodoProps) => {
     />
   );
 
-  const renderText = () => (
-    <Animated.Text style={[styles.text, { opacity: getOpacity(0.5) }]}>
-      {displayText}
-    </Animated.Text>
-  );
-
-  const renderTouchable = (inner: React.ReactNode) => {
-    if (!url) return null;
-    const action = url.startsWith("tldtdl://")
+  let action: () => any = () => undefined;
+  if (url) {
+    action = url.startsWith("tldtdl://")
       ? () => handleAction(url as string)
       : () => Linking.openURL(url as string);
+  }
 
-    return (
-      <TouchableHighlight
-        underlayColor="#fff4"
-        activeOpacity={0.2}
-        style={styles.todo}
-        onPress={action}
-      >
-        <React.Fragment>
-          {inner}
-          {renderUrl()}
-        </React.Fragment>
-      </TouchableHighlight>
-    );
-  };
-
-  const inner = renderText();
   return (
     <Animated.View
       style={{
-        backgroundColor: getColor(),
+        backgroundColor: computedColor,
         paddingTop: index === 0 ? Constants.statusBarHeight : 0,
         height:
           Constants.itemHeight + (index === 0 ? Constants.statusBarHeight : 0),
       }}
     >
-      {url && !done ? (
-        renderTouchable(inner)
-      ) : (
-        <View style={styles.todo}>{inner}</View>
-      )}
+      <TouchableOpacity
+        style={styles.todo}
+        onPress={action}
+        onLongPress={onUndo}
+        activeOpacity={0.8}
+      >
+        <>
+          <Animated.Text style={[styles.text, { opacity: getOpacity(0.5) }]}>
+            {displayText}
+          </Animated.Text>
+          {url && !done && renderUrl()}
+        </>
+      </TouchableOpacity>
     </Animated.View>
   );
-};
-
-Todo.defaultProps = {
-  theme: Theme.Default,
-  done: false,
-  text: "",
-  index: 0,
-  fade: null,
 };
 
 const styles = StyleSheet.create({

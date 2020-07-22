@@ -16,7 +16,7 @@ import Marker, { useMarker, Line } from "./marker";
 import Settings from "./settings";
 import { track, events, identify } from "./analytics";
 import useMask from "./mask";
-import { Theme } from "./themes";
+import Colors, { Theme } from "./themes";
 
 type TodoData = {
   index: number;
@@ -41,12 +41,22 @@ const TodoList = () => {
   const [theme, setTheme] = useState<Theme>(Theme.Default);
   const [showSettings, setShowSettings] = useState(false);
 
+  const onUndo = (idx: number) => {
+    setLines((prev) => prev.filter((l) => l.todo !== idx));
+    setData((data) =>
+      update(data, {
+        [idx]: { done: { $set: false } },
+      })
+    );
+  };
+
   const todos = data?.map((todo: TodoData, index: number) => (
     <Todo
       key={index.toString()}
-      theme={theme}
+      color={Colors[theme][index]}
       {...todo}
       index={index}
+      onUndo={() => onUndo(index)}
       fade={marker.activeTodo === index ? fade : null}
     />
   ));
@@ -84,10 +94,11 @@ const TodoList = () => {
   };
 
   const onMarkDone = (idx: number) => {
-    const newData = update(data, {
-      [idx]: { done: { $set: true } },
-    });
-    setData(newData);
+    setData((data) =>
+      update(data, {
+        [idx]: { done: { $set: true } },
+      })
+    );
     onCompleteTodo(idx);
   };
 
