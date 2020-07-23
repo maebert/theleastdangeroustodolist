@@ -9,7 +9,7 @@ import {
   PanGestureHandlerStateChangeEvent,
 } from "react-native-gesture-handler";
 import Todo from "./todo";
-import Data, { Pack } from "./data";
+import Data, { Pack } from "./generated/data";
 import { sampleSize, range } from "lodash";
 import Store from "./store";
 import Marker, { useMarker, Line } from "./marker";
@@ -22,7 +22,7 @@ type TodoData = {
   index: number;
   text: string;
   done: boolean;
-  pack: string;
+  pack: Pack;
 };
 
 const TodoList = () => {
@@ -163,20 +163,22 @@ const TodoList = () => {
     }
   };
 
-  const getTodos = (pack: Pack, n: number): TodoData[] =>
-    sampleSize(range(Data[pack].length), n).map((i) => ({
-      index: i,
-      text: Data[pack][i].text,
+  const getTodos = (pack: Pack, n: number): TodoData[] => {
+    const tasks = Data.filter((t) => t.pack === pack);
+    return sampleSize(tasks, n).map((task, index) => ({
+      index,
+      text: task.text,
       done: false,
       pack: pack,
     }));
+  };
 
   const save = () => {
     Store.save(Constants.namespace, { data, lines, date, theme });
   };
 
   const load = async () => {
-    const tutorialCompleted = await Store.get("tutorialCompleted");
+    const tutorialCompleted = await Store.get("tutorialCompleted?1");
     if (!tutorialCompleted) {
       loadTutorial();
       return;
@@ -194,12 +196,15 @@ const TodoList = () => {
   };
 
   const loadTutorial = () => {
-    const data = Data.tutorial.map((todo, index) => ({
-      index,
-      text: todo.text,
-      done: false,
-      pack: "tutorial",
-    }));
+    const tasks = Data.filter((t) => t.pack === "Tutorial");
+    const data = tasks
+      .sort((a, b) => a.id.localeCompare(b.id))
+      .map((todo, index) => ({
+        index,
+        text: todo.text,
+        done: false,
+        pack: "tutorial",
+      }));
     setData(data);
     setLines([]);
     setDate(getDate());
@@ -208,7 +213,7 @@ const TodoList = () => {
   };
 
   const refreshTodos = () => {
-    setData(getTodos("basic", Constants.todos));
+    setData(getTodos("Basic", Constants.todos));
     setLines([]);
     setDate(getDate());
   };
