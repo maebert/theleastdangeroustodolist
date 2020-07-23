@@ -8,9 +8,9 @@ import {
   PanGestureHandlerGestureEvent,
   PanGestureHandlerStateChangeEvent,
 } from "react-native-gesture-handler";
-import Todo from "./todo";
-import Data, { Pack } from "./generated/data";
-import { sampleSize, range } from "lodash";
+import TodoBlock from "./todo";
+import Data, { Pack, Todo } from "./generated/data";
+import { sampleSize, range, countBy, flatten, shuffle } from "lodash";
 import Store from "./store";
 import Marker, { useMarker, Line } from "./marker";
 import Settings from "./settings";
@@ -51,7 +51,7 @@ const TodoList = () => {
   };
 
   const todos = data?.map((todo: TodoData, index: number) => (
-    <Todo
+    <TodoBlock
       key={index.toString()}
       color={Colors[theme][index]}
       {...todo}
@@ -163,9 +163,34 @@ const TodoList = () => {
     }
   };
 
+  const checkConstraints = (picked: Todo[], other: Todo) => {
+    // no dupes
+    if (picked.map((t) => t.id).includes(other.id)) return false;
+
+    // 'Do ⬆️ that thing twice' can't be first
+    if (picked.length === 0 && other.id === "basic_65") return false;
+
+    const tags: string[] = flatten([...picked, other].map((t) => t.tags));
+    const counts = countBy(tags);
+
+    // Already Done should only occur once
+    if (counts["Already Done"] > 1) return false;
+
+    // We should only have two of each tag
+    if (Object.values(counts).filter((c) => c > 2).length > 0) return false;
+    return true;
+  };
+
   const getTodos = (pack: Pack, n: number): TodoData[] => {
-    const tasks = Data.filter((t) => t.pack === pack);
-    return sampleSize(tasks, n).map((task, index) => ({
+    const tasks = shuffle(Data.filter((t) => t.pack === pack));
+    const topTask = tasks.find((t) => t.rating === 4) || tasks[0];
+    let picked: Todo[] = [topTask];
+
+    for (let idx = 0; picked.length < n && idx < tasks.length; idx++) {
+      if (checkConstraints(picked, tasks[idx])) picked.push(tasks[idx]);
+    }
+    console.log(picked);
+    return picked.map((task, index) => ({
       index,
       text: task.text,
       done: false,
