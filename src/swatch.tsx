@@ -4,9 +4,9 @@ import {
   View,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
+  TouchableHighlight,
 } from "react-native";
-import Colors, { Theme, ThemeDef } from "./themes";
+import { useTheme, Theme, ThemeDef } from "./themes";
 
 const AvailableThemes = [
   Theme.Default,
@@ -26,43 +26,55 @@ type SingleSwatchProps = {
 
 const SingleSwatch = ({ name, colors, active, onPress }: SingleSwatchProps) => (
   <View style={styles.swatchView}>
-    <TouchableOpacity
+    <TouchableHighlight
       style={[styles.swatch, active && styles.activeSwatch]}
       onPress={onPress}
     >
-      {colors.map((c) => (
-        <View key={c} style={{ backgroundColor: c, height: 20 }} />
-      ))}
-      <Text style={styles.label}>{name}</Text>
-    </TouchableOpacity>
+      <>
+        {colors.map((c) => (
+          <View key={c} style={{ backgroundColor: c, height: 20 }} />
+        ))}
+        <Text style={styles.label}>{name}</Text>
+      </>
+    </TouchableHighlight>
   </View>
 );
 
 type SwatchProps = {
-  active: Theme;
-  onChoose: (theme: Theme) => any;
+  onChoose: () => any;
 };
 
-const Swatch = ({ active, onChoose }: SwatchProps) => (
-  <View style={styles.container}>
-    <ScrollView
-      horizontal={true}
-      snapToInterval={140}
-      decelerationRate="fast"
-      showsHorizontalScrollIndicator={false}
-    >
-      {AvailableThemes.map((o) => (
-        <SingleSwatch
-          active={active === o}
-          onPress={() => onChoose(o)}
-          key={o}
-          name={o} //Theme[o] as string
-          colors={Colors[o]}
-        />
-      ))}
-    </ScrollView>
-  </View>
-);
+const Swatch = ({ onChoose }: SwatchProps) => {
+  const { themeName, setTheme, colors } = useTheme();
+
+  const pickTheme = (theme: Theme) => {
+    setTheme(theme);
+    onChoose();
+  };
+
+  console.log(AvailableThemes.map((o) => [o, themeName === o]));
+
+  return (
+    <View style={styles.container}>
+      <ScrollView
+        horizontal={true}
+        snapToInterval={140}
+        decelerationRate="fast"
+        showsHorizontalScrollIndicator={false}
+      >
+        {AvailableThemes.map((o) => (
+          <SingleSwatch
+            active={themeName === o}
+            onPress={() => pickTheme(o)}
+            key={o}
+            name={o} //Theme[o] as string
+            colors={colors[o]}
+          />
+        ))}
+      </ScrollView>
+    </View>
+  );
+};
 
 export default Swatch;
 
@@ -84,7 +96,7 @@ const styles = StyleSheet.create({
     borderRadius: 4,
     overflow: "hidden",
     backgroundColor: "white",
-    opacity: 0.6,
+    opacity: 0.5,
   },
   activeSwatch: {
     opacity: 1,

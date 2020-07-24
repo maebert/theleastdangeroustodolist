@@ -9,7 +9,7 @@ const Store = {
   save: (key: string, value: any) =>
     AsyncStorage.setItem(key, JSON.stringify(value)),
 
-  del: (key: string | string[]) => AsyncStorage.removeItem(key),
+  del: (key: string) => AsyncStorage.removeItem(key),
 
   keys: () => AsyncStorage.getAllKeys(),
 };

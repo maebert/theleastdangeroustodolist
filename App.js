@@ -1,6 +1,7 @@
 import React, { useState } from "react";
 import { StyleSheet } from "react-native";
 import TodoList from "./src/todolist";
+import { ThemeProvider } from "./src/themes";
 import { Asset } from "expo-asset";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
@@ -33,7 +34,11 @@ const App = () => {
       />
     );
   }
-  return <TodoList />;
+  return (
+    <ThemeProvider>
+      <TodoList />
+    </ThemeProvider>
+  );
 };
 
 const styles = StyleSheet.create({

@@ -1,14 +1,11 @@
 import React, { useRef } from "react";
 import { Animated, View } from "react-native";
 import Constants from "./constants";
-import Colors, { Theme } from "./themes";
-
-type MaskProps = {
-  theme: Theme;
-};
+import { useTheme } from "./themes";
 
 const useMask = () => {
   const opacity = useRef(new Animated.Value(0)).current;
+  const { theme } = useTheme();
 
   const conceal = (callback: () => any) => {
     Animated.timing(opacity, {
@@ -25,7 +22,7 @@ const useMask = () => {
     });
   };
 
-  const render = ({ theme = Theme.Default }: MaskProps) => (
+  const render = () => (
     <Animated.View
       pointerEvents="none"
       style={{
@@ -37,7 +34,7 @@ const useMask = () => {
         width: Constants.screenWidth,
       }}
     >
-      {Colors[theme].map((color, index) => (
+      {theme.map((color, index) => (
         <View
           style={{
             backgroundColor: color,

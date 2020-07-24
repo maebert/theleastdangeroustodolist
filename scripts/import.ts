@@ -15,6 +15,8 @@ type Task = {
   pack: string;
   rating: number;
   tags: string[];
+  exclude: string[];
+  group: string | null;
 };
 
 const importData = async (): Promise<Task[]> => {
@@ -26,14 +28,15 @@ const importData = async (): Promise<Task[]> => {
         (records, next: () => any) => {
           records.forEach((record) => {
             // @ts-ignore
-            const { Task, Pack, ID, Rating, Tags } = record.fields;
-            const id = `${Pack.toLowerCase()}_${ID}`;
+            const { text, pack, rating, tags, exclude, group } = record.fields;
             data.push({
-              id,
-              text: (Task as string).replace("\\n", "\n"),
-              tags: Tags || [],
-              pack: Pack,
-              rating: Rating,
+              id: record.id,
+              text: (text as string).replace("\\n", "\n"),
+              tags: tags || [],
+              pack,
+              rating,
+              exclude: exclude || [],
+              group,
             });
           });
           next();
@@ -80,6 +83,8 @@ export type Todo = {
     pack: Pack;
     tags: Tag[];
     rating?: number;
+    exclude: string[]
+    group?: string
 };`;
 };
 

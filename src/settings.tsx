@@ -2,15 +2,13 @@ import React from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 import Constants from "./constants";
 import Swatch from "./swatch";
-import { Theme } from "./themes";
 
 type SettingsProps = {
-  onPickTheme: (theme: Theme) => any;
+  onPickTheme: () => any;
   onReshuffle: () => any;
-  activeTheme: Theme;
 };
 
-const Settings = ({ onPickTheme, activeTheme, onReshuffle }: SettingsProps) => (
+const Settings = ({ onPickTheme, onReshuffle }: SettingsProps) => (
   <View style={styles.container}>
     <View
       style={{ marginTop: Constants.statusBarHeight + 40, marginBottom: 40 }}
@@ -23,7 +21,7 @@ const Settings = ({ onPickTheme, activeTheme, onReshuffle }: SettingsProps) => (
       </Text>
     </View>
     <View style={{ flex: 1 }}>
-      <Swatch onChoose={(id: Theme) => onPickTheme(id)} active={activeTheme} />
+      <Swatch onChoose={onPickTheme} />
     </View>
     <View style={{ marginBottom: 40 }}>
       <Button onPress={onReshuffle} title="Gimme something new" />

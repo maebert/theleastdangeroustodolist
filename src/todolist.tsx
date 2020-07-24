@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { View, Animated, GestureResponderEvent } from "react-native";
+import { Animated } from "react-native";
 import Constants from "./constants";
 import update from "immutability-helper";
 import {
@@ -9,21 +9,13 @@ import {
   PanGestureHandlerStateChangeEvent,
 } from "react-native-gesture-handler";
 import TodoBlock from "./todo";
-import Data, { Pack, Todo } from "./generated/data";
-import { sampleSize, range, countBy, flatten, shuffle } from "lodash";
 import Store from "./store";
 import Marker, { useMarker, Line } from "./marker";
 import Settings from "./settings";
 import { track, events, identify } from "./analytics";
 import useMask from "./mask";
-import Colors, { Theme } from "./themes";
-
-type TodoData = {
-  index: number;
-  text: string;
-  done: boolean;
-  pack: Pack;
-};
+import { useTheme, Theme } from "./themes";
+import useTasks, { TodoData } from "./tasks";
 
 const TodoList = () => {
   const fade = useRef(new Animated.Value(0)).current;
@@ -33,12 +25,13 @@ const TodoList = () => {
   const marker = useMarker();
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
+  const { getTodos, getTutorial } = useTasks();
+  const { theme, setTheme } = useTheme();
 
   const [data, setData] = useState<TodoData[] | null>(null);
   const [isTutorial, setIsTutorial] = useState(false);
   const [date, setDate] = useState(getDate());
   const [lines, setLines] = useState<Line[]>([]);
-  const [theme, setTheme] = useState<Theme>(Theme.Default);
   const [showSettings, setShowSettings] = useState(false);
 
   const onUndo = (idx: number) => {
@@ -53,7 +46,6 @@ const TodoList = () => {
   const todos = data?.map((todo: TodoData, index: number) => (
     <TodoBlock
       key={index.toString()}
-      color={Colors[theme][index]}
       {...todo}
       index={index}
       onUndo={() => onUndo(index)}
@@ -163,47 +155,12 @@ const TodoList = () => {
     }
   };
 
-  const checkConstraints = (picked: Todo[], other: Todo) => {
-    // no dupes
-    if (picked.map((t) => t.id).includes(other.id)) return false;
-
-    // 'Do ⬆️ that thing twice' can't be first
-    if (picked.length === 0 && other.id === "basic_65") return false;
-
-    const tags: string[] = flatten([...picked, other].map((t) => t.tags));
-    const counts = countBy(tags);
-
-    // Already Done should only occur once
-    if (counts["Already Done"] > 1) return false;
-
-    // We should only have two of each tag
-    if (Object.values(counts).filter((c) => c > 2).length > 0) return false;
-    return true;
-  };
-
-  const getTodos = (pack: Pack, n: number): TodoData[] => {
-    const tasks = shuffle(Data.filter((t) => t.pack === pack));
-    const topTask = tasks.find((t) => t.rating === 4) || tasks[0];
-    let picked: Todo[] = [topTask];
-
-    for (let idx = 0; picked.length < n && idx < tasks.length; idx++) {
-      if (checkConstraints(picked, tasks[idx])) picked.push(tasks[idx]);
-    }
-    console.log(picked);
-    return picked.map((task, index) => ({
-      index,
-      text: task.text,
-      done: false,
-      pack: pack,
-    }));
-  };
-
   const save = () => {
     Store.save(Constants.namespace, { data, lines, date, theme });
   };
 
   const load = async () => {
-    const tutorialCompleted = await Store.get("tutorialCompleted?1");
+    const tutorialCompleted = await Store.get("tutorialCompleted");
     if (!tutorialCompleted) {
       loadTutorial();
       return;
@@ -214,23 +171,13 @@ const TodoList = () => {
       setData(data);
       setDate(date);
       setLines(lines);
-      setTheme(theme);
     } else {
       refreshTodos();
     }
   };
 
   const loadTutorial = () => {
-    const tasks = Data.filter((t) => t.pack === "Tutorial");
-    const data = tasks
-      .sort((a, b) => a.id.localeCompare(b.id))
-      .map((todo, index) => ({
-        index,
-        text: todo.text,
-        done: false,
-        pack: "tutorial",
-      }));
-    setData(data);
+    setData(getTutorial());
     setLines([]);
     setDate(getDate());
     setIsTutorial(true);
@@ -238,16 +185,9 @@ const TodoList = () => {
   };
 
   const refreshTodos = () => {
-    setData(getTodos("Basic", Constants.todos));
+    setData(getTodos("Basic"));
     setLines([]);
     setDate(getDate());
-  };
-
-  const pickTheme = (theme: Theme) => {
-    setTheme(theme);
-    save();
-    track(events.PICK_THEME, { theme });
-    onEndPull();
   };
 
   useEffect(() => {
@@ -258,7 +198,7 @@ const TodoList = () => {
   });
 
   useEffect(() => {
-    // all done
+    // all todos done
     if (!data) return;
     const allDone = data.map((d) => d.done).every(Boolean);
     if (allDone) {
@@ -283,8 +223,7 @@ const TodoList = () => {
         style={{ width: "100%", transform: [{ translateY: pull }] }}
       >
         <Settings
-          onPickTheme={pickTheme}
-          activeTheme={theme}
+          onPickTheme={onEndPull}
           onReshuffle={() => {
             refreshTodos();
             onEndPull();
@@ -296,7 +235,7 @@ const TodoList = () => {
         ))}
 
         <ActiveMarker />
-        <Mask theme={theme} />
+        <Mask />
       </Animated.View>
     </PanGestureHandler>
   );

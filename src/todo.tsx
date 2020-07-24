@@ -7,13 +7,13 @@ import {
   StyleSheet,
 } from "react-native";
 import Constants from "./constants";
-import Colors, { Theme } from "./themes";
+import { useTheme } from "./themes";
+
 import { handleAction } from "./util";
 
 const URL_REGEX = /((https?|tldtdl):\/\/[^\s]+)/g;
 
 type TodoProps = {
-  color: string;
   done: boolean;
   text: string;
   index: number;
@@ -21,7 +21,9 @@ type TodoProps = {
   onUndo: () => any;
 };
 
-const Todo = ({ onUndo, color, done, text, index, fade }: TodoProps) => {
+const Todo = ({ onUndo, done, text, index, fade }: TodoProps) => {
+  const { theme, themeName, greys } = useTheme();
+  const color = theme[index];
   const urlMatch = text.match(URL_REGEX);
   let url: string | null = null,
     displayText = text;
@@ -41,15 +43,11 @@ const Todo = ({ onUndo, color, done, text, index, fade }: TodoProps) => {
   };
 
   const getColor = () => {
-    if (done) return Colors[Theme.Greys][index];
+    if (done) return greys[index];
     if (fade === null) return color;
     return fade.interpolate({
       inputRange: [0, 0.2, 0.2],
-      outputRange: [
-        color,
-        Colors[Theme.Greys][index],
-        Colors[Theme.Greys][index],
-      ],
+      outputRange: [color, greys[index], greys[index]],
     });
   };
 
@@ -91,7 +89,16 @@ const Todo = ({ onUndo, color, done, text, index, fade }: TodoProps) => {
         activeOpacity={0.8}
       >
         <>
-          <Animated.Text style={[styles.text, { opacity: getOpacity(0.5) }]}>
+          <Animated.Text
+            style={[
+              styles.text,
+              // displayText.length > 60 && styles.smallText,
+              {
+                opacity: getOpacity(0.5),
+                width: url && !done ? "auto" : "100%",
+              },
+            ]}
+          >
             {displayText}
           </Animated.Text>
           {url && !done && renderUrl()}
@@ -115,6 +122,10 @@ const styles = StyleSheet.create({
     fontSize: 24,
     marginRight: 30,
   },
+  smallText: {
+    fontSize: 20,
+  },
+
   tag: {
     fontSize: 14,
     backgroundColor: "#fff3",
