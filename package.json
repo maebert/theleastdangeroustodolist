@@ -15,6 +15,7 @@
     "expo": "^38.0.0",
     "expo-analytics-segment": "~8.2.1",
     "expo-haptics": "~8.2.1",
+    "expo-sensors": "~9.0.1",
     "expo-store-review": "~2.1.2",
     "immutability-helper": "^3.0.1",
     "lodash": "^4.17.15",

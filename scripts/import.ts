@@ -51,7 +51,6 @@ const importData = async (): Promise<Task[]> => {
 };
 
 const writeData = async (body: string, path: string) => {
-  console.log("Finished loading data...");
   return new Promise((resolve) => {
     fs.writeFile(path, body, undefined, resolve);
   });
@@ -90,7 +89,6 @@ export type Todo = {
 
 const importTodos = async () => {
   const data = await importData();
-  console.log(`Got ${data.length} tasks...`);
   const tags = getTags(data);
   const packs = getPacks(data);
 
@@ -104,8 +102,6 @@ const importTodos = async () => {
       data.filter((d: Task) => d.tags && d.tags.includes(t)).length,
     ])
   );
-  console.log("Packs:", packStats);
-  console.log("Tags:", tagStats);
 
   const body = `${generateHeader(tags, packs)}
 
@@ -113,7 +109,6 @@ const data: Todo[] = ${JSON.stringify(data, null, 2)};
 
 export default data;`;
   await writeData(body, OUTPUT_PATH);
-  console.log("Written to", OUTPUT_PATH);
 };
 
 importTodos();
