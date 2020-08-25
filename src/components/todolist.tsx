@@ -8,10 +8,10 @@ import {
   PanGestureHandlerStateChangeEvent,
 } from "react-native-gesture-handler";
 
-import { Todo as TodoBlock, Settings, Marker } from ".";
+import { Todo as TodoBlock, CustomTodo, Settings, Marker } from ".";
 import { Line, TodoData, Theme } from "../types";
 import { Constants, Store, Analytics } from "../util";
-import { useMarker, useTheme, useMask, useTasks } from "../hooks";
+import { useMarker, useTheme, useMask, useTasks, useSettings } from "../hooks";
 
 const TodoList = () => {
   const fade = useRef(new Animated.Value(0)).current;
@@ -19,6 +19,9 @@ const TodoList = () => {
 
   const getDate = () => new Date().toISOString().substr(0, 10);
   const marker = useMarker();
+
+  const { addTodo, dispatch } = useSettings();
+
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
   const { getTodos, getTutorial } = useTasks();
@@ -39,15 +42,33 @@ const TodoList = () => {
     );
   };
 
-  const todos = data?.map((todo: TodoData, index: number) => (
-    <TodoBlock
-      key={index.toString()}
-      {...todo}
-      index={index}
-      onUndo={() => onUndo(index)}
-      fade={marker.activeTodo === index ? fade : null}
-    />
-  ));
+  const renderTodos = () => {
+    if (!data) return null;
+
+    const dataToRender =
+      (addTodo ? data?.slice(0, data.length - 1) : data) || [];
+    const todos = dataToRender.map((todo: TodoData, index: number) => (
+      <TodoBlock
+        key={index.toString()}
+        {...todo}
+        index={index}
+        onUndo={() => onUndo(index)}
+        fade={marker.activeTodo === index ? fade : null}
+      />
+    ));
+    if (true)
+      return [
+        ...todos,
+        <CustomTodo
+          key="custom"
+          done={data[data.length - 1].done}
+          index={data.length - 1}
+          onUndo={() => onUndo(data.length - 1)}
+          fade={marker.activeTodo === data.length - 1 ? fade : null}
+        />,
+      ];
+    return todos;
+  };
 
   const handleGesture = (evt: PanGestureHandlerGestureEvent) => {
     if (marker.isDrawing) {
@@ -182,6 +203,7 @@ const TodoList = () => {
 
   const refreshTodos = () => {
     setData(getTodos("Basic"));
+    dispatch({ customTodo: "" });
     setLines([]);
     setDate(getDate());
   };
@@ -225,7 +247,7 @@ const TodoList = () => {
             onEndPull();
           }}
         />
-        {todos}
+        {renderTodos()}
         {lines.map((line, idx) => (
           <Marker {...line} key={idx} />
         ))}

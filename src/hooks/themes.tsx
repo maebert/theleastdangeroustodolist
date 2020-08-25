@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { AsyncStorage } from "react-native";
 import { Theme, ThemeDef } from "../types";
+import { Store } from "../util";
 
 const colors: { [key in Theme]: ThemeDef } = {
   [Theme.Default]: [
@@ -85,17 +85,17 @@ const ThemeProvider = ({ children }: UPProps) => {
   const [theme, setTheme] = useState<Theme>(Theme.Default);
 
   const setPersistedTheme = async (theme: Theme) => {
-    await AsyncStorage.setItem("theme", JSON.stringify(theme));
+    await Store.save("theme", theme);
     setTheme(theme);
   };
 
   useEffect(() => {
     const load = async () => {
-      const theme = await AsyncStorage.getItem("theme");
-      if (theme) setTheme(JSON.parse(theme) as Theme);
+      const theme = await Store.get("theme");
+      if (theme) setTheme(theme as Theme);
     };
     load();
-  });
+  }, []);
 
   const value = {
     theme: colors[theme],

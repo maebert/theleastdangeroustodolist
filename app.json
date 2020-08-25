@@ -19,7 +19,7 @@
     "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "10",
+      "buildNumber": "11",
       "bundleIdentifier": "me.1450.tldtdl",
       "config": {
         "usesNonExemptEncryption": false
