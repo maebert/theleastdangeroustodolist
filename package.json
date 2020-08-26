@@ -9,12 +9,16 @@
     "eject": "expo eject"
   },
   "dependencies": {
+    "@types/color-convert": "^1.9.0",
     "@types/lodash": "^4.14.157",
     "@types/react": "^16.9.43",
     "@types/react-native": "^0.63.1",
+    "@types/react-native-material-ripple": "^0.9.1",
+    "color-convert": "^2.0.1",
     "expo": "^38.0.0",
     "expo-analytics-segment": "~8.2.1",
     "expo-haptics": "~8.2.1",
+    "expo-linear-gradient": "~8.2.1",
     "expo-sensors": "~9.0.1",
     "expo-store-review": "~2.1.2",
     "immutability-helper": "^3.0.1",
@@ -23,6 +27,8 @@
     "react-dom": "16.11.0",
     "react-native": "https://github.com/expo/react-native/archive/sdk-38.0.2.tar.gz",
     "react-native-gesture-handler": "~1.6.0",
+    "react-native-material-ripple": "^0.9.1",
+    "react-native-modal": "^11.5.6",
     "react-native-web": "~0.11.7",
     "sentry-expo": "^2.0.1",
     "typescript": "^3.8.3"

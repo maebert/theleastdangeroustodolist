@@ -15,16 +15,20 @@ const useMarker = () => {
   const [isDrawing, setIsDrawing] = useState(false);
   const [direction, setDirection] = useState(false);
 
+  const getActiveTodo = (y: number) => {
+    return Math.floor(
+      ((y - Constants.statusBarHeight + 10) /
+        (Constants.screenHeight - Constants.statusBarHeight)) *
+        Constants.todos
+    );
+  };
+
   const startDrawing = (x: number, y: number) => {
     Haptics.selectionAsync();
     length.setValue(0);
     lineX.setValue(x);
     lineY.setValue(y);
-    const activeTodo = Math.floor(
-      ((y - Constants.statusBarHeight + 10) /
-        (Constants.screenHeight - Constants.statusBarHeight)) *
-        Constants.todos
-    );
+    const activeTodo = getActiveTodo(y);
     setIsDrawing(true);
     setStyle(Math.floor(Math.random() * Constants.todos));
     setActiveTodo(activeTodo);
@@ -78,6 +82,7 @@ const useMarker = () => {
     startDrawing,
     endDrawing,
     cancelDrawing,
+    getActiveTodo,
     render,
     activeTodo,
     isDrawing,

@@ -20,7 +20,7 @@ const TodoList = () => {
   const getDate = () => new Date().toISOString().substr(0, 10);
   const marker = useMarker();
 
-  const { addTodo, dispatch } = useSettings();
+  const { addTodo, customTodo, dispatch } = useSettings();
 
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
@@ -144,7 +144,13 @@ const TodoList = () => {
     ) {
       if (
         !showSettings &&
-        Math.abs(nativeEvent.velocityX) > Math.abs(nativeEvent.velocityY) * 0.6
+        Math.abs(nativeEvent.velocityX) >
+          Math.abs(nativeEvent.velocityY) * 0.6 &&
+        !(
+          addTodo &&
+          !customTodo &&
+          marker.getActiveTodo(nativeEvent.y) === Constants.todos - 1
+        )
       ) {
         marker.startDrawing(nativeEvent.x, nativeEvent.y);
       } else if (nativeEvent.velocityY > 0) {
@@ -241,7 +247,6 @@ const TodoList = () => {
         style={{ width: "100%", transform: [{ translateY: pull }] }}
       >
         <Settings
-          onPickTheme={onEndPull}
           onReshuffle={() => {
             refreshTodos();
             onEndPull();

@@ -1,67 +1,79 @@
-import React from "react";
-import { Text, View, Button, Switch, StyleSheet } from "react-native";
+import React, { useState } from "react";
+import { Text, View, Button, StyleSheet } from "react-native";
 import { Constants } from "../util";
 import { useSettings, useTheme } from "../hooks";
-import { Swatch } from ".";
+import { Swatch, Tile } from ".";
+import Modal from "react-native-modal";
 
 type SettingsProps = {
-  onPickTheme: () => any;
   onReshuffle: () => any;
 };
 
-const Settings = ({ onPickTheme, onReshuffle }: SettingsProps) => {
+const Settings = ({ onReshuffle }: SettingsProps) => {
   const { debug, addTodo, dispatch } = useSettings();
-  const { theme } = useTheme();
+  const { theme, themeName } = useTheme();
+  const [showThemes, setShowThemes] = useState(false);
+
   return (
-    <View style={styles.container}>
+    <View style={{ ...styles.container, backgroundColor: theme[0] }}>
       <View
-        style={{ marginTop: Constants.statusBarHeight + 40, marginBottom: 40 }}
+        style={{
+          marginTop: Constants.statusBarHeight + 40,
+          paddingHorizontal: 30,
+          flex: 1,
+        }}
       >
-        <Text style={styles.title}>The Least</Text>
-        <Text style={[styles.title, styles.titleBold]}>Dangerous</Text>
-        <Text style={styles.title}>To Do List</Text>
+        <Text style={styles.title}>
+          The Least{"\n"}Dangerous{"\n"}To-Do List
+        </Text>
         <Text style={styles.subtitle}>
           A charmingly antagonistic app{"\n"}by Kari Tarr & Manu Ebert
         </Text>
-      </View>
-      <View style={{ flex: 1 }}>
-        <Swatch onChoose={onPickTheme} />
-        <View
-          style={{
-            display: "flex",
-            flexDirection: "row",
-            borderRadius: 4,
-            backgroundColor: "white",
-            borderWidth: 1,
-            borderColor: "#51565e33",
-            padding: 8,
-            shadowColor: "#0003",
-            shadowOffset: {
-              width: 0,
-              height: 1,
-            },
-            shadowOpacity: 0.2,
-            shadowRadius: 1.41,
-          }}
-        >
-          <View style={{ flex: 1, marginRight: 8 }}>
-            <Text style={styles.hardcore}>Hardcore Mode</Text>
-            <Text style={styles.hardcoreSub}>
-              Lets you add one task yourself each day.
-            </Text>
-          </View>
-          <Switch
-            style={{ alignSelf: "center" }}
-            trackColor={{ false: "#51565e", true: "#B64B5A" }}
-            onValueChange={() => dispatch({ addTodo: !addTodo })}
-            value={addTodo}
-          />
-        </View>
       </View>
 
       <View style={{ marginBottom: 40 }}>
         {debug && <Button onPress={onReshuffle} title="Gimme something new" />}
       </View>
+
+      <View
+        style={{
+          // flex: 1,
+          height: Constants.screenWidth,
+          flexWrap: "wrap",
+          flexDirection: "column",
+          alignContent: "stretch",
+        }}
+      >
+        <Tile
+          title="THEME"
+          text={themeName}
+          color={theme[2]}
+          onClick={() => setShowThemes(true)}
+        />
+        <Tile
+          title="CUSTOM TO-DOs"
+          text={addTodo ? "On" : "Off"}
+          color={theme[3]}
+          onClick={() => dispatch({ addTodo: !addTodo })}
+        />
+        <Tile title="HARDCORE PASS" text="Nope" color={theme[4]} />
+        <Tile title="PACK" text="Basic" color={theme[5]} />
+      </View>
+      <Modal
+        isVisible={showThemes}
+        onBackdropPress={() => setShowThemes(false)}
+        backdropColor={theme[0]}
+        animationIn="zoomIn"
+        animationOut="fadeOut"
+        backdropOpacity={1}
+        animationInTiming={200}
+        backdropTransitionInTiming={600}
+        backdropTransitionOutTiming={0}
+        style={{ margin: 0 }}
+        hideModalContentWhileAnimating={true}
+      >
+        <Swatch onChoose={() => setShowThemes(false)} />
+      </Modal>
     </View>
   );
 };
@@ -72,41 +84,25 @@ const styles = StyleSheet.create({
     top: -Constants.screenHeight,
     height: Constants.screenHeight,
     width: "100%",
-    backgroundColor: "#fffefa",
     justifyContent: "center",
-    paddingHorizontal: 30,
-  },
-  hardcore: {
-    fontFamily: "Lato Black",
-    color: "#B64B5A",
-    fontSize: 16,
-    marginBottom: 4,
-  },
-  hardcoreSub: {
-    fontFamily: "Lato Regular",
-    color: "#51565e",
-    opacity: 0.8,
-    fontSize: 14,
   },
   title: {
     fontFamily: "Lato Black",
-    color: "#51565e",
+    color: "#fffefa",
     textAlign: "left",
     fontSize: 48,
     margin: 0,
     lineHeight: 48,
-  },
-  titleBold: {
-    fontFamily: "Lato Black",
-    color: "#B64B5A",
+    letterSpacing: 0.7,
   },
   subtitle: {
     textAlign: "left",
     fontFamily: "Lato Regular",
-    color: "#51565e",
-    fontWeight: "400",
-    marginTop: 20,
-    fontSize: 18,
+    color: "#fffefa",
+    opacity: 0.8,
+    letterSpacing: 0.1,
+    marginTop: 10,
+    fontSize: 14,
   },
 });
 

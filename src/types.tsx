@@ -16,10 +16,11 @@ export enum Theme {
   Floss = "Floss\nDaily",
   Clear = "Cease &\nDesist",
   Pride = "The Letter People",
-  LSD = "I think\nit's working",
+  Dark = "Darkwad",
+  NotOk = "Ok, not Ok",
   Greys = "Why bother",
 }
-export type ThemeDef = [string, string, string, string, string, string];
+export type ThemeDef = [string, string, string, string, string, string, string];
 
 export type TodoData = {
   index: number;

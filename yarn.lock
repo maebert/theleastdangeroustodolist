@@ -1868,7 +1868,14 @@
   resolved "https://registry.yarnpkg.com/@types/airtable/-/airtable-0.8.0.tgz#3d6c4a843cd975b0c334df86f4927a957d276caf"
   integrity sha512-gp150mdcRSHeTlKYAdkGk6xv0N1OxmgOItbPOkcPX5nKexYmy0U+mJ12oWKN4VpXJCH5Hhwj4g046rvSsip69A==
 
-"@types/color-name@^1.1.1":
+"@types/color-convert@^1.9.0":
+  version "1.9.0"
+  resolved "https://registry.yarnpkg.com/@types/color-convert/-/color-convert-1.9.0.tgz#bfa8203e41e7c65471e9841d7e306a7cd8b5172d"
+  integrity sha512-OKGEfULrvSL2VRbkl/gnjjgbbF7ycIlpSsX7Nkab4MOWi5XxmgBYvuiQ7lcCFY5cPDz7MUNaKgxte2VRmtr4Fg==
+  dependencies:
+    "@types/color-name" "*"
+
+"@types/color-name@*", "@types/color-name@^1.1.1":
   version "1.1.1"
   resolved "https://registry.yarnpkg.com/@types/color-name/-/color-name-1.1.1.tgz#1c1261bbeaa10a8055bbc5d8ab84b7b2afc846a0"
   integrity sha512-rr+OQyAjxze7GgWrSaJwydHStIhHq2lvY3BOC2Mj7KnzI7XK0Uw1TOOdI9lDoajEbSWLiYgoo4f1R51erQfhPQ==
@@ -1907,6 +1914,21 @@
   version "15.7.3"
   resolved "https://registry.yarnpkg.com/@types/prop-types/-/prop-types-15.7.3.tgz#2ab0d5da2e5815f94b0b9d4b95d1e5f243ab2ca7"
   integrity sha512-KfRL3PuHmqQLOG+2tGpRO26Ctg+Cq1E01D2DMriKEATHgWLfeNDmq9e29Q9WIky0dQ3NPkd1mzYH8Lm936Z9qw==
+
+"@types/react-native-material-ripple@^0.9.1":
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/@types/react-native-material-ripple/-/react-native-material-ripple-0.9.1.tgz#5e91d28008e1455619804288c98f30ce7e6b1290"
+  integrity sha512-AUvTlF5PDvWlMuQbZf18GH0yRuIZhBxV7Nk30CWsJRlocfuYHB3EIGVnejwWxPXhPW8bMj8h3eW/ZR6x4+rEeA==
+  dependencies:
+    "@types/react" "*"
+    "@types/react-native" "*"
+
+"@types/react-native@*":
+  version "0.63.10"
+  resolved "https://registry.yarnpkg.com/@types/react-native/-/react-native-0.63.10.tgz#89234ace2f6a2b0ada4d902cc81fcdd973088596"
+  integrity sha512-9ZbfoWJFbxv7FVPTK7/Y8yRRViJ0bu62p3yKgeK3KqQmBKqQR14nvbIqBHkbBS1mtSWfGgBkPtxI2pmJni4VWQ==
+  dependencies:
+    "@types/react" "*"
 
 "@types/react-native@^0.63.1":
   version "0.63.1"
@@ -5506,7 +5528,7 @@ promise@^7.1.1:
   dependencies:
     asap "~2.0.3"
 
-prop-types@15.7.2, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
+prop-types@15.7.2, prop-types@^15.5.10, prop-types@^15.6.0, prop-types@^15.6.1, prop-types@^15.6.2, prop-types@^15.7.2:
   version "15.7.2"
   resolved "https://registry.yarnpkg.com/prop-types/-/prop-types-15.7.2.tgz#52c41e75b8c87e72b9d9360e0206b99dcbffa6c5"
   integrity sha512-8QQikdH7//R2vurIJSutZ1smHYTcLpRWEOlHnzcWHmBYrOGUysKwSsrC89BCiFj3CbrfJ/nXFdJepOVrY1GCHQ==
@@ -5610,6 +5632,13 @@ react-is@^16.8.4:
   resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.12.0.tgz#2cc0fe0fba742d97fd527c42a13bec4eeb06241c"
   integrity sha512-rPCkf/mWBtKc97aLL9/txD8DZdemK0vkA3JMLShjlJB3Pj3s+lpf1KaBzMfQrAmhMQB0n1cU/SUGgKKBCe837Q==
 
+react-native-animatable@1.3.3:
+  version "1.3.3"
+  resolved "https://registry.yarnpkg.com/react-native-animatable/-/react-native-animatable-1.3.3.tgz#a13a4af8258e3bb14d0a9d839917e9bb9274ec8a"
+  integrity sha512-2ckIxZQAsvWn25Ho+DK3d1mXIgj7tITkrS4pYDvx96WyOttSvzzFeQnM2od0+FUMzILbdHDsDEqZvnz1DYNQ1w==
+  dependencies:
+    prop-types "^15.7.2"
+
 react-native-appearance@~0.3.3:
   version "0.3.4"
   resolved "https://registry.yarnpkg.com/react-native-appearance/-/react-native-appearance-0.3.4.tgz#2cbcbc5142cdc1898c116684f519b16c879cbec2"
@@ -5628,6 +5657,21 @@ react-native-gesture-handler@~1.6.0:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-material-ripple@^0.9.1:
+  version "0.9.1"
+  resolved "https://registry.yarnpkg.com/react-native-material-ripple/-/react-native-material-ripple-0.9.1.tgz#db1ad9dd7cf97011e4cd8475ae2041ade0f891cb"
+  integrity sha512-dHjARdKoGD3LXwPh2TkURabywM5BfdpKc/AHplJTfBMalhVZ2bc7iJoJmNhNnmT/TZ+B3szL6uV1mO7Pv8zNeA==
+  dependencies:
+    prop-types "^15.5.10"
+
+react-native-modal@^11.5.6:
+  version "11.5.6"
+  resolved "https://registry.yarnpkg.com/react-native-modal/-/react-native-modal-11.5.6.tgz#bb25a78c35a5e24f45de060e5f64284397d38a87"
+  integrity sha512-APGNfbvgC4hXbJqcSADu79GLoMKIHUmgR3fDQ7rCGZNBypkStSP8imZ4PKK/OzIZZfjGU9aP49jhMgGbhY9KHA==
+  dependencies:
+    prop-types "^15.6.2"
+    react-native-animatable "1.3.3"
 
 react-native-safe-area-context@~3.0.7:
   version "3.0.7"

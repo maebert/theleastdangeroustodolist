@@ -1,4 +1,5 @@
 export { default as Todo } from "./todo";
+export { default as Tile } from "./tile";
 export { default as CustomTodo } from "./custom-todo";
 export { default as Marker } from "./marker";
 export { default as Settings } from "./settings";

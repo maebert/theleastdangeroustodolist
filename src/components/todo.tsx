@@ -15,7 +15,7 @@ type TodoProps = {
 };
 
 const Todo = ({ onUndo, done, text, index, fade, onTap }: TodoProps) => {
-  const { theme, themeName, greys } = useTheme();
+  const { theme, textColor, greys } = useTheme();
   const color = theme[index];
   const urlMatch = text.match(URL_REGEX);
   let url: string | null = null,
@@ -110,8 +110,8 @@ const styles = StyleSheet.create({
     height: "100%",
   },
   text: {
+    color: "#fffefa",
     fontFamily: "Lato Bold",
-    color: "white",
     fontSize: 24,
     marginRight: 30,
   },

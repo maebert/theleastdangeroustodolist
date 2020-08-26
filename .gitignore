@@ -15,3 +15,4 @@ web-report/
 
 *.sublime-workspace
 yarn-error.log
+.vscode/.react/debuggerWorker.js

@@ -27,13 +27,13 @@ const colors: { [key in Theme]: ThemeDef } = {
     "#61617E",
     "#375C7D",
   ],
-  [Theme.LSD]: [
-    "#A1184B",
-    "#FF8522",
-    "#0298C9",
-    "#6EBA08",
-    "#711D79",
-    "#FE61A7",
+  [Theme.Dark]: [
+    "#36494E",
+    "#324248",
+    "#2F3C43",
+    "#2B353D",
+    "#272D36",
+    "#232731",
   ],
   [Theme.Pride]: [
     "#F13529",
@@ -50,6 +50,14 @@ const colors: { [key in Theme]: ThemeDef } = {
     "#5396BD",
     "#4988C4",
     "#3D75CD",
+  ],
+  [Theme.NotOk]: [
+    "#B8BE9D",
+    "#D9C6A4",
+    "#FDCEAB",
+    "#FDC1A2",
+    "#FF857B",
+    "#F57575",
   ],
   [Theme.Greys]: [
     "#707070",

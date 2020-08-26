@@ -19,7 +19,7 @@ const useTasks = (): UseTasks => {
       return false;
 
     // 'Do ⬆️ that thing twice' can't be first
-    if (picked.length === 0 && other.id === "basic_65") return false;
+    if (picked.length === 0 && other.id === "recuxdRNRLdrb2lFm") return false;
 
     const tags: string[] = flatten([...picked, other].map((t) => t.tags));
 
