@@ -30,6 +30,14 @@
     <link rel="icon" href="img/favicon-192.png" sizes="192x192" />
 
     <script async defer data-domain="theleastdangeroustodolist" src="https://plausible.io/js/plausible.js"></script>
+    <script>
+      window.plausible =
+        window.plausible ||
+        function () {
+          (window.plausible.q = window.plausible.q || []).push(arguments);
+        };
+    </script>
+
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/normalize/8.0.1/normalize.min.css"
@@ -61,7 +69,7 @@
         </a>
         <p class="tagline"><span>Get stuff done</span></p>
         <p class="title">Check things off.</p>
-        <a href="#" class="appstore">
+        <a href="http://apple.com" class="appstore" onclick="plausible('appstore'); return true;">
           <img src="img/appstore.svg" alt="Download The Least Dangerous To-Do List on the App Store" />
         </a>
         <div id="app"></div>
@@ -131,7 +139,7 @@
     </section>
     <section class="cta">
       <h3>Because some days, we can't either.</h3>
-      <a href="#" class="appstore">
+      <a href="#" class="appstore" onclick="plausible('appstore'); return true;">
         <img src="img/appstore.svg" alt="Download The Least Dangerous To-Do List on the App Store" />
       </a>
     </section>
