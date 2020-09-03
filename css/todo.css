@@ -1,0 +1,183 @@
+.todos {
+  width: 340px;
+  perspective: 1000px;
+  position: relative;
+  transform-style: preserve-3d;
+  margin-left: 40px;
+}
+.todo {
+  color: #fffefa;
+  background-color: #493d64;
+  padding: 20px 40px;
+  height: 60px;
+  font-weight: 400;
+  font-size: 20pt;
+  border-radius: 4px;
+  width: 260px;
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate3d(0, 0, 0px);
+  animation: TodoList 12s infinite;
+  box-shadow: 0 20px 24px -10px rgba(0, 0, 0, 0.2);
+}
+.todo .marker {
+  background: url(../img/marker.png) top left no-repeat;
+  background-size: 300px 180px;
+  width: 260px;
+  height: 20px;
+  position: absolute;
+  top: 40px;
+  animation: Marker 12s infinite;
+}
+.todo .marker:nth-child(1) {
+  top: 24px;
+}
+.todo .marker:nth-child(2) {
+  top: 56px;
+  max-width: 120px;
+}
+.todo.dl .marker:nth-child(1) {
+  top: 40px;
+}
+.todo.dl {
+  line-height: 60px;
+}
+.todo:nth-child(1) {
+  background-color: #493d64;
+  animation-delay: 0s;
+}
+
+.todo:nth-child(2) {
+  background-color: #763d60;
+  animation-delay: -2s;
+}
+
+.todo:nth-child(3) {
+  background-color: #9b3c5b;
+  animation-delay: -4s;
+}
+
+.todo:nth-child(4) {
+  background-color: #b64b5a;
+  animation-delay: -6s;
+}
+
+.todo:nth-child(5) {
+  background-color: #c4785d;
+  animation-delay: -8s;
+}
+
+.todo:nth-child(6) {
+  background-color: #cc8e5f;
+  animation-delay: -10s;
+}
+
+.todo:nth-child(1) .marker {
+  background-position-y: 0px;
+  animation-delay: 0s;
+}
+.todo:nth-child(2) .marker {
+  background-position-y: -30px;
+  animation-delay: -2s;
+}
+.todo:nth-child(3) .marker {
+  background-position-y: -60px;
+  animation-delay: -4s;
+}
+.todo:nth-child(4) .marker {
+  background-position-y: -90px;
+  animation-delay: -6s;
+}
+.todo:nth-child(5) .marker {
+  background-position-y: -120px;
+  animation-delay: -8s;
+}
+.todo:nth-child(6) .marker {
+  background-position-y: -150px;
+  animation-delay: -10s;
+}
+.todo:nth-child(1) .marker:nth-child(2) {
+  background-position-y: -60px;
+  animation-delay: 0.7s;
+}
+.todo:nth-child(2) .marker:nth-child(2) {
+  background-position-y: -120px;
+  animation-delay: -1.7s;
+}
+.todo:nth-child(3) .marker:nth-child(2) {
+  background-position-y: -90px;
+  animation-delay: -3.7s;
+}
+.todo:nth-child(4) .marker:nth-child(2) {
+  background-position-y: -0px;
+  animation-delay: -5.7s;
+}
+.todo:nth-child(5) .marker:nth-child(2) {
+  background-position-y: -150px;
+  animation-delay: -7.7s;
+}
+.todo:nth-child(6) .marker:nth-child(2) {
+  background-position-y: -30px;
+  animation-delay: -9.7s;
+}
+
+@keyframes Marker {
+  0% {
+    width: 0px;
+  }
+  5% {
+    width: 260px;
+  }
+  17% {
+    width: 260px;
+  }
+  18% {
+    width: 0px;
+  }
+  100% {
+    width: 0px;
+  }
+}
+
+@keyframes TodoList {
+  0% {
+    transform: translate3d(0, 0px, 0px);
+  }
+  10% {
+    transform: translate3d(0, 0px, -1px);
+    background-color: #887e7e;
+    opacity: 1;
+  }
+  17% {
+    transform: translate3d(0, -40px, -1px);
+    background-color: #887e7e;
+    opacity: 0;
+  }
+  43% {
+    transform: translate3d(0, 90px, -120px);
+    opacity: 0;
+  }
+  50% {
+    transform: translate3d(0, 90px, -120px);
+    opacity: 1;
+  }
+  60% {
+    transform: translate3d(0, 90px, -120px);
+  }
+  67% {
+    transform: translate3d(0, 70px, -80px);
+  }
+  77% {
+    transform: translate3d(0, 70px, -80px);
+  }
+  83% {
+    transform: translate3d(0, 40px, -40px);
+  }
+  93% {
+    transform: translate3d(0, 40px, -40px);
+  }
+  100% {
+    transform: translate3d(0, 0px, 0px);
+  }
+}
