@@ -298,9 +298,6 @@ footer {
   }
 }
 @media only screen and (max-width: 680px) {
-  body {
-    font-size: 80%;
-  }
   .row {
     flex-direction: column-reverse;
   }
@@ -314,5 +311,10 @@ footer {
   .features,
   .cta {
     padding: 20px 0;
+  }
+  .appstore {
+    text-align: center;
+    display: block;
+    margin: 60px 0 0 0;
   }
 }
