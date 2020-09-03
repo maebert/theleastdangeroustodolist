@@ -3,6 +3,7 @@ body {
   background-color: #fffefa;
   color: #2a3541;
   font-weight: 400;
+  font-size: 62.5%;
 }
 #hero {
   background-image: linear-gradient(150deg, #f12c62 30%, #ec313c 100%);
@@ -43,7 +44,7 @@ body {
 }
 .tagline {
   color: #2a3541;
-  font-size: 30pt;
+  font-size: 2.4rem;
   font-weight: 900;
   margin: 0;
 }
@@ -64,12 +65,12 @@ body {
 }
 .title {
   color: #fffefa;
-  font-size: 40pt;
-  margin: 10pt 0 0 0;
+  font-size: 3.3rem;
+  margin: 0.75rem 0 0 0;
   font-weight: 900;
 }
 .appstore {
-  margin-top: 20pt;
+  margin-top: 2rem;
   display: inline-block;
 }
 .appstore:hover {
@@ -83,7 +84,7 @@ section.main {
   margin-top: 40px;
 }
 h1 {
-  font-size: 40pt;
+  font-size: 3.3rem;
   font-weight: 900;
   text-align: center;
 }
@@ -94,7 +95,7 @@ p.copy {
   color: #2a3541;
   opacity: 0.8;
   font-weight: 400;
-  font-size: 18pt;
+  font-size: 1.5rem;
   line-height: 160%;
   margin: 0 0 0.75em 0;
 }
@@ -106,7 +107,7 @@ p.copy {
 .cta h3 {
   font-family: Merriweather, "Times New Roman", serif;
   font-style: italic;
-  font-size: 16pt;
+  font-size: 1.5rem;
   text-align: center;
   margin: 60pt 0 20pt 0;
   color: #555d67;
@@ -133,7 +134,7 @@ p.copy {
 
 .feature .nope {
   font-weight: 900;
-  font-size: 16pt;
+  font-size: 1.25rem;
   display: inline-block;
   position: relative;
   color: #2a3541;
@@ -167,7 +168,7 @@ p.copy {
   margin: 0em 0 0.5em 0;
   color: #ec313c;
   font-weight: 900;
-  font-size: 20pt;
+  font-size: 1.5rem;
   line-height: 1.3em;
 }
 .feature p {
@@ -175,7 +176,7 @@ p.copy {
   color: #555d67;
   line-height: 1.5em;
   font-weight: 400;
-  font-size: 14pt;
+  font-size: 1.25rem;
 }
 
 .legal {
@@ -241,7 +242,7 @@ a.logotype:hover {
 
 a.logotype h1 {
   line-height: 32px;
-  font-size: 12pt;
+  font-size: 1rem;
   color: #2a3541;
   margin-left: 4px;
   vertical-align: middle;
@@ -267,7 +268,7 @@ a.logotype h1 {
 footer p {
   text-align: center;
   opacity: 0.6;
-  font-size: 10pt;
+  font-size: 0.8rem;
   color: #555d67;
 }
 
@@ -283,4 +284,35 @@ footer {
   font-family: Merriweather, "Times New Roman", serif;
   /* color: #ec313c; */
   margin-top: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+  #app {
+    right: -20px;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  #app {
+    display: none;
+  }
+}
+@media only screen and (max-width: 680px) {
+  body {
+    font-size: 80%;
+  }
+  .row {
+    flex-direction: column-reverse;
+  }
+  .todos {
+    margin: 0px auto;
+    height: 200px;
+  }
+  .feature {
+    margin-top: 20px;
+  }
+  .features,
+  .cta {
+    padding: 20px 0;
+  }
 }
