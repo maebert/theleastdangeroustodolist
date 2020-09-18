@@ -1,7 +1,7 @@
 import React from "react";
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { useIAP } from "../hooks";
+import { useIAP, useSettings } from "../hooks";
 import { fadeColor, rippleColor, Constants } from "../util";
 import Ripple from "react-native-material-ripple";
 
@@ -14,7 +14,8 @@ type ModalType = {
 };
 
 const IAPModal = ({ visible, onHide, color }: ModalType) => {
-  const { price, purchase, restorePurchases } = useIAP();
+  const { getPrice, purchase, restorePurchases } = useIAP();
+  const { hardcorePrice } = useSettings();
   return (
     <Modal
       isVisible={visible}
@@ -66,7 +67,7 @@ const IAPModal = ({ visible, onHide, color }: ModalType) => {
             source={require("../../assets/dollar.png")}
             style={styles.icon}
           />
-          <Text style={styles.featureText}>"Only" {price}</Text>
+          <Text style={styles.featureText}>"Only" {hardcorePrice}</Text>
         </View>
         <Text style={styles.p2}>
           Is that worth the money? Absolutely not! But spending your dough on

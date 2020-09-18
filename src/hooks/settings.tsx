@@ -6,6 +6,7 @@ type Settings = {
   customTodo?: string;
   addTodo?: boolean;
   hardcore?: boolean;
+  hardcorePrice?: string;
   showTutorial?: boolean;
 };
 
@@ -18,6 +19,7 @@ const defaults: Settings = {
   customTodo: "",
   addTodo: false,
   hardcore: false,
+  hardcorePrice: "$90",
   showTutorial: true,
 };
 

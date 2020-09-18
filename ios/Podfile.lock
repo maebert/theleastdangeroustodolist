@@ -4,6 +4,8 @@ PODS:
   - CocoaAsyncSocket (7.6.4)
   - CocoaLibEvent (1.0.0)
   - DoubleConversion (1.1.6)
+  - EXApplication (2.2.1):
+    - UMCore
   - EXConstants (9.1.1):
     - UMConstantsInterface
     - UMCore
@@ -41,8 +43,7 @@ PODS:
   - EXSensors (9.0.1):
     - UMCore
     - UMSensorsInterface
-  - EXSplashScreen (0.5.0):
-    - React
+  - EXSplashScreen (0.3.1):
     - UMCore
   - EXSQLite (8.2.1):
     - UMCore
@@ -343,6 +344,8 @@ PODS:
     - ReactCommon/callinvoker (= 0.62.2)
   - RNGestureHandler (1.6.1):
     - React
+  - RNIap (4.6.0):
+    - React
   - RNReanimated (1.9.0):
     - React
   - RNScreens (2.9.0):
@@ -370,6 +373,7 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
+  - EXApplication (from `../node_modules/expo-application/ios`)
   - EXConstants (from `../node_modules/expo-constants/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
@@ -433,6 +437,7 @@ DEPENDENCIES:
   - ReactCommon/callinvoker (from `../node_modules/react-native/ReactCommon`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
+  - RNIap (from `../node_modules/react-native-iap`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
@@ -469,6 +474,8 @@ SPEC REPOS:
 EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
+  EXApplication:
+    :path: "../node_modules/expo-application/ios"
   EXConstants:
     :path: "../node_modules/expo-constants/ios"
   EXErrorRecovery:
@@ -551,6 +558,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
+  RNIap:
+    :path: "../node_modules/react-native-iap"
   RNReanimated:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
@@ -590,6 +599,7 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
+  EXApplication: d7ccb60c33fa4d506967ff6adde42a0f872d69ad
   EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
   EXErrorRecovery: 500f1d4231c534f415e86caeb3fc677c7f5dd23c
   EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
@@ -603,7 +613,7 @@ SPEC CHECKSUMS:
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
   EXSegment: 7f9fd99f88f5b1ff06d323a153873d2105d390f4
   EXSensors: 761f6bd03eb13ff7dfffe955de7edce3b73306c4
-  EXSplashScreen: 9423d258b71afa5bf128a83dcb57b636d9900a74
+  EXSplashScreen: c4ed5d39cd5dbc1329f8dec720e280276bafa28b
   EXSQLite: 64611c1b369c0f1e9cae4e551d0aa4478a58cadf
   EXStoreReview: 2b9bdb91b3ed4319b4f6a4cb4647ba48a6ab67c8
   EXUpdates: f3c4943abb6ab28cc55cbeac4ff4612701f82725
@@ -639,6 +649,7 @@ SPEC CHECKSUMS:
   React-RCTVibration: 4356114dbcba4ce66991096e51a66e61eda51256
   ReactCommon: ed4e11d27609d571e7eee8b65548efc191116eb3
   RNGestureHandler: 8f09cd560f8d533eb36da5a6c5a843af9f056b38
+  RNIap: 6c6ab349cbafa161dded03556d1595c1a6bf224f
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
   UMAppLoader: 61049c8d55590b74e9ae1d5429bf68d96b4a2528

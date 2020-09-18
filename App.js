@@ -39,12 +39,12 @@ const App = () => {
     const fontAssets = Font.loadAsync(FONTS);
     await Promise.all([...imageAssets, fontAssets]);
     setIsReady(true);
+    await SplashScreen.hideAsync();
   };
 
   useEffect(() => {
     loadAssetsAsync();
   }, []);
-
   if (!isReady) return null;
 
   return (

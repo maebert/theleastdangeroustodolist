@@ -4724,6 +4724,11 @@ domexception@^1.0.1:
   dependencies:
     webidl-conversions "^4.0.2"
 
+dooboolab-welcome@^1.2.0:
+  version "1.2.0"
+  resolved "https://registry.yarnpkg.com/dooboolab-welcome/-/dooboolab-welcome-1.2.0.tgz#295818ce85a8e97dc90c0ec0510b4008e2d722dc"
+  integrity sha512-XgEbjJHAsKLge/e8jtuHsv84Ovg1Gx0GvnOTOmOlVGV1643nduTAkT3fyo/mxKbzvyXBr47RHaJAY4R2toI0UA==
+
 dotenv@^8.2.0:
   version "8.2.0"
   resolved "https://registry.yarnpkg.com/dotenv/-/dotenv-8.2.0.tgz#97e619259ada750eea3e4ea3e26bceea5424b16a"
@@ -8420,6 +8425,13 @@ react-native-gesture-handler@~1.6.0:
     hoist-non-react-statics "^2.3.1"
     invariant "^2.2.4"
     prop-types "^15.7.2"
+
+react-native-iap@^4.6.0:
+  version "4.6.0"
+  resolved "https://registry.yarnpkg.com/react-native-iap/-/react-native-iap-4.6.0.tgz#42bd1b40526dbba24ac10c5c0ec59ef1ab38059c"
+  integrity sha512-9pHW0OpYFLdVNIzBltYvUTpHmvgzLnYHLvpeqXD5gzspzXTzXXshS3WhKaOnM0s0FTquh7ML8b7/Eav81vzuVQ==
+  dependencies:
+    dooboolab-welcome "^1.2.0"
 
 react-native-material-ripple@^0.9.1:
   version "0.9.1"

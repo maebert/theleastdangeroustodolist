@@ -1,77 +1,98 @@
 import React, { useEffect, useState } from "react";
-import * as InAppPurchases from "expo-in-app-purchases";
+import RNIap, {
+  PurchaseError,
+  finishTransaction,
+  InAppPurchase,
+} from "react-native-iap";
+import { Alert } from "react-native";
 import { useSettings } from "./settings";
 const IAPItems = ["hardcore"];
 
 const useIap = () => {
   const { hardcore, dispatch } = useSettings();
-  const [price, setPrice] = useState();
+  const [price, setPrice] = useState("");
+
+  const getPrice = () => {
+    console.warn("requesting price");
+    return price;
+  };
 
   const restorePurchases = async () => {
-    const {
-      responseCode,
-      results,
-    } = await InAppPurchases.getPurchaseHistoryAsync();
-    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-      (results as InAppPurchases.InAppPurchase[]).forEach((purchase) => {
-        if (purchase.productId === "hardcore" && purchase.acknowledged) {
-          console.info("Hardcore previously purchased");
-          dispatch({ hardcore: true });
-        }
-      });
-    }
+    const purchases = await RNIap.getAvailablePurchases();
+    purchases.forEach((purchase) => {
+      if (purchase.productId === "hardcore") {
+        console.info("Restoring hardcore mode");
+        Alert.alert("Restore successful", "You're so hardcore again.");
+        dispatch({ hardcore: true });
+      }
+    });
   };
 
   const getItems = async () => {
+    console.log("Get price for IAP");
     try {
-      await InAppPurchases.connectAsync();
-    } catch (error) {}
-
-    const items = await InAppPurchases.getProductsAsync(IAPItems);
-    if (items.responseCode === 0 && items.results) {
-      setPrice(items.results[0].price);
-    }
-  };
-  const purchase = async (item: string) => {
-    console.info("Purchasing...");
-    InAppPurchases.purchaseItemAsync("hardcore");
-  };
-
-  const listener = ({
-    responseCode,
-    results,
-    errorCode,
-  }: InAppPurchases.IAPQueryResponse) => {
-    // Purchase was successful
-    if (responseCode === InAppPurchases.IAPResponseCode.OK) {
-      (results as InAppPurchases.InAppPurchase[]).forEach((purchase) => {
-        if (purchase.productId === "hardcore" && !purchase.acknowledged) {
-          console.log(`Successfully purchased ${purchase.productId}`);
-          dispatch({ hardcore: true });
-          InAppPurchases.finishTransactionAsync(purchase, true);
+      const products = await RNIap.getProducts(IAPItems);
+      console.log("Products", products);
+      products.forEach((product) => {
+        if (product.productId === "hardcore") {
+          console.info(`Price for hardcore: ${product.localizedPrice}`);
+          dispatch({ hardcorePrice: product.localizedPrice });
+          setPrice(product.localizedPrice);
         }
       });
-    }
-
-    // Else find out what went wrong
-    if (responseCode === InAppPurchases.IAPResponseCode.USER_CANCELED) {
-      console.log("User canceled the transaction");
-    } else if (responseCode === InAppPurchases.IAPResponseCode.DEFERRED) {
-      console.log(
-        "User does not have permissions to buy but requested parental approval (iOS only)"
-      );
-    } else {
-      console.warn(
-        `Something went wrong with the purchase. Received errorCode ${errorCode}`
-      );
+    } catch (err) {
+      console.warn(err.code, err.message);
     }
   };
 
-  useEffect(() => {
-    if (!price) getItems();
-  }, [price]);
+  const purchase = async (item: string) => {
+    console.info("Purchasing...");
+    try {
+      RNIap.requestPurchase(item);
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  };
 
-  return { price, purchase, listener, restorePurchases };
+  const listener = async (purchase: InAppPurchase) => {
+    console.log("purchaseUpdatedListener", purchase);
+    const receipt = purchase.transactionReceipt;
+    if (receipt) {
+      dispatch({ hardcore: true });
+      try {
+        const ackResult = await finishTransaction(purchase);
+        console.log("ackResult", ackResult);
+      } catch (ackErr) {
+        console.warn("ackErr", ackErr);
+      }
+    }
+  };
+
+  const errorListener = (error: PurchaseError) => {
+    console.log("purchaseErrorListener", error);
+    Alert.alert("purchase error", JSON.stringify(error));
+  };
+
+  const init = async () => {
+    console.log("initing IAP");
+    try {
+      await RNIap.initConnection();
+      await RNIap.flushFailedPurchasesCachedAsPendingAndroid();
+      await getItems();
+    } catch (err) {
+      console.warn(err.code, err.message);
+    }
+  };
+
+  return {
+    getPrice,
+    price,
+    init,
+    purchase,
+    listener,
+    errorListener,
+    restorePurchases,
+  };
 };
 
 export default useIap;

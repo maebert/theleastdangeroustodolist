@@ -1,19 +1,24 @@
 import React, { useState, useEffect } from "react";
 import { DeviceMotion } from "expo-sensors";
 import { useSettings, useIAP } from "../hooks";
-import * as InAppPurchases from "expo-in-app-purchases";
+import RNIap, {
+  purchaseErrorListener,
+  purchaseUpdatedListener,
+} from "react-native-iap";
 
 type EEProps = {
   children: React.ReactNode;
 };
-const EasterEggWrapper = ({ children }: EEProps) => {
+const Listeners = ({ children }: EEProps) => {
   const [debug, setDebug] = useState(0);
   const { dispatch } = useSettings();
-  const { listener } = useIAP();
+  const { init: initIAP, listener, errorListener } = useIAP();
 
   useEffect(() => {
     console.info("Setting purchase listeer");
-    InAppPurchases.setPurchaseListener(listener);
+    initIAP();
+    const iapListener = purchaseUpdatedListener(listener);
+    const iapErrorListener = purchaseErrorListener(errorListener);
 
     DeviceMotion.addListener((event) => {
       if (!event.rotation || !event.rotation.beta) return;
@@ -31,9 +36,14 @@ const EasterEggWrapper = ({ children }: EEProps) => {
         alert("Debug mode off");
       }
     });
-    return () => DeviceMotion.removeAllListeners();
+
+    return () => {
+      DeviceMotion.removeAllListeners();
+      if (iapListener) iapListener.remove();
+      if (iapErrorListener) iapErrorListener.remove();
+    };
   }, []);
 
   return <>{children}</>;
 };
-export default EasterEggWrapper;
+export default Listeners;
