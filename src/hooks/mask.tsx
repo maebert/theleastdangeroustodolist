@@ -2,7 +2,7 @@ import React, { useRef } from "react";
 import { Animated, View } from "react-native";
 
 import { Constants } from "../util";
-import { useTheme } from ".";
+import { useTheme } from "./themes";
 
 const useMask = () => {
   const opacity = useRef(new Animated.Value(0)).current;

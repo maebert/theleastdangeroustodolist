@@ -1,12 +1,23 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Asset } from "expo-asset";
-import { AppLoading } from "expo";
 import * as Font from "expo-font";
+import * as SplashScreen from "expo-splash-screen";
 
-import { TodoList, EasterEggWrapper } from "./src/components";
+import { TodoList, Listeners } from "./src/components";
 import { ThemeProvider, SettingsProvider } from "./src/hooks";
 
-const IMAGES = [require("./assets/line1.png"), require("./assets/url.png")];
+const IMAGES = [
+  require("./assets/line1.png"),
+  require("./assets/url.png"),
+  require("./assets/crown.png"),
+  require("./assets/fuckyeah.png"),
+  require("./assets/tinycrown.png"),
+  require("./assets/cancel.png"),
+  require("./assets/palette.png"),
+  require("./assets/pen.png"),
+  require("./assets/pen2.png"),
+  require("./assets/dollar.png"),
+];
 
 const FONTS = {
   "Lato Regular": require("./assets/fonts/Lato-Regular.ttf"),
@@ -17,30 +28,32 @@ const FONTS = {
 const App = () => {
   const [isReady, setIsReady] = useState(false);
 
-  const _loadAssetsAsync = async () => {
+  const loadAssetsAsync = async () => {
+    try {
+      await SplashScreen.preventAutoHideAsync();
+    } catch (e) {}
+
     const imageAssets = IMAGES.map((image) =>
       Asset.fromModule(image).downloadAsync()
     );
     const fontAssets = Font.loadAsync(FONTS);
     await Promise.all([...imageAssets, fontAssets]);
+    setIsReady(true);
   };
 
-  if (!isReady) {
-    return (
-      <AppLoading
-        startAsync={_loadAssetsAsync}
-        onFinish={() => setIsReady(true)}
-        onError={console.warn}
-      />
-    );
-  }
+  useEffect(() => {
+    loadAssetsAsync();
+  }, []);
+
+  if (!isReady) return null;
+
   return (
     <SettingsProvider>
-      <ThemeProvider>
-        <EasterEggWrapper>
+      <Listeners>
+        <ThemeProvider>
           <TodoList />
-        </EasterEggWrapper>
-      </ThemeProvider>
+        </ThemeProvider>
+      </Listeners>
     </SettingsProvider>
   );
 };

@@ -5,6 +5,7 @@ type Settings = {
   debug?: boolean;
   customTodo?: string;
   addTodo?: boolean;
+  hardcore?: boolean;
   showTutorial?: boolean;
 };
 
@@ -16,6 +17,7 @@ const defaults: Settings = {
   debug: false,
   customTodo: "",
   addTodo: false,
+  hardcore: false,
   showTutorial: true,
 };
 

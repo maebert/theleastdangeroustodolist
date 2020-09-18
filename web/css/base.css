@@ -1,0 +1,321 @@
+body {
+  font-family: "Lato", "Helvetica Neue", sans-serif;
+  background-color: #fffefa;
+  color: #2a3541;
+  font-weight: 400;
+  font-size: 62.5%;
+}
+#hero {
+  background-image: linear-gradient(150deg, #f12c62 30%, #ec313c 100%);
+  position: relative;
+}
+#hero .background {
+  width: 100%;
+  height: 100%;
+  position: absolute;
+  overflow: hidden;
+  transform: translate3d(0, 0, 0);
+}
+#hero .container {
+  padding: 20px 20px 120px 20px;
+  transform: translate3d(0, 0, 0);
+  overflow: hidden;
+}
+
+#hero .container .logotype {
+  margin-bottom: 100px;
+  display: block;
+}
+
+#app {
+  background: url(../img/app.png) top left no-repeat;
+  background-size: 100%;
+  width: 400px;
+  height: 600px;
+  position: absolute;
+  right: 10%;
+  bottom: -30%;
+  transition: all 0.5s ease;
+}
+.container {
+  margin: auto;
+  max-width: 900px;
+  padding: 0 20px;
+}
+.tagline {
+  color: #2a3541;
+  font-size: 2.4rem;
+  font-weight: 900;
+  margin: 0;
+}
+
+.tagline span {
+  position: relative;
+}
+.tagline span:after {
+  display: block;
+  position: absolute;
+  top: calc(50% - 5px);
+  left: -15px;
+  content: "";
+  background: url("../img/marker-white.png") center center no-repeat;
+  background-size: contain;
+  width: calc(100% + 30px);
+  height: 15px;
+}
+.title {
+  color: #fffefa;
+  font-size: 3.3rem;
+  margin: 0.75rem 0 0 0;
+  font-weight: 900;
+}
+.appstore {
+  margin-top: 2rem;
+  display: inline-block;
+}
+.appstore:hover {
+  transform: scale(1.1);
+  opacity: 1;
+}
+.appstore img {
+  height: 64px;
+}
+section.main {
+  margin-top: 40px;
+}
+h1 {
+  font-size: 3.3rem;
+  font-weight: 900;
+  text-align: center;
+}
+.red {
+  color: #ec313c;
+}
+p.copy {
+  color: #2a3541;
+  opacity: 0.8;
+  font-weight: 400;
+  font-size: 1.5rem;
+  line-height: 160%;
+  margin: 0 0 0.75em 0;
+}
+
+.row {
+  display: flex;
+}
+.makers,
+.cta h3 {
+  font-family: Merriweather, "Times New Roman", serif;
+  font-style: italic;
+  font-size: 1.5rem;
+  text-align: center;
+  margin: 60pt 0 20pt 0;
+  color: #555d67;
+}
+.makers strong {
+  color: #2a3541;
+}
+
+.features {
+  padding: 80px 0;
+}
+.features .container {
+  justify-content: space-between;
+}
+.feature {
+  width: 280px;
+}
+
+.feature svg {
+  color: #ec313c;
+  width: 3em;
+  height: 3em;
+}
+
+.feature .nope {
+  font-weight: 900;
+  font-size: 1.25rem;
+  display: inline-block;
+  position: relative;
+  color: #2a3541;
+  opacity: 0.8;
+}
+
+.feature .nope:after {
+  display: block;
+  position: absolute;
+  top: 8px;
+  left: -5px;
+  content: "";
+  background: url("../img/marker.png") top left no-repeat;
+  background-size: 200px 120px;
+  width: calc(100% + 10px);
+  height: 20px;
+  transform: scaleY(0.5);
+}
+
+.feature:nth-child(1) .nope:after {
+  background-position-y: -80px;
+}
+.feature:nth-child(2) .nope:after {
+  background-position-y: -20px;
+}
+.feature:nth-child(3) .nope:after {
+  background-position-y: -40px;
+}
+
+.feature h3 {
+  margin: 0em 0 0.5em 0;
+  color: #ec313c;
+  font-weight: 900;
+  font-size: 1.5rem;
+  line-height: 1.3em;
+}
+.feature p {
+  margin: 0;
+  color: #555d67;
+  line-height: 1.5em;
+  font-weight: 400;
+  font-size: 1.25rem;
+}
+
+.legal {
+  max-width: 700px;
+  padding: 20px;
+}
+
+.legal p,
+.legal li {
+  /* font-family: Merriweather, "Times New Roman", serif; */
+  line-height: 150%;
+}
+
+a {
+  text-decoration: none;
+  color: #ec313c;
+  transition: all 300ms ease;
+}
+
+a:hover {
+  opacity: 0.7;
+}
+a:active {
+  color: #9c212c;
+  /* opacity: 0.7; */
+}
+
+.logo {
+  width: 32px;
+  height: 32px;
+  background-image: linear-gradient(180deg, #fc3b66 0%, #ec313c 100%);
+  border-radius: 6px;
+  position: relative;
+  display: inline-block;
+  line-height: 32px;
+  vertical-align: middle;
+}
+
+.logo:after {
+  width: 24px;
+  height: 12px;
+  border: 1px solid #fffefa;
+  color: #fffefa;
+  font-size: 7px;
+  font-weight: 900;
+  line-height: 12px;
+  padding: 14px 0px 0 2px;
+
+  position: absolute;
+  border-radius: 4px;
+  content: "Don't.";
+  left: 2px;
+  top: 2px;
+}
+
+a.logotype {
+  transition: all 30ms ease;
+  opacity: 0.8;
+}
+a.logotype:hover {
+  opacity: 1;
+}
+
+a.logotype h1 {
+  line-height: 32px;
+  font-size: 1rem;
+  color: #2a3541;
+  margin-left: 4px;
+  vertical-align: middle;
+  text-align: left;
+  display: inline-block;
+}
+
+.logotype h1 strong {
+  color: #ec313c;
+}
+
+.logotype.white h1 {
+  color: #fffefa;
+}
+.logotype.white h1 strong {
+  color: #fffefa;
+}
+
+.logotype.white .logo {
+  background-image: none;
+}
+
+footer p {
+  text-align: center;
+  opacity: 0.6;
+  font-size: 0.8rem;
+  color: #555d67;
+}
+
+footer {
+  padding: 40px 0;
+}
+
+.cta {
+  text-align: center;
+}
+
+.cta h3 {
+  font-family: Merriweather, "Times New Roman", serif;
+  /* color: #ec313c; */
+  margin-top: 0;
+}
+
+@media only screen and (max-width: 1024px) {
+  #app {
+    right: -20px;
+  }
+}
+
+@media only screen and (max-width: 760px) {
+  #app {
+    display: none;
+  }
+}
+@media only screen and (max-width: 680px) {
+  .row {
+    flex-direction: column-reverse;
+  }
+  .todos {
+    margin: 0px auto;
+    height: 200px;
+  }
+  .feature {
+    margin-top: 20px;
+    width: 100%;
+  }
+  .features,
+  .cta {
+    padding: 20px 0;
+  }
+  .appstore {
+    text-align: center;
+    display: block;
+    margin: 60px 0 0 0;
+  }
+}

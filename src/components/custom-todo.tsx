@@ -2,9 +2,9 @@ import React, { useRef, useState } from "react";
 import { TextInput } from "react-native";
 import { Animated, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "../hooks";
-import { Constants, handleAction } from "../util";
+import { Constants } from "../util";
 
-import { Todo } from ".";
+import Todo from "./todo";
 import { useSettings } from "../hooks";
 
 export type TodoProps = {

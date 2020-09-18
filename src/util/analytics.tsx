@@ -3,7 +3,14 @@
  */
 
 import * as Segment from "expo-analytics-segment";
-import * as Sentry from "sentry-expo";
+// import * as Sentry from "sentry-expo";
+import * as Application from "expo-application";
+import * as manifest from "../../app.json";
+import Constants from "expo-constants";
+
+if (!Constants.manifest) {
+  Constants.manifest = manifest.expo;
+}
 
 const events = {
   COMPLETE: "Complete To Do",
@@ -18,16 +25,11 @@ const segmentApiKey = "iM8Q5IFh4sxYndv8jayYX9wscSdxdghv";
 const sentryApiKey =
   "https://6f7c52e459bd40318c91ed8fd4ab7382@sentry.io/2213171";
 
-Segment.initialize({
-  androidWriteKey: segmentApiKey,
-  iosWriteKey: segmentApiKey,
-});
-
-Sentry.init({
-  dsn: sentryApiKey,
-  enableInExpoDevelopment: false,
-  debug: true,
-});
+// Sentry.init({
+//   dsn: sentryApiKey,
+//   enableInExpoDevelopment: false,
+//   debug: true,
+// });
 
 const initializesegment = () => {
   Segment.initialize({
@@ -38,11 +40,11 @@ const initializesegment = () => {
 };
 
 const initializeSentry = () => {
-  Sentry.init({
-    dsn: sentryApiKey,
-    enableInExpoDevelopment: false,
-    debug: true,
-  });
+  // Sentry.init({
+  //   dsn: sentryApiKey,
+  //   enableInExpoDevelopment: false,
+  //   debug: true,
+  // });
   sentryInitialized = true;
 };
 
@@ -51,9 +53,10 @@ const maybeInitialize = () => {
   if (!sentryInitialized) initializeSentry();
 };
 
-const identify = (id?: string) => {
+const identify = async (id?: string) => {
+  const idForVendor = await Application.getIosIdForVendorAsync();
   maybeInitialize();
-  Segment.identify(id || null);
+  Segment.identify(id || idForVendor || "anonymous");
 };
 
 const alias = (id: string) => {
@@ -72,7 +75,7 @@ const track = (event: string, options: any = null) => {
 
 const capture = (error: any) => {
   maybeInitialize();
-  Sentry.captureException(error);
+  // Sentry.captureException(error);
 };
 
 maybeInitialize();

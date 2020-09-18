@@ -2,17 +2,19 @@ import React, { useState } from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 import { Constants } from "../util";
 import { useSettings, useTheme } from "../hooks";
-import { Swatch, Tile } from ".";
-import Modal from "react-native-modal";
+import SwatchModal from "./swatch-modal";
+import IAPModal from "./iap-modal";
+import Tile from "./tile";
 
 type SettingsProps = {
   onReshuffle: () => any;
 };
 
 const Settings = ({ onReshuffle }: SettingsProps) => {
-  const { debug, addTodo, dispatch } = useSettings();
+  const { debug, hardcore, addTodo, dispatch } = useSettings();
   const { theme, themeName } = useTheme();
   const [showThemes, setShowThemes] = useState(false);
+  const [showIAP, setShowIAP] = useState(false);
 
   return (
     <View style={{ ...styles.container, backgroundColor: theme[0] }}>
@@ -53,27 +55,31 @@ const Settings = ({ onReshuffle }: SettingsProps) => {
         <Tile
           title="CUSTOM TO-DOs"
           text={addTodo ? "On" : "Off"}
-          color={theme[3]}
-          onClick={() => dispatch({ addTodo: !addTodo })}
+          color={theme[4]}
+          onClick={() =>
+            hardcore ? dispatch({ addTodo: !addTodo }) : setShowIAP(true)
+          }
         />
-        <Tile title="HARDCORE PASS" text="Nope" color={theme[4]} />
+        <Tile
+          title="HARDCORE PASS"
+          text={hardcore ? "F*CK YEAH" : "Nope."}
+          fuckyeah={hardcore}
+          color={theme[3]}
+          onClick={() => setShowIAP(true)}
+        />
         <Tile title="PACK" text="Basic" color={theme[5]} />
       </View>
-      <Modal
-        isVisible={showThemes}
-        onBackdropPress={() => setShowThemes(false)}
-        backdropColor={theme[0]}
-        animationIn="zoomIn"
-        animationOut="fadeOut"
-        backdropOpacity={1}
-        animationInTiming={200}
-        backdropTransitionInTiming={600}
-        backdropTransitionOutTiming={0}
-        style={{ margin: 0 }}
-        hideModalContentWhileAnimating={true}
-      >
-        <Swatch onChoose={() => setShowThemes(false)} />
-      </Modal>
+
+      <SwatchModal
+        visible={showThemes}
+        onHide={() => setShowThemes(false)}
+        color={theme[2]}
+      />
+      <IAPModal
+        visible={showIAP}
+        onHide={() => setShowIAP(false)}
+        color={theme[3]}
+      />
     </View>
   );
 };

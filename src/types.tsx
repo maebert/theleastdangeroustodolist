@@ -20,7 +20,7 @@ export enum Theme {
   NotOk = "Ok, not Ok",
   Greys = "Why bother",
 }
-export type ThemeDef = [string, string, string, string, string, string, string];
+export type ThemeDef = [string, string, string, string, string, string];
 
 export type TodoData = {
   index: number;

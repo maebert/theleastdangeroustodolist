@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DeviceMotion } from "expo-sensors";
-import { useSettings } from "../hooks";
+import { useSettings, useIAP } from "../hooks";
+import * as InAppPurchases from "expo-in-app-purchases";
 
 type EEProps = {
   children: React.ReactNode;
@@ -8,8 +9,12 @@ type EEProps = {
 const EasterEggWrapper = ({ children }: EEProps) => {
   const [debug, setDebug] = useState(0);
   const { dispatch } = useSettings();
+  const { listener } = useIAP();
 
   useEffect(() => {
+    console.info("Setting purchase listeer");
+    InAppPurchases.setPurchaseListener(listener);
+
     DeviceMotion.addListener((event) => {
       if (!event.rotation || !event.rotation.beta) return;
       if (debug == 0 && event.rotation.beta <= -1) {
@@ -27,7 +32,7 @@ const EasterEggWrapper = ({ children }: EEProps) => {
       }
     });
     return () => DeviceMotion.removeAllListeners();
-  });
+  }, []);
 
   return <>{children}</>;
 };

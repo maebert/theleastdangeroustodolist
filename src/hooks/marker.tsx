@@ -3,7 +3,7 @@ import * as Haptics from "expo-haptics";
 import { Animated } from "react-native";
 
 import { Constants } from "../util";
-import { Marker } from "../components";
+import Marker from "../components/marker";
 
 const useMarker = () => {
   const length = useRef(new Animated.Value(0)).current;

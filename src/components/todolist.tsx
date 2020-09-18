@@ -7,8 +7,10 @@ import {
   PanGestureHandlerGestureEvent,
   PanGestureHandlerStateChangeEvent,
 } from "react-native-gesture-handler";
-
-import { Todo as TodoBlock, CustomTodo, Settings, Marker } from ".";
+import TodoBlock from "./todo";
+import CustomTodo from "./custom-todo";
+import Settings from "./settings";
+import Marker from "./marker";
 import { Line, TodoData, Theme } from "../types";
 import { Constants, Store, Analytics } from "../util";
 import { useMarker, useTheme, useMask, useTasks, useSettings } from "../hooks";

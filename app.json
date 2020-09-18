@@ -31,18 +31,10 @@
         "usesNonExemptEncryption": false
       }
     },
-    "sdkVersion": "38.0.0"
-  },
-  "hooks": {
-    "postPublish": [
-      {
-        "file": "sentry-expo/upload-sourcemaps",
-        "config": {
-          "organization": "tiny-guru",
-          "project": "tiny-guru",
-          "authToken": "61d12cd55cf84d09a607ab3e1218cd3aefd19cf8d07e40199fa287de1276caec"
-        }
-      }
-    ]
+    "sdkVersion": "38.0.0",
+    "android": {
+      "package": "com.theleastdangeroustodolist.app"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
   }
 }
