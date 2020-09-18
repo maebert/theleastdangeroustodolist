@@ -4,7 +4,6 @@ import { Animated, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "../hooks";
 import { Constants } from "../util";
 
-import Todo from "./todo";
 import { useSettings } from "../hooks";
 
 export type TodoProps = {
@@ -15,7 +14,7 @@ export type TodoProps = {
 };
 
 const CustomTodo = ({ onUndo, done, index, fade }: TodoProps) => {
-  const { theme, themeName, greys } = useTheme();
+  const { theme, greys } = useTheme();
   const [expanded, setExpanded] = useState(false);
   const { customTodo, dispatch } = useSettings();
   const grow = useRef(new Animated.Value(0)).current;
@@ -157,7 +156,5 @@ const styles = StyleSheet.create({
     borderRadius: 10,
   },
 });
-
-export default Todo;
 
 export default CustomTodo;
