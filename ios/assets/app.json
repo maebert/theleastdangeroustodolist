@@ -1,0 +1,40 @@
+{
+  "expo": {
+    "name": "TLD TDL",
+    "scheme": "tldtdl",
+    "slug": "theleastdangeroustodolist",
+    "privacy": "public",
+    "platforms": [
+      "ios",
+      "android",
+      "web"
+    ],
+    "version": "1.0.0",
+    "orientation": "portrait",
+    "icon": "./assets/icon.png",
+    "splash": {
+      "image": "./assets/splash.png",
+      "resizeMode": "cover",
+      "backgroundColor": "#464152"
+    },
+    "updates": {
+      "fallbackToCacheTimeout": 0
+    },
+    "assetBundlePatterns": [
+      "**/*"
+    ],
+    "ios": {
+      "supportsTablet": true,
+      "buildNumber": "11",
+      "bundleIdentifier": "me.1450.tldtdl",
+      "config": {
+        "usesNonExemptEncryption": false
+      }
+    },
+    "sdkVersion": "38.0.0",
+    "android": {
+      "package": "com.theleastdangeroustodolist.app"
+    },
+    "entryPoint": "node_modules/expo/AppEntry.js"
+  }
+}
