@@ -14,7 +14,7 @@ type ModalType = {
 };
 
 const IAPModal = ({ visible, onHide, color }: ModalType) => {
-  const { getPrice, purchase, restorePurchases } = useIAP();
+  const { purchase, restorePurchases } = useIAP();
   const { hardcorePrice } = useSettings();
   return (
     <Modal

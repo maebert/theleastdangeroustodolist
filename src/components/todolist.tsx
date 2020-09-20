@@ -1,6 +1,10 @@
 import React, { useState, useEffect, useRef } from "react";
 import { Animated } from "react-native";
 import update from "immutability-helper";
+import * as Haptics from "expo-haptics";
+import SwatchModal from "./swatch-modal";
+import IAPModal from "./iap-modal";
+
 import {
   PanGestureHandler,
   State as GestureState,
@@ -11,6 +15,7 @@ import TodoBlock from "./todo";
 import CustomTodo from "./custom-todo";
 import Settings from "./settings";
 import Marker from "./marker";
+import EndOfDay from "./end-of-day";
 import { Line, TodoData, Theme } from "../types";
 import { Constants, Store, Analytics } from "../util";
 import { useMarker, useTheme, useMask, useTasks, useSettings } from "../hooks";
@@ -22,20 +27,25 @@ const TodoList = () => {
   const getDate = () => new Date().toISOString().substr(0, 10);
   const marker = useMarker();
 
-  const { addTodo, customTodo, dispatch } = useSettings();
+  const { hardcore, addTodo, customTodo, dispatch } = useSettings();
 
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
   const { getTodos, getTutorial } = useTasks();
   const { theme, setTheme } = useTheme();
 
+  const [showThemes, setShowThemes] = useState(false);
+  const [showIAP, setShowIAP] = useState(false);
+
   const [data, setData] = useState<TodoData[] | null>(null);
   const [isTutorial, setIsTutorial] = useState(false);
+  const [doneForToday, setDoneForToday] = useState(false);
   const [date, setDate] = useState(getDate());
   const [lines, setLines] = useState<Line[]>([]);
   const [showSettings, setShowSettings] = useState(false);
 
   const onUndo = (idx: number) => {
+    Haptics.impactAsync();
     setLines((prev) => prev.filter((l) => l.todo !== idx));
     setData((data) =>
       update(data, {
@@ -210,6 +220,8 @@ const TodoList = () => {
   };
 
   const refreshTodos = () => {
+    setIsTutorial(false);
+    setDoneForToday(false);
     setData(getTodos("Basic"));
     dispatch({ customTodo: "" });
     setLines([]);
@@ -227,12 +239,16 @@ const TodoList = () => {
     // all todos done
     if (!data) return;
     const allDone = data.map((d) => d.done).every(Boolean);
-    if (allDone) {
+    if (allDone && isTutorial) {
       Analytics.track(Analytics.events.COMPLETE_TUTORIAL);
       Store.save("tutorialCompleted", true);
       replaceTodos();
+    } else if (allDone) {
+      setDoneForToday(true);
+    } else {
+      setDoneForToday(false);
     }
-  }, [data, Analytics, Store, replaceTodos, save]);
+  }, [data]);
 
   useEffect(() => {
     // save when new data or lines change
@@ -253,6 +269,8 @@ const TodoList = () => {
             refreshTodos();
             onEndPull();
           }}
+          onShowThemes={() => setShowThemes(true)}
+          onShowIAP={() => setShowIAP(true)}
         />
         {renderTodos()}
         {lines.map((line, idx) => (
@@ -261,6 +279,20 @@ const TodoList = () => {
 
         <ActiveMarker />
         <Mask />
+        <EndOfDay
+          visible={doneForToday}
+          onClick={hardcore ? refreshTodos : () => setShowIAP(true)}
+        />
+        <SwatchModal
+          visible={showThemes}
+          onHide={() => setShowThemes(false)}
+          color={theme[2]}
+        />
+        <IAPModal
+          visible={showIAP}
+          onHide={() => setShowIAP(false)}
+          color={theme[3]}
+        />
       </Animated.View>
     </PanGestureHandler>
   );

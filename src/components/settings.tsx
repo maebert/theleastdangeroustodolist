@@ -2,19 +2,17 @@ import React, { useState } from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
 import { Constants } from "../util";
 import { useSettings, useTheme } from "../hooks";
-import SwatchModal from "./swatch-modal";
-import IAPModal from "./iap-modal";
 import Tile from "./tile";
 
 type SettingsProps = {
   onReshuffle: () => any;
+  onShowThemes: () => any;
+  onShowIAP: () => any;
 };
 
-const Settings = ({ onReshuffle }: SettingsProps) => {
+const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
   const { debug, hardcore, addTodo, dispatch } = useSettings();
   const { theme, themeName } = useTheme();
-  const [showThemes, setShowThemes] = useState(false);
-  const [showIAP, setShowIAP] = useState(false);
 
   return (
     <View style={{ ...styles.container, backgroundColor: theme[0] }}>
@@ -33,9 +31,15 @@ const Settings = ({ onReshuffle }: SettingsProps) => {
         </Text>
       </View>
 
-      <View style={{ marginBottom: 40 }}>
-        {debug && <Button onPress={onReshuffle} title="Gimme something new" />}
-      </View>
+      {(debug || Constants.debug) && (
+        <View style={{ marginBottom: 40 }}>
+          <Button onPress={onReshuffle} title="Gimme something new" />
+          <Button
+            onPress={() => dispatch({ hardcore: !hardcore })}
+            title="Toggle Hardcore"
+          />
+        </View>
+      )}
 
       <View
         style={{
@@ -50,36 +54,26 @@ const Settings = ({ onReshuffle }: SettingsProps) => {
           title="THEME"
           text={themeName}
           color={theme[2]}
-          onClick={() => setShowThemes(true)}
+          onClick={onShowThemes}
         />
         <Tile
           title="CUSTOM TO-DOs"
           text={addTodo ? "On" : "Off"}
+          img={!hardcore && require("../../assets/lock.png")}
           color={theme[4]}
           onClick={() =>
-            hardcore ? dispatch({ addTodo: !addTodo }) : setShowIAP(true)
+            hardcore ? dispatch({ addTodo: !addTodo }) : onShowIAP()
           }
         />
         <Tile
           title="HARDCORE PASS"
           text={hardcore ? "F*CK YEAH" : "Nope."}
-          fuckyeah={hardcore}
+          img={hardcore && require("../../assets/fuckyeah.png")}
           color={theme[3]}
-          onClick={() => setShowIAP(true)}
+          onClick={onShowIAP}
         />
         <Tile title="PACK" text="Basic" color={theme[5]} />
       </View>
-
-      <SwatchModal
-        visible={showThemes}
-        onHide={() => setShowThemes(false)}
-        color={theme[2]}
-      />
-      <IAPModal
-        visible={showIAP}
-        onHide={() => setShowIAP(false)}
-        color={theme[3]}
-      />
     </View>
   );
 };

@@ -17,6 +17,8 @@ const IMAGES = [
   require("./assets/pen.png"),
   require("./assets/pen2.png"),
   require("./assets/dollar.png"),
+  require("./assets/lock.png"),
+  require("./assets/tinylock.png"),
 ];
 
 const FONTS = {

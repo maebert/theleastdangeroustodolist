@@ -8,3 +8,4 @@ export { default as SwatchModal } from "./swatch-modal";
 export { default as IAPModal } from "./iap-modal";
 export { default as TodoList } from "./todolist";
 export { default as Listeners } from "./listeners";
+export { default as EndOfDay } from "./end-of-day";

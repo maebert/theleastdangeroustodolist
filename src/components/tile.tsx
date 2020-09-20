@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, StyleSheet, Image } from "react-native";
+import { Text, StyleSheet, Image, ImageSourcePropType } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { fadeColor, rippleColor } from "../util";
 import Ripple from "react-native-material-ripple";
@@ -8,11 +8,12 @@ type TileProps = {
   title: string;
   text: string;
   color: string;
-  fuckyeah?: boolean;
+  img?: ImageSourcePropType;
+  locked?: boolean;
   onClick?: () => any;
 };
 
-const Tile = ({ title, color, text, fuckyeah, onClick }: TileProps) => {
+const Tile = ({ title, color, text, img, onClick }: TileProps) => {
   return (
     <LinearGradient
       start={[0, 0]}
@@ -30,15 +31,10 @@ const Tile = ({ title, color, text, fuckyeah, onClick }: TileProps) => {
       >
         <Text style={styles.title}>{title}</Text>
 
-        {fuckyeah ? (
-          <Image
-            source={require("../../assets/fuckyeah.png")}
-            resizeMode={"cover"}
-            style={styles.fuckyeah}
-          />
-        ) : (
-          <Text style={styles.text}>{text}</Text>
+        {img && (
+          <Image source={img} resizeMode={"cover"} style={styles.fuckyeah} />
         )}
+        <Text style={styles.text}>{text}</Text>
       </Ripple>
     </LinearGradient>
   );

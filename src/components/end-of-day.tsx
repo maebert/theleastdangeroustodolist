@@ -1,0 +1,144 @@
+import React, { useRef, useEffect, useState } from "react";
+import { Animated, View, Text, StyleSheet, Image } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import { Constants } from "../util";
+import { useTheme, useSettings } from "../hooks";
+import ConfettiCannon from "react-native-confetti-cannon";
+import Ripple from "react-native-material-ripple";
+
+type EODProps = {
+  visible: boolean;
+  onClick: () => any;
+};
+
+const EndOfDay = ({ visible, onClick }: EODProps) => {
+  const [shouldRender, setRender] = useState(visible);
+  const opacity = useRef(new Animated.Value(0)).current;
+
+  const { theme, greys } = useTheme();
+  const { hardcore } = useSettings();
+
+  useEffect(() => {
+    console.info("Changing visible to", visible);
+    if (visible) {
+      Animated.timing(opacity, {
+        toValue: 1,
+        duration: 1500,
+        useNativeDriver: true,
+      }).start();
+      setRender(true);
+    } else {
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: true,
+      }).start(() => {
+        setRender(false);
+      });
+    }
+  }, [visible]);
+
+  if (!shouldRender) return null;
+
+  return (
+    <Animated.View
+      style={{
+        opacity,
+        position: "absolute",
+        top: 0,
+        left: 0,
+        height: Constants.screenHeight,
+        width: Constants.screenWidth,
+      }}
+    >
+      <LinearGradient
+        start={[1, 0]}
+        end={[1, 1]}
+        colors={[greys[0], greys[5]]}
+        style={styles.container}
+      >
+        <ConfettiCannon
+          count={300}
+          origin={{ x: Constants.screenWidth / 2, y: 0 }}
+          colors={theme}
+          explosionSpeed={1000}
+          fallSpeed={6000}
+        />
+        <View style={{ flex: 1 }} />
+        <Text style={styles.text}>
+          You're done for today.{"\n"}Check back tomorrow.
+        </Text>
+        <View style={{ flex: 1 }} />
+        <Ripple
+          style={styles.more}
+          rippleColor={greys[0]}
+          rippleOpacity={1}
+          rippleCentered={true}
+          rippleDuration={600}
+          onPress={onClick}
+        >
+          {!hardcore && (
+            <Image
+              source={require("../../assets/tinylock.png")}
+              style={styles.morelock}
+            />
+          )}
+          <Text style={styles.moretext}>But I want more</Text>
+        </Ripple>
+      </LinearGradient>
+    </Animated.View>
+  );
+};
+
+const styles = StyleSheet.create({
+  container: {
+    paddingTop: 0,
+    height: "100%",
+    paddingHorizontal: 30,
+    alignItems: "center",
+    justifyContent: "center",
+    flexDirection: "column",
+  },
+  text: {
+    textAlign: "center",
+    color: "#fffefaaa",
+    width: "100%",
+    fontFamily: "Lato Bold",
+    fontSize: 24,
+  },
+  more: {
+    backgroundColor: "#fffd",
+    flexDirection: "row",
+    alignItems: "center",
+    borderRadius: 50,
+    paddingVertical: 12,
+    paddingHorizontal: 32,
+    marginTop: 40,
+    marginBottom: 60,
+    shadowColor: "#000",
+    textAlign: "center",
+    shadowOffset: {
+      width: 0,
+      height: 6,
+    },
+    shadowOpacity: 0.2,
+    shadowRadius: 8,
+    elevation: 12,
+  },
+  morelock: {
+    width: 24,
+    height: 24,
+    marginRight: 8,
+  },
+  moretext: {
+    color: "#36494E",
+    fontFamily: "Lato Bold",
+    fontSize: 20,
+  },
+  firstTodo: {
+    paddingTop: Constants.statusBarHeight,
+    height: Constants.itemHeight + Constants.statusBarHeight,
+  },
+});
+
+export default EndOfDay;
