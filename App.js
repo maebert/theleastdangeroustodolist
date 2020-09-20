@@ -18,6 +18,7 @@ const IMAGES = [
   require("./assets/pen2.png"),
   require("./assets/dollar.png"),
   require("./assets/lock.png"),
+  require("./assets/more.png"),
   require("./assets/tinylock.png"),
 ];
 

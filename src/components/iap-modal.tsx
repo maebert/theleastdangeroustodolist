@@ -54,7 +54,13 @@ const IAPModal = ({ visible, onHide, color }: ModalType) => {
           />
           <Text style={styles.featureText}>Write your own To-Do</Text>
         </View>
-
+        <View style={styles.feature}>
+          <Image
+            source={require("../../assets/more.png")}
+            style={styles.icon}
+          />
+          <Text style={styles.featureText}>Never run out of stuff to do</Text>
+        </View>
         <View style={styles.feature}>
           <Image
             source={require("../../assets/tinycrown.png")}

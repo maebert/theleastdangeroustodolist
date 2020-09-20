@@ -67,10 +67,10 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
         />
         <Tile
           title="HARDCORE PASS"
-          text={hardcore ? "F*CK YEAH" : "Nope."}
+          text={hardcore ? "" : "Nope."}
           img={hardcore && require("../../assets/fuckyeah.png")}
           color={theme[3]}
-          onClick={onShowIAP}
+          onClick={hardcore ? () => {} : onShowIAP}
         />
         <Tile title="PACK" text="Basic" color={theme[5]} />
       </View>
