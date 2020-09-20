@@ -1,5 +1,5 @@
 import React, { useRef, useEffect, useState } from "react";
-import { Animated, View, Text, StyleSheet, Image } from "react-native";
+import { Animated, View, Text, StyleSheet, Image, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { Constants } from "../util";
 import { useTheme, useSettings } from "../hooks";
@@ -14,16 +14,23 @@ type EODProps = {
 const EndOfDay = ({ visible, onClick }: EODProps) => {
   const [shouldRender, setRender] = useState(visible);
   const opacity = useRef(new Animated.Value(0)).current;
+  const translateMore = useRef(new Animated.Value(140)).current;
 
   const { theme, greys } = useTheme();
   const { hardcore } = useSettings();
 
   useEffect(() => {
-    console.info("Changing visible to", visible);
     if (visible) {
       Animated.timing(opacity, {
         toValue: 1,
         duration: 1500,
+        useNativeDriver: true,
+      }).start();
+      Animated.timing(translateMore, {
+        toValue: 0,
+        easing: Easing.elastic(1.1),
+        duration: 3000,
+        delay: 8000,
         useNativeDriver: true,
       }).start();
       setRender(true);
@@ -33,6 +40,7 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
         duration: 500,
         useNativeDriver: true,
       }).start(() => {
+        translateMore.setValue(140);
         setRender(false);
       });
     }
@@ -69,22 +77,30 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
           You're done for today.{"\n"}Check back tomorrow.
         </Text>
         <View style={{ flex: 1 }} />
-        <Ripple
-          style={styles.more}
-          rippleColor={greys[0]}
-          rippleOpacity={1}
-          rippleCentered={true}
-          rippleDuration={600}
-          onPress={onClick}
-        >
-          {!hardcore && (
-            <Image
-              source={require("../../assets/tinylock.png")}
-              style={styles.morelock}
-            />
-          )}
-          <Text style={styles.moretext}>But I want more</Text>
-        </Ripple>
+        <View>
+          <Animated.View
+            style={{
+              transform: [{ translateY: translateMore }],
+            }}
+          >
+            <Ripple
+              style={styles.more}
+              rippleColor={greys[0]}
+              rippleOpacity={1}
+              rippleCentered={true}
+              rippleDuration={600}
+              onPress={onClick}
+            >
+              {!hardcore && (
+                <Image
+                  source={require("../../assets/tinylock.png")}
+                  style={styles.morelock}
+                />
+              )}
+              <Text style={styles.moretext}>But I want more</Text>
+            </Ripple>
+          </Animated.View>
+        </View>
       </LinearGradient>
     </Animated.View>
   );
