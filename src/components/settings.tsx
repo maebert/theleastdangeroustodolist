@@ -3,6 +3,7 @@ import { Text, View, Button, StyleSheet } from "react-native";
 import { Constants } from "../util";
 import { useSettings, useTheme } from "../hooks";
 import Tile from "./tile";
+import HistoryTile from "./history-tile";
 
 type SettingsProps = {
   onReshuffle: () => any;
@@ -72,7 +73,7 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
           color={theme[3]}
           onClick={hardcore ? () => {} : onShowIAP}
         />
-        <Tile title="PACK" text="Basic" color={theme[5]} />
+        <HistoryTile color={theme[5]} />
       </View>
     </View>
   );

@@ -7,7 +7,12 @@
   "settings": {
     "search.exclude": {
       "**/android": true,
-      "**/ios": true
+      "**/ios": true,
+      "**/yarn.lock": true,
+      "**/package.json": true,
+      "**/Readme.md": true,
+      "**/assets.json": true
+      "**/*.svg": true
     }
   }
 }

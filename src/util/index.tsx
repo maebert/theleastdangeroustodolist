@@ -25,3 +25,33 @@ export const handleAction = (action: string) => {
   action = action.replace("tldtdl://", "");
   if (action === "review") requestReview();
 };
+
+const dateToString = (date: Date) =>
+  `${date.getFullYear()}-${date.getMonth() < 9 ? "0" : ""}${
+    date.getMonth() + 1
+  }-${date.getDate() < 9 ? "0" : ""}${date.getDate()}`;
+
+export const getDate = () => {
+  // Fuck javascript. Fuck it in the date hole.
+  return dateToString(new Date());
+};
+
+export const getDates = (days: number) => {
+  let dates = [],
+    endDate = new Date(),
+    addDays = function (days: number) {
+      var date = new Date(this?.valueOf());
+      date.setDate(date.getDate() + days);
+      return date;
+    };
+  let startDate = new Date();
+  startDate.setDate(startDate.getDate() - days);
+  let currentDate = startDate;
+
+  while (currentDate <= endDate) {
+    dates.push(currentDate);
+    currentDate = addDays.call(currentDate, 1);
+  }
+
+  return dates.map(dateToString);
+};

@@ -9,7 +9,6 @@ type TileProps = {
   text: string;
   color: string;
   img?: ImageSourcePropType;
-  locked?: boolean;
   onClick?: () => any;
 };
 

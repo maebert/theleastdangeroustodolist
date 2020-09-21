@@ -9,6 +9,7 @@ type Settings = {
   hardcorePrice?: string;
   showTutorial?: boolean;
   history?: string[];
+  completionHistory?: { [key: string]: number };
 };
 
 type SettingsState = Settings & {
@@ -18,6 +19,7 @@ type SettingsState = Settings & {
 const defaults: Settings = {
   debug: false,
   customTodo: "",
+  completionHistory: {},
   history: [],
   addTodo: false,
   hardcore: false,

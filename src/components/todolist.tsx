@@ -17,23 +17,22 @@ import Settings from "./settings";
 import Marker from "./marker";
 import EndOfDay from "./end-of-day";
 import { Line, TodoData, Theme } from "../types";
-import { Constants, Store, Analytics } from "../util";
+import { Constants, Store, Analytics, getDate } from "../util";
 import { useMarker, useTheme, useMask, useTasks, useSettings } from "../hooks";
 
 const TodoList = () => {
   const fade = useRef(new Animated.Value(0)).current;
   const pull = useRef(new Animated.Value(0)).current;
 
-  const getDate = () => {
-    // Fuck javascript. Fuck it in the date hole.
-    const now = new Date();
-    return `${now.getFullYear()}-${now.getMonth() < 9 ? "0" : ""}${
-      now.getMonth() + 1
-    }-${now.getDate() < 9 ? "0" : ""}${now.getDate()}`;
-  };
   const marker = useMarker();
 
-  const { hardcore, addTodo, customTodo, dispatch } = useSettings();
+  const {
+    hardcore,
+    addTodo,
+    customTodo,
+    completionHistory,
+    dispatch,
+  } = useSettings();
 
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
@@ -53,6 +52,11 @@ const TodoList = () => {
   const onUndo = (idx: number) => {
     Haptics.impactAsync();
     setLines((prev) => prev.filter((l) => l.todo !== idx));
+
+    const numDone = (completionHistory[getDate()] || 0) - 1;
+    dispatch({
+      completionHistory: { ...completionHistory, [getDate()]: numDone },
+    });
     setData((data) =>
       update(data, {
         [idx]: { done: { $set: false } },
@@ -74,7 +78,7 @@ const TodoList = () => {
         fade={marker.activeTodo === index ? fade : null}
       />
     ));
-    if (true)
+    if (addTodo)
       return [
         ...todos,
         <CustomTodo
@@ -121,6 +125,10 @@ const TodoList = () => {
   };
 
   const onMarkDone = (idx: number) => {
+    const numDone = (completionHistory[getDate()] || 0) + 1;
+    dispatch({
+      completionHistory: { ...completionHistory, [getDate()]: numDone },
+    });
     setData((data) =>
       update(data, {
         [idx]: { done: { $set: true } },
