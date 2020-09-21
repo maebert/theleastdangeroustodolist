@@ -18,7 +18,7 @@
 
 /* Begin PBXFileReference section */
 		008F07F21AC5B25A0029DE68 /* main.jsbundle */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text; path = main.jsbundle; sourceTree = "<group>"; };
-		13B07F961A680F5B00A75B9A /* The Least Dangerous To-Do List.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "The Least Dangerous To-Do List.app"; sourceTree = BUILT_PRODUCTS_DIR; };
+		13B07F961A680F5B00A75B9A /* LDTDL.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = LDTDL.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		13B07FAF1A68108700A75B9A /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = AppDelegate.h; path = TLDTDL/AppDelegate.h; sourceTree = "<group>"; };
 		13B07FB01A68108700A75B9A /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = AppDelegate.m; path = TLDTDL/AppDelegate.m; sourceTree = "<group>"; };
 		13B07FB21A68108700A75B9A /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = Base; path = Base.lproj/LaunchScreen.xib; sourceTree = "<group>"; };
@@ -96,7 +96,7 @@
 		83CBBA001A601CBA00E9B192 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				13B07F961A680F5B00A75B9A /* The Least Dangerous To-Do List.app */,
+				13B07F961A680F5B00A75B9A /* LDTDL.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -139,7 +139,7 @@
 			);
 			name = TLDTDL;
 			productName = TLDTDL;
-			productReference = 13B07F961A680F5B00A75B9A /* The Least Dangerous To-Do List.app */;
+			productReference = 13B07F961A680F5B00A75B9A /* LDTDL.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -202,7 +202,7 @@
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 			shellPath = /bin/sh;
-			shellScript = "export NODE_BINARY=node\n../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
+			shellScript = "export NODE_BINARY=/usr/local/bin/node\n../node_modules/react-native/scripts/react-native-xcode.sh\n../node_modules/expo-updates/scripts/create-manifest-ios.sh\n";
 		};
 		08A4A3CD28434E44B6B9DE2E /* [CP] Check Pods Manifest.lock */ = {
 			isa = PBXShellScriptBuildPhase;
@@ -281,7 +281,7 @@
 				CODE_SIGN_ENTITLEMENTS = TLDTDL/tldtdl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = VU39PAUN65;
 				ENABLE_BITCODE = NO;
@@ -298,7 +298,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1450.tldtdl;
-				PRODUCT_NAME = "The Least Dangerous To-Do List";
+				PRODUCT_NAME = LDTDL;
 				PROVISIONING_PROFILE_SPECIFIER = "LDTDL App Store";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
@@ -315,7 +315,7 @@
 				CODE_SIGN_ENTITLEMENTS = TLDTDL/tldtdl.entitlements;
 				CODE_SIGN_IDENTITY = "iPhone Distribution";
 				CODE_SIGN_STYLE = Manual;
-				CURRENT_PROJECT_VERSION = 13;
+				CURRENT_PROJECT_VERSION = 14;
 				DEAD_CODE_STRIPPING = YES;
 				DEVELOPMENT_TEAM = VU39PAUN65;
 				INFOPLIST_FILE = TLDTDL/Info.plist;
@@ -327,7 +327,7 @@
 					"-lc++",
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1450.tldtdl;
-				PRODUCT_NAME = "The Least Dangerous To-Do List";
+				PRODUCT_NAME = LDTDL;
 				PROVISIONING_PROFILE_SPECIFIER = "LDTDL App Store";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";

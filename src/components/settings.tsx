@@ -32,7 +32,7 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
         </Text>
       </View>
 
-      {(debug || Constants.debug) && (
+      {debug && Constants.debug && (
         <View style={{ marginBottom: 40 }}>
           <Button onPress={onReshuffle} title="Gimme something new" />
           <Button
@@ -71,7 +71,7 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
           text={hardcore ? "" : "Nope."}
           img={hardcore && require("../../assets/fuckyeah.png")}
           color={theme[3]}
-          onClick={hardcore ? () => {} : onShowIAP}
+          onClick={hardcore ? null : onShowIAP}
         />
         <HistoryTile color={theme[5]} />
       </View>

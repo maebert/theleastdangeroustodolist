@@ -13,7 +13,6 @@ const useIap = () => {
   const [price, setPrice] = useState("");
 
   const getPrice = () => {
-    console.warn("requesting price");
     return price;
   };
 
@@ -69,8 +68,12 @@ const useIap = () => {
   };
 
   const errorListener = (error: PurchaseError) => {
-    console.log("purchaseErrorListener", error);
-    Alert.alert("purchase error", JSON.stringify(error));
+    console.warn("purchaseErrorListener", error);
+    if (error.code === "E_USER_ERRO") {
+      Alert.alert("Never mind then.", "You chickened out, didn't you?");
+    } else {
+      Alert.alert("Hmmmm...", error.message);
+    }
   };
 
   const init = async () => {

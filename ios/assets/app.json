@@ -1,14 +1,10 @@
 {
   "expo": {
-    "name": "TLD TDL",
+    "name": "The Least Dangerous To-Do List",
     "scheme": "tldtdl",
     "slug": "theleastdangeroustodolist",
     "privacy": "public",
-    "platforms": [
-      "ios",
-      "android",
-      "web"
-    ],
+    "platforms": ["ios"],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -20,12 +16,10 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": [
-      "**/*"
-    ],
+    "assetBundlePatterns": ["**/*"],
     "ios": {
       "supportsTablet": true,
-      "buildNumber": "11",
+      "buildNumber": "15",
       "bundleIdentifier": "me.1450.tldtdl",
       "config": {
         "usesNonExemptEncryption": false

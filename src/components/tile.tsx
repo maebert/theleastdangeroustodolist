@@ -1,5 +1,11 @@
-import React from "react";
-import { Text, StyleSheet, Image, ImageSourcePropType } from "react-native";
+import React, { useRef } from "react";
+import {
+  Text,
+  Animated,
+  Easing,
+  StyleSheet,
+  ImageSourcePropType,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { fadeColor, rippleColor } from "../util";
 import Ripple from "react-native-material-ripple";
@@ -9,10 +15,25 @@ type TileProps = {
   text: string;
   color: string;
   img?: ImageSourcePropType;
-  onClick?: () => any;
+  onClick: () => any | null;
 };
 
 const Tile = ({ title, color, text, img, onClick }: TileProps) => {
+  const wob = useRef(new Animated.Value(0)).current;
+  const wobble = () => {
+    Animated.timing(wob, {
+      toValue: 1 - Math.random() * 2,
+      duration: 600,
+      easing: Easing.elastic(5),
+      useNativeDriver: true,
+    }).start(() =>
+      Animated.timing(wob, {
+        toValue: 0,
+        duration: 200,
+        useNativeDriver: true,
+      }).start()
+    );
+  };
   return (
     <LinearGradient
       start={[0, 0]}
@@ -26,12 +47,34 @@ const Tile = ({ title, color, text, img, onClick }: TileProps) => {
         rippleOpacity={1}
         rippleCentered={true}
         rippleDuration={600}
-        onPress={onClick}
+        onPress={onClick || wobble}
       >
         <Text style={styles.title}>{title}</Text>
 
         {img && (
-          <Image source={img} resizeMode={"cover"} style={styles.fuckyeah} />
+          <Animated.Image
+            source={img}
+            resizeMode={"cover"}
+            style={[
+              styles.fuckyeah,
+              {
+                transform: [
+                  {
+                    rotate: wob.interpolate({
+                      inputRange: [-1, 0, 1],
+                      outputRange: ["30deg", "0deg", "-20deg"],
+                    }),
+                  },
+                  {
+                    scale: wob.interpolate({
+                      inputRange: [-1, -0.3, 0, 0.3, 1],
+                      outputRange: [1.4, 1.2, 1, 1.2, 1.4],
+                    }),
+                  },
+                ],
+              },
+            ]}
+          />
         )}
         <Text style={styles.text}>{text}</Text>
       </Ripple>

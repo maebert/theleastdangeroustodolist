@@ -1,8 +1,10 @@
-import React from "react";
-import { Text, View, StyleSheet, Image } from "react-native";
+import React, { useState, useRef } from "react";
+import { Text, View, StyleSheet, Image, Animated } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Constants, fadeColor, getDates } from "../util";
+import { rippleColor, fadeColor, getDates, getDate } from "../util";
 import { useSettings } from "../hooks";
+import Ripple from "react-native-material-ripple";
+import { sample, without } from "lodash";
 
 type HTrops = {
   color: string;
@@ -12,7 +14,8 @@ type BarProps = {
   date: Date;
 };
 
-const DAYS = ["S", "M", "T", "W", "T", "F", "S"];
+const NUMBERS = ["zero", "one", "two", "three", "four", "five", "six"];
+const UNUMBERS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six"];
 const Bar = ({ height, date }: BarProps) => (
   <View style={styles.bar}>
     {height >= 6 && (
@@ -36,6 +39,61 @@ const Bar = ({ height, date }: BarProps) => (
 
 const Tile = ({ color }: HTrops) => {
   const { completionHistory } = useSettings();
+  const opacity = useRef(new Animated.Value(0)).current;
+  const [insult, setInsult] = useState<string>("");
+
+  const showText = () => {
+    const doneToday = completionHistory[getDate()];
+    let insults: string[] = [];
+    if (doneToday === 0) {
+      insults = insults.concat([
+        "Brand new day!",
+        "Rise and shine, slacker",
+        "You're a... clean slate",
+        "Better get going",
+        "The word “Failure” comes to mind",
+        "You must have done something today!",
+        "Looks like you haven't done SH*T today",
+        "Least Dangerous User",
+        "I bet you have a great personality",
+        "Did you loose your thumbs?",
+      ]);
+    } else if (doneToday < 6) {
+      insults = insults.concat([
+        `${UNUMBERS[doneToday]} down, ${NUMBERS[6 - doneToday]} to go.`,
+        `Only ${NUMBERS[6 - doneToday]} left`,
+        "Are you even trying?",
+        "Least Dangerous User",
+        "You can do better than this. Maybe.",
+        "",
+      ]);
+    }
+    if (doneToday === 5) {
+      insults = insults.concat(["One more. You can do this."]);
+    }
+    if (doneToday === 6) {
+      insults = insults.concat([
+        "Gold Star ⭐️⭐️⭐️",
+        "Look at you!",
+        "Good job you!",
+        "You're trying way too hard.",
+        "Who's dynamite? You're dynamite!",
+      ]);
+    }
+
+    setInsult(sample(without(insults, insult)));
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: 600,
+      useNativeDriver: true,
+    }).start(() => {
+      Animated.timing(opacity, {
+        toValue: 0,
+        duration: 2000,
+        useNativeDriver: true,
+      }).start();
+    });
+  };
 
   return (
     <LinearGradient
@@ -44,17 +102,47 @@ const Tile = ({ color }: HTrops) => {
       colors={[fadeColor(color), color]}
       style={styles.gradient}
     >
-      <Text style={styles.title}>HISTORY</Text>
-      <View style={styles.history}>
-        {getDates(13).map((d) => (
-          <Bar date={new Date(d)} height={completionHistory[d] || 0} />
-        ))}
-      </View>
+      <Ripple
+        style={styles.inner}
+        rippleColor={rippleColor(color)}
+        rippleOpacity={1}
+        rippleCentered={true}
+        rippleDuration={600}
+        onPress={showText}
+      >
+        <Text style={styles.title}>HISTORY</Text>
+        <Animated.Text style={[styles.text, { opacity: opacity }]}>
+          {insult}
+        </Animated.Text>
+        <Animated.View
+          style={[
+            styles.history,
+            {
+              opacity: opacity.interpolate({
+                inputRange: [0, 0.7, 1],
+                outputRange: [1, 0.2, 0.2],
+              }),
+            },
+          ]}
+        >
+          {getDates(13).map((d) => (
+            <Bar
+              key={d}
+              date={new Date(d)}
+              height={completionHistory[d] || 0}
+            />
+          ))}
+        </Animated.View>
+      </Ripple>
     </LinearGradient>
   );
 };
 
 const styles = StyleSheet.create({
+  inner: {
+    width: "100%",
+    height: "100%",
+  },
   barInner: {
     width: 5,
     backgroundColor: "#fff9",
@@ -109,6 +197,7 @@ const styles = StyleSheet.create({
     fontFamily: "Lato Black",
     color: "#fffefa",
     fontSize: 28,
+    lineHeight: 28,
     marginTop: 6,
     paddingHorizontal: "10%",
   },

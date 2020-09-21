@@ -66,14 +66,9 @@ const IAPModal = ({ visible, onHide, color }: ModalType) => {
             source={require("../../assets/tinycrown.png")}
             style={styles.icon}
           />
-          <Text style={styles.featureText}>Feel superior</Text>
-        </View>
-        <View style={styles.feature}>
-          <Image
-            source={require("../../assets/dollar.png")}
-            style={styles.icon}
-          />
-          <Text style={styles.featureText}>"Only" {hardcorePrice}</Text>
+          <Text style={styles.featureText}>
+            Feel superior for “only” {hardcorePrice}
+          </Text>
         </View>
         <Text style={styles.p2}>
           Is that worth the money? Absolutely not! But spending your dough on
@@ -126,8 +121,8 @@ const styles = StyleSheet.create({
     margin: 0,
   },
   crown: {
-    height: 80,
-    width: 80,
+    height: Constants.screenHeight > 700 ? 80 : 40,
+    width: Constants.screenHeight > 700 ? 80 : 40,
   },
   cancel: {
     width: 40,
@@ -158,11 +153,11 @@ const styles = StyleSheet.create({
     fontFamily: "Lato Bold",
     textAlign: "center",
     marginTop: 20,
-    marginBottom: 20,
+    marginBottom: Constants.screenHeight > 700 ? 20 : 10,
   },
   icon: {
-    width: 24,
-    height: 24,
+    width: Constants.screenHeight > 700 ? 24 : 18,
+    height: Constants.screenHeight > 700 ? 24 : 18,
     marginRight: 10,
     opacity: 0.85,
   },
@@ -171,29 +166,29 @@ const styles = StyleSheet.create({
     fontFamily: "Lato Regular",
     fontSize: 20,
     marginTop: 18,
-    marginBottom: 24,
+    marginBottom: 16,
     lineHeight: 30,
   },
   feature: {
     backgroundColor: "#0002",
     borderRadius: 8,
     flexDirection: "row",
-    paddingVertical: 16,
-    paddingHorizontal: 20,
+    alignItems: "center",
+    paddingVertical: Constants.screenHeight > 700 ? 16 : 12,
+    paddingHorizontal: Constants.screenHeight > 700 ? 20 : 12,
     marginTop: 10,
   },
   featureText: {
     color: "#ffffff",
-    fontFamily: "Lato Black",
-    fontSize: 20,
+    fontFamily: Constants.screenHeight > 700 ? "Lato Black" : "Lato Bold",
+    fontSize: Constants.screenHeight > 700 ? 20 : 18,
   },
   p2: {
     color: "#ffffffaa",
     fontFamily: "Lato Regular",
-    fontSize: 16,
-    marginTop: 24,
-    marginBottom: 24,
-    lineHeight: 24,
+    fontSize: Constants.screenHeight > 700 ? 16 : 14,
+    marginTop: 26,
+    lineHeight: Constants.screenHeight > 700 ? 24 : 20,
   },
   button: {
     backgroundColor: "white",

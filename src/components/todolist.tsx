@@ -54,10 +54,12 @@ const TodoList = () => {
     Analytics.track(Analytics.events.UNDO);
     setLines((prev) => prev.filter((l) => l.todo !== idx));
 
-    const numDone = (completionHistory[getDate()] || 0) - 1;
-    dispatch({
-      completionHistory: { ...completionHistory, [getDate()]: numDone },
-    });
+    if (!isTutorial && data[idx].done) {
+      const numDone = (completionHistory[getDate()] || 0) - 1;
+      dispatch({
+        completionHistory: { ...completionHistory, [getDate()]: numDone },
+      });
+    }
     setData((data) =>
       update(data, {
         [idx]: { done: { $set: false } },
@@ -129,10 +131,12 @@ const TodoList = () => {
   };
 
   const onMarkDone = (idx: number) => {
-    const numDone = (completionHistory[getDate()] || 0) + 1;
-    dispatch({
-      completionHistory: { ...completionHistory, [getDate()]: numDone },
-    });
+    if (!isTutorial && !data[idx].done) {
+      const numDone = (completionHistory[getDate()] || 0) + 1;
+      dispatch({
+        completionHistory: { ...completionHistory, [getDate()]: numDone },
+      });
+    }
     setData((data) =>
       update(data, {
         [idx]: { done: { $set: true } },
@@ -225,7 +229,7 @@ const TodoList = () => {
       setDate(date);
       setLines(lines);
     } else {
-      refreshTodos();
+      replaceTodos();
     }
   };
 
