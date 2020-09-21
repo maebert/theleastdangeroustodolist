@@ -7,7 +7,7 @@ const screenHeight = Math.round(Dimensions.get("window").height);
 export default {
   todos: 6,
   historyLenth: 84,
-  debug: true,
+  debug: false,
   namespace: "TLDTLD-2",
   screenWidth,
   screenHeight,

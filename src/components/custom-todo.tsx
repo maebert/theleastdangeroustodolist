@@ -2,7 +2,7 @@ import React, { useRef, useState } from "react";
 import { TextInput } from "react-native";
 import { Animated, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "../hooks";
-import { Constants } from "../util";
+import { Constants, Analytics } from "../util";
 
 import { useSettings } from "../hooks";
 
@@ -77,7 +77,6 @@ const CustomTodo = ({ onUndo, done, index, fade }: TodoProps) => {
                 width: 20,
                 marginLeft: 15,
                 marginTop: 2,
-                //   position: "absolute",
               }}
             />
           )}
@@ -96,9 +95,14 @@ const CustomTodo = ({ onUndo, done, index, fade }: TodoProps) => {
         numberOfLines={3}
         autoFocus
         selectTextOnFocus
-        onChangeText={(customTodo) => dispatch({ customTodo })}
+        onChangeText={(customTodo) => setTodo(customTodo)}
       />
     );
+  };
+
+  const setTodo = (customTodo: string) => {
+    Analytics.track(Analytics.events.COMPLETE, { customTodo });
+    dispatch({ customTodo });
   };
 
   return (

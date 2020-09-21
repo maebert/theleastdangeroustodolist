@@ -83,12 +83,13 @@ const stripeHeight = (Constants.screenWidth - 60) / 12;
 
 const styles = StyleSheet.create({
   container: {
-    marginTop: 60,
-    marginLeft: 20,
-    width: Constants.screenWidth - 20,
+    width: Constants.screenWidth - 40,
+    marginTop: Constants.statusBarHeight + 20,
+    marginHorizontal: 20,
+    flexDirection: "row",
     flexWrap: "wrap",
-    flexDirection: "column",
-    alignContent: "stretch",
+    alignContent: "space-between",
+    justifyContent: "space-between",
   },
   swatchView: {
     shadowRadius: 8,
@@ -97,7 +98,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.4,
     height: stripeHeight * 6,
     width: stripeHeight * 6,
-    marginRight: 20,
+    // marginRight: 20,
     marginBottom: 20,
   },
   stripe: {

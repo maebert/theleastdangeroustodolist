@@ -13,7 +13,12 @@ if (!Constants.manifest) {
 }
 
 const events = {
-  COMPLETE: "Complete To Do",
+  OPEN_IAP: "open IAP",
+  WRITE: "Write To-Do",
+  GET_MORE: "Get more todos",
+  SETTINGS: "Open Settings",
+  COMPLETE: "Complete To-Do",
+  UNDO: "Undo To-Do",
   PICK_THEME: "Pick Theme",
   COMPLETE_TUTORIAL: "Complete Tutorial",
 };

@@ -1,5 +1,6 @@
 import React from "react";
 import Swatch from "./swatch";
+import { ScrollView, View } from "react-native";
 import Modal from "react-native-modal";
 
 type ModalType = {
@@ -22,7 +23,13 @@ const SwatchModal = ({ visible, onHide, color }: ModalType) => (
     style={{ margin: 0 }}
     hideModalContentWhileAnimating={true}
   >
-    <Swatch onChoose={onHide} />
+    <ScrollView
+      style={{
+        width: "100%",
+      }}
+    >
+      <Swatch onChoose={onHide} />
+    </ScrollView>
   </Modal>
 );
 

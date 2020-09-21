@@ -51,6 +51,7 @@ const TodoList = () => {
 
   const onUndo = (idx: number) => {
     Haptics.impactAsync();
+    Analytics.track(Analytics.events.UNDO);
     setLines((prev) => prev.filter((l) => l.todo !== idx));
 
     const numDone = (completionHistory[getDate()] || 0) - 1;
@@ -121,6 +122,9 @@ const TodoList = () => {
       duration: 300,
       useNativeDriver: true,
     }).start();
+    if (!showSettings) {
+      Analytics.track(Analytics.events.SETTINGS);
+    }
     setShowSettings(!showSettings);
   };
 
@@ -270,6 +274,11 @@ const TodoList = () => {
     save();
   }, [data, lines, save]);
 
+  const openIAP = () => {
+    Analytics.track(Analytics.events.OPEN_IAP);
+    setShowIAP(true);
+  };
+
   return (
     <PanGestureHandler
       onGestureEvent={handleGesture}
@@ -284,7 +293,7 @@ const TodoList = () => {
             onEndPull();
           }}
           onShowThemes={() => setShowThemes(true)}
-          onShowIAP={() => setShowIAP(true)}
+          onShowIAP={openIAP}
         />
         {renderTodos()}
         {lines.map((line, idx) => (
@@ -295,7 +304,7 @@ const TodoList = () => {
         <Mask />
         <EndOfDay
           visible={doneForToday}
-          onClick={hardcore ? refreshTodos : () => setShowIAP(true)}
+          onClick={hardcore ? refreshTodos : openIAP}
         />
         <SwatchModal
           visible={showThemes}

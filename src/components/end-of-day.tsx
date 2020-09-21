@@ -1,7 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 import { Animated, View, Text, StyleSheet, Image, Easing } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import { Constants } from "../util";
+import { Analytics, Constants } from "../util";
 import { useTheme, useSettings } from "../hooks";
 import ConfettiCannon from "react-native-confetti-cannon";
 import Ripple from "react-native-material-ripple";
@@ -48,6 +48,11 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
 
   if (!shouldRender) return null;
 
+  const getMore = () => {
+    Analytics.track(Analytics.events.GET_MORE, { hardcore });
+    onClick();
+  };
+
   return (
     <Animated.View
       style={{
@@ -89,7 +94,7 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
               rippleOpacity={1}
               rippleCentered={true}
               rippleDuration={600}
-              onPress={onClick}
+              onPress={getMore}
             >
               {!hardcore && (
                 <Image

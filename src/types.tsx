@@ -17,7 +17,7 @@ export enum Theme {
   Clear = "Cease &\nDesist",
   Pride = "The Letter People",
   Dark = "Darkwad",
-  NotOk = "Ok, not Ok",
+  NotOk = "Ok,\nnot Ok",
   Greys = "Why bother",
 }
 export type ThemeDef = [string, string, string, string, string, string];
