@@ -8,6 +8,7 @@ type Settings = {
   hardcore?: boolean;
   hardcorePrice?: string;
   showTutorial?: boolean;
+  history?: string[];
 };
 
 type SettingsState = Settings & {
@@ -17,6 +18,7 @@ type SettingsState = Settings & {
 const defaults: Settings = {
   debug: false,
   customTodo: "",
+  history: [],
   addTodo: false,
   hardcore: false,
   hardcorePrice: "$90",
@@ -34,7 +36,6 @@ type UPProps = {
 
 const SettingsProvider = ({ children }: UPProps) => {
   const [settings, setSettings] = useState<Settings>(defaults);
-  const [loading, setLoading] = useState(true);
 
   const dispatch = (settings: Settings) => {
     setSettings((prev) => {

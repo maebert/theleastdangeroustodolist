@@ -3,6 +3,7 @@ import Data, { Pack, Todo } from "../generated/data";
 
 import { TodoData } from "../types";
 import { Constants } from "../util";
+import { useSettings } from "./settings";
 
 type UseTasks = {
   getTodos: (pack: Pack) => TodoData[];
@@ -10,6 +11,7 @@ type UseTasks = {
 };
 
 const useTasks = (): UseTasks => {
+  const { history, dispatch } = useSettings();
   const checkConstraints = (picked: Todo[], other: Todo) => {
     // no dupes
     if (picked.map((t) => t.id).includes(other.id)) return false;
@@ -20,6 +22,12 @@ const useTasks = (): UseTasks => {
 
     // 'Do ⬆️ that thing twice' can't be first
     if (picked.length === 0 && other.id === "recuxdRNRLdrb2lFm") return false;
+    // 'Skip doing ⬇️ that thing' can't be last
+    if (
+      picked.length === Constants.todos - 2 &&
+      other.id === "recdczB0LDWLYyD9p;"
+    )
+      return false;
 
     const tags: string[] = flatten([...picked, other].map((t) => t.tags));
 
@@ -55,7 +63,9 @@ const useTasks = (): UseTasks => {
     }));
 
   const getTodos = (pack: Pack): TodoData[] => {
-    const tasks = shuffle(Data.filter((t) => t.pack === pack));
+    const tasks = shuffle(
+      Data.filter((t) => t.pack === pack && !history?.includes(t.id))
+    );
     const topTask = tasks.find((t) => t.rating === 4) || tasks[0];
     let picked: Todo[] = [topTask];
 
@@ -66,6 +76,12 @@ const useTasks = (): UseTasks => {
     ) {
       if (checkConstraints(picked, tasks[idx])) picked.push(tasks[idx]);
     }
+
+    const newHistory = (history || [])
+      .concat(picked.map((p) => p.id))
+      .slice(0, Constants.historyLenth);
+
+    dispatch({ history: newHistory });
     return mapTodosToData(picked);
   };
 
