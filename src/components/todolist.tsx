@@ -24,7 +24,13 @@ const TodoList = () => {
   const fade = useRef(new Animated.Value(0)).current;
   const pull = useRef(new Animated.Value(0)).current;
 
-  const getDate = () => new Date().toISOString().substr(0, 10);
+  const getDate = () => {
+    // Fuck javascript. Fuck it in the date hole.
+    const now = new Date();
+    return `${now.getFullYear()}-${now.getMonth() < 9 ? "0" : ""}${
+      now.getMonth() + 1
+    }-${now.getDate() < 9 ? "0" : ""}${now.getDate()}`;
+  };
   const marker = useMarker();
 
   const { hardcore, addTodo, customTodo, dispatch } = useSettings();
@@ -202,7 +208,7 @@ const TodoList = () => {
     }
     const result = await Store.get(Constants.namespace);
     if (result && result.date === getDate()) {
-      const { data, date, lines, theme } = result;
+      const { data, date, lines } = result;
       setData(data);
       setDate(date);
       setLines(lines);
