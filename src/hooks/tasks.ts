@@ -11,7 +11,7 @@ type UseTasks = {
 };
 
 const useTasks = (): UseTasks => {
-  const { history, dispatch } = useSettings();
+  const { history, setNumber, dispatch } = useSettings();
   const checkConstraints = (picked: Todo[], other: Todo) => {
     // no dupes
     if (picked.map((t) => t.id).includes(other.id)) return false;
@@ -68,6 +68,10 @@ const useTasks = (): UseTasks => {
     );
     const topTask = tasks.find((t) => t.rating === 4) || tasks[0];
     let picked: Todo[] = [topTask];
+    const onboardingTask = getOnBoardingTask(setNumber);
+    if (onboardingTask) {
+      picked.push(onboardingTask);
+    }
 
     for (
       let idx = 0;
@@ -81,19 +85,22 @@ const useTasks = (): UseTasks => {
       .concat(picked.map((p) => p.id))
       .slice(0, Constants.historyLenth);
 
-    dispatch({ history: newHistory });
+    dispatch({ history: newHistory, setNumber: (setNumber || 0) + 1 });
     return mapTodosToData(picked);
   };
 
   const getTutorial = (): TodoData[] => {
-    return getTodos("Tutorial")
-      .sort((a, b) => a.text.localeCompare(b.text))
-      .map(({ index, text, done, pack }) => ({
-        index,
-        text: text.slice(2),
-        done,
-        pack,
-      }));
+    return mapTodosToData(
+      Data.filter((t) => t.pack === "Tutorial").sort((a, b) =>
+        a.group.localeCompare(b.group)
+      )
+    );
+  };
+
+  const getOnBoardingTask = (day: number): Todo | undefined => {
+    return Data.filter((t) => t.pack === "Onboarding").find(
+      (p) => p.group === day.toString()
+    );
   };
 
   return { getTodos, getTutorial };

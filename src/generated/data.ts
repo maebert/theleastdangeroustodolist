@@ -1,5 +1,5 @@
 export type Tag = "Cleaning" | "Digital" | "Social" | "Already Done" | "Food" | "Selfhelp" | "Adulting" | "Body" | "Clothes" | "Entertainment" | "Hygiene" | "Outside";
-export type Pack = "Basic" | "Tutorial";
+export type Pack = "Basic" | "Onboarding" | "Tutorial";
 export type Todo = {
     id: string;
     text: string;
@@ -136,6 +136,14 @@ const data: Todo[] = [
     "rating": 3,
     "exclude": [],
     "group": "vocab"
+  },
+  {
+    "id": "rec3LcWa9ahTxCiHR",
+    "text": "Consider buying the HARDCORE PASS to prove your superiority",
+    "tags": [],
+    "pack": "Onboarding",
+    "exclude": [],
+    "group": "3"
   },
   {
     "id": "rec3gxpak6GZlPHaw",
@@ -287,6 +295,14 @@ const data: Todo[] = [
     "exclude": []
   },
   {
+    "id": "rec8253yTHKhREaJS",
+    "text": "Long-press to undo a task",
+    "tags": [],
+    "pack": "Onboarding",
+    "exclude": [],
+    "group": "2"
+  },
+  {
     "id": "rec8xZ2m2bgRinLu1",
     "text": "Wear something that fits you ",
     "tags": [
@@ -411,11 +427,12 @@ const data: Todo[] = [
   },
   {
     "id": "recDaatWFgB8tyHFu",
-    "text": "4 Swipe to mark them done.\nTry it now",
+    "text": "Swipe to mark them done.\nTry it now",
     "tags": [],
     "pack": "Tutorial",
     "rating": 4,
-    "exclude": []
+    "exclude": [],
+    "group": "3"
   },
   {
     "id": "recDcneNqMqgDrls1",
@@ -620,11 +637,12 @@ const data: Todo[] = [
   },
   {
     "id": "recIb1RdbPA2YEEDp",
-    "text": "2 Minus the work of actually doing them",
+    "text": "Minus the work of actually doing them",
     "tags": [],
     "pack": "Tutorial",
     "rating": 4,
-    "exclude": []
+    "exclude": [],
+    "group": "1"
   },
   {
     "id": "recIedwD0KLN3CaVi",
@@ -682,6 +700,15 @@ const data: Todo[] = [
     "pack": "Basic",
     "rating": 3,
     "exclude": []
+  },
+  {
+    "id": "recKiWq2r2AuzwLmt",
+    "text": "Pick a new theme in the settings (swipe down)",
+    "tags": [],
+    "pack": "Onboarding",
+    "rating": 1,
+    "exclude": [],
+    "group": "1"
   },
   {
     "id": "recKzm5KfjVf86IHq",
@@ -869,11 +896,12 @@ const data: Todo[] = [
   },
   {
     "id": "recPuSI4b33MPtSci",
-    "text": "6 Finish this list to get started",
+    "text": "Finish this list to get started",
     "tags": [],
     "pack": "Tutorial",
     "rating": 4,
-    "exclude": []
+    "exclude": [],
+    "group": "5"
   },
   {
     "id": "recQ3oDc6uvlHCb50",
@@ -949,11 +977,12 @@ const data: Todo[] = [
   },
   {
     "id": "recSbyblhKiuc1CQT",
-    "text": "3 Each day you get six new low-effort tasks",
+    "text": "Each day you get six new low-effort tasks",
     "tags": [],
     "pack": "Tutorial",
     "rating": 4,
-    "exclude": []
+    "exclude": [],
+    "group": "2"
   },
   {
     "id": "recShvaYkPRI2GZKm",
@@ -1328,11 +1357,12 @@ const data: Todo[] = [
   },
   {
     "id": "recbqaLte8Iz5VTm0",
-    "text": "1 The satisfaction of checking things off your To-Do list...",
+    "text": "The satisfaction of checking things off your To-Do list...",
     "tags": [],
     "pack": "Tutorial",
     "rating": 4,
-    "exclude": []
+    "exclude": [],
+    "group": "0"
   },
   {
     "id": "recc3gR4DZS2WmtFA",
@@ -1666,11 +1696,12 @@ const data: Todo[] = [
   },
   {
     "id": "recl4uDrl9dMLqGTQ",
-    "text": "5 Swipe down for settings",
+    "text": "Swipe down for settings",
     "tags": [],
     "pack": "Tutorial",
     "rating": 4,
-    "exclude": []
+    "exclude": [],
+    "group": "4"
   },
   {
     "id": "reclHSgnV43YGmTVq",
