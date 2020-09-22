@@ -33,6 +33,9 @@ PODS:
     - UMCore
     - UMPermissionsInterface
     - UMTaskManagerInterface
+  - EXNotifications (0.3.3):
+    - UMCore
+    - UMPermissionsInterface
   - EXPermissions (9.0.1):
     - UMCore
     - UMPermissionsInterface
@@ -283,6 +286,8 @@ PODS:
     - React-cxxreact (= 0.62.2)
     - React-jsi (= 0.62.2)
   - React-jsinspector (0.62.2)
+  - react-native-splash-screen (3.2.0):
+    - React
   - React-RCTActionSheet (0.62.2):
     - React-Core/RCTActionSheetHeaders (= 0.62.2)
   - React-RCTAnimation (0.62.2):
@@ -384,6 +389,7 @@ DEPENDENCIES:
   - EXKeepAwake (from `../node_modules/expo-keep-awake/ios`)
   - EXLinearGradient (from `../node_modules/expo-linear-gradient/ios`)
   - EXLocation (from `../node_modules/expo-location/ios`)
+  - EXNotifications (from `../node_modules/expo-notifications/ios`)
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXSegment (from `../node_modules/expo-analytics-segment/ios`)
   - EXSensors (from `../node_modules/expo-sensors/ios`)
@@ -425,6 +431,7 @@ DEPENDENCIES:
   - React-jsi (from `../node_modules/react-native/ReactCommon/jsi`)
   - React-jsiexecutor (from `../node_modules/react-native/ReactCommon/jsiexecutor`)
   - React-jsinspector (from `../node_modules/react-native/ReactCommon/jsinspector`)
+  - react-native-splash-screen (from `../node_modules/react-native-splash-screen`)
   - React-RCTActionSheet (from `../node_modules/react-native/Libraries/ActionSheetIOS`)
   - React-RCTAnimation (from `../node_modules/react-native/Libraries/NativeAnimation`)
   - React-RCTBlob (from `../node_modules/react-native/Libraries/Blob`)
@@ -496,6 +503,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-linear-gradient/ios"
   EXLocation:
     :path: "../node_modules/expo-location/ios"
+  EXNotifications:
+    :path: "../node_modules/expo-notifications/ios"
   EXPermissions:
     :path: "../node_modules/expo-permissions/ios"
   EXSegment:
@@ -536,6 +545,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/ReactCommon/jsiexecutor"
   React-jsinspector:
     :path: "../node_modules/react-native/ReactCommon/jsinspector"
+  react-native-splash-screen:
+    :path: "../node_modules/react-native-splash-screen"
   React-RCTActionSheet:
     :path: "../node_modules/react-native/Libraries/ActionSheetIOS"
   React-RCTAnimation:
@@ -610,6 +621,7 @@ SPEC CHECKSUMS:
   EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
   EXLinearGradient: 663bf3b9009a96567e98498016e40422631be81d
   EXLocation: e93020e255f52a1cc031e0f45b0a24eb20fc4b55
+  EXNotifications: 4066720495cdd6366d0178f853a93671d9ea11c6
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
   EXSegment: 7f9fd99f88f5b1ff06d323a153873d2105d390f4
   EXSensors: 761f6bd03eb13ff7dfffe955de7edce3b73306c4
@@ -638,6 +650,7 @@ SPEC CHECKSUMS:
   React-jsi: b6dc94a6a12ff98e8877287a0b7620d365201161
   React-jsiexecutor: 1540d1c01bb493ae3124ed83351b1b6a155db7da
   React-jsinspector: 512e560d0e985d0e8c479a54a4e5c147a9c83493
+  react-native-splash-screen: 200d11d188e2e78cea3ad319964f6142b6384865
   React-RCTActionSheet: f41ea8a811aac770e0cc6e0ad6b270c644ea8b7c
   React-RCTAnimation: 49ab98b1c1ff4445148b72a3d61554138565bad0
   React-RCTBlob: a332773f0ebc413a0ce85942a55b064471587a71

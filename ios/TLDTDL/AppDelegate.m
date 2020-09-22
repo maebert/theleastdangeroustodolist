@@ -3,12 +3,14 @@
 #import <React/RCTBridge.h>
 #import <React/RCTBundleURLProvider.h>
 #import <React/RCTRootView.h>
+#import "RNSplashScreen.h"
 
 #import <UMCore/UMModuleRegistry.h>
 #import <UMReactNativeAdapter/UMNativeModulesProxy.h>
 #import <UMReactNativeAdapter/UMModuleRegistryAdapter.h>
 #import <EXSplashScreen/EXSplashScreenService.h>
 #import <UMCore/UMModuleRegistryProvider.h>
+
 
 #if DEBUG
 #import <FlipperKit/FlipperClient.h>
@@ -43,7 +45,7 @@ static void InitializeFlipper(UIApplication *application) {
 #if DEBUG
   InitializeFlipper(application);
 #endif
-  
+
   self.moduleRegistryAdapter = [[UMModuleRegistryAdapter alloc] initWithModuleRegistryProvider:[[UMModuleRegistryProvider alloc] init]];
   self.launchOptions = launchOptions;
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
@@ -54,6 +56,9 @@ static void InitializeFlipper(UIApplication *application) {
     controller.delegate = self;
     [controller startAndShowLaunchScreen:self.window];
   #endif
+
+  [RNSplashScreen show];  // here
+
 
   [super application:application didFinishLaunchingWithOptions:launchOptions];
 

@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { DeviceMotion } from "expo-sensors";
 import { useSettings, useIAP } from "../hooks";
-import RNIap, {
+import {
   purchaseErrorListener,
   purchaseUpdatedListener,
 } from "react-native-iap";

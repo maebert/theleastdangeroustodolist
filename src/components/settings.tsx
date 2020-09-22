@@ -32,16 +32,15 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
         </Text>
       </View>
 
-      {debug ||
-        (Constants.debug && (
-          <View style={{ marginBottom: 40 }}>
-            <Button onPress={onReshuffle} title="Gimme something new" />
-            <Button
-              onPress={() => dispatch({ hardcore: !hardcore })}
-              title="Toggle Hardcore"
-            />
-          </View>
-        ))}
+      {debug && Constants.debug && (
+        <View style={{ marginBottom: 40 }}>
+          <Button onPress={onReshuffle} title="Gimme something new" />
+          <Button
+            onPress={() => dispatch({ hardcore: !hardcore })}
+            title="Toggle Hardcore"
+          />
+        </View>
+      )}
 
       <View
         style={{

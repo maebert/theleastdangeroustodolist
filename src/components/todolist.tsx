@@ -217,7 +217,7 @@ const TodoList = () => {
   };
 
   const load = async () => {
-    const tutorialCompleted = false; //await Store.get("tutorialCompleted");
+    const tutorialCompleted = await Store.get("tutorialCompleted");
     if (!tutorialCompleted) {
       loadTutorial();
       return;

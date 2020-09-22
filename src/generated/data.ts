@@ -139,11 +139,11 @@ const data: Todo[] = [
   },
   {
     "id": "rec3LcWa9ahTxCiHR",
-    "text": "Consider buying the HARDCORE PASS to prove your superiority",
+    "text": "Consider buying the HARDCORE PASS to prove your superiority ldtdl://iap",
     "tags": [],
     "pack": "Onboarding",
     "exclude": [],
-    "group": "3"
+    "group": "4"
   },
   {
     "id": "rec3gxpak6GZlPHaw",
@@ -300,7 +300,7 @@ const data: Todo[] = [
     "tags": [],
     "pack": "Onboarding",
     "exclude": [],
-    "group": "2"
+    "group": "1"
   },
   {
     "id": "rec8xZ2m2bgRinLu1",
@@ -703,12 +703,12 @@ const data: Todo[] = [
   },
   {
     "id": "recKiWq2r2AuzwLmt",
-    "text": "Pick a new theme in the settings (swipe down)",
+    "text": "Pick a new theme in the settings ldtdl://themes",
     "tags": [],
     "pack": "Onboarding",
     "rating": 1,
     "exclude": [],
-    "group": "1"
+    "group": "3"
   },
   {
     "id": "recKzm5KfjVf86IHq",
@@ -1747,14 +1747,12 @@ const data: Todo[] = [
   },
   {
     "id": "recmfQhcHbrzRGddN",
-    "text": "Give this app a 5 star rating tldtdl://review",
-    "tags": [
-      "Already Done"
-    ],
-    "pack": "Basic",
+    "text": "Give this app a 5 star rating ldtdl://review",
+    "tags": [],
+    "pack": "Onboarding",
     "rating": 1,
     "exclude": [],
-    "group": "Shameless Plug"
+    "group": "2"
   },
   {
     "id": "recn9BZ0BXHvnpq8n",
@@ -1874,6 +1872,14 @@ const data: Todo[] = [
     "pack": "Basic",
     "rating": 1,
     "exclude": []
+  },
+  {
+    "id": "recqlcgtq4vx3QDPn",
+    "text": "Tap to get a reminder when there are new tasks available ldtdl://notif",
+    "tags": [],
+    "pack": "Onboarding",
+    "exclude": [],
+    "group": "0"
   },
   {
     "id": "recqsKKNeU9sVnpJX",

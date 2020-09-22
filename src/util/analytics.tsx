@@ -21,6 +21,8 @@ const events = {
   UNDO: "Undo To-Do",
   PICK_THEME: "Pick Theme",
   COMPLETE_TUTORIAL: "Complete Tutorial",
+  ASK_NOTIFICATION: "Ask for notification permissions",
+  ASK_REVIEW: "Ask for AppStore Review",
 };
 
 let segmentInitialized = false;

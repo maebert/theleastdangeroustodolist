@@ -3,7 +3,7 @@ import { Animated, Linking, TouchableOpacity, StyleSheet } from "react-native";
 import { useTheme } from "../hooks";
 import { Constants, handleAction } from "../util";
 
-const URL_REGEX = /((https?|tldtdl):\/\/[^\s]+)/g;
+const URL_REGEX = /((https?|ldtdl):\/\/[^\s]+)/g;
 
 type TodoProps = {
   done: boolean;
@@ -15,7 +15,7 @@ type TodoProps = {
 };
 
 const Todo = ({ onUndo, done, text, index, fade, onTap }: TodoProps) => {
-  const { theme, textColor, greys } = useTheme();
+  const { theme, greys } = useTheme();
   const color = theme[index];
   const urlMatch = text.match(URL_REGEX);
   let url: string | null = null,
@@ -61,7 +61,7 @@ const Todo = ({ onUndo, done, text, index, fade, onTap }: TodoProps) => {
 
   let action: () => any = onTap || (() => undefined);
   if (url && !onTap) {
-    action = url.startsWith("tldtdl://")
+    action = url.startsWith("ldtdl://")
       ? () => handleAction(url as string)
       : () => Linking.openURL(url as string);
   }

@@ -1,10 +1,11 @@
 import React, { useState, useEffect } from "react";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
-import * as SplashScreen from "expo-splash-screen";
+import SplashScreen from "react-native-splash-screen";
 
 import { TodoList, Listeners } from "./src/components";
 import { ThemeProvider, SettingsProvider } from "./src/hooks";
+import { scheduleNotifications } from "./src/util";
 
 const IMAGES = [
   require("./assets/line1.png"),
@@ -42,10 +43,11 @@ const App = () => {
     const fontAssets = Font.loadAsync(FONTS);
     await Promise.all([...imageAssets, fontAssets]);
     setIsReady(true);
-    await SplashScreen.hideAsync();
+    SplashScreen.hide();
   };
 
   useEffect(() => {
+    scheduleNotifications();
     loadAssetsAsync();
   }, []);
   if (!isReady) return null;

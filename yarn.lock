@@ -3893,7 +3893,7 @@ babel-preset-jest@^25.2.6, babel-preset-jest@^25.5.0:
     babel-plugin-jest-hoist "^25.5.0"
     babel-preset-current-node-syntax "^0.1.2"
 
-badgin@^1.1.2:
+badgin@^1.1.2, badgin@^1.1.5:
   version "1.1.8"
   resolved "https://registry.yarnpkg.com/badgin/-/badgin-1.1.8.tgz#6e4c930554945d31752e5de2d8a316036dccda5e"
   integrity sha512-EGbhb5OwZreHS0vd8tFLzdWBqvz3dFREf1sYK5EtivtTDUkYCLSEKz1KvXJ4MBHAyKGDymx8wYPCQwrftQBifw==
@@ -5023,7 +5023,7 @@ expo-constants@*:
   dependencies:
     ua-parser-js "^0.7.19"
 
-expo-constants@~9.1.1:
+expo-constants@9.1.1, expo-constants@~9.1.1:
   version "9.1.1"
   resolved "https://registry.yarnpkg.com/expo-constants/-/expo-constants-9.1.1.tgz#bca141ee3d4550e308798128f66c6d9c6a206ca1"
   integrity sha512-zCa/wRARODHd6BSwxjBhidmao0AqQnKmLkl0tsVIoZlRyPDHsEaxNR/m+7wqGC7qiC+UpG1qRnvLOLwCGt2ihg==
@@ -5095,6 +5095,16 @@ expo-location@~8.2.1:
   integrity sha512-MixKapt3nijAxyjIISscBzdKi8bwh0H/dWYsL2mCofrjguFHOh2gP07h95902lekb7NVqybl5AIQRW5cvrG4rQ==
   dependencies:
     invariant "^2.2.4"
+
+expo-notifications@~0.3.3:
+  version "0.3.3"
+  resolved "https://registry.yarnpkg.com/expo-notifications/-/expo-notifications-0.3.3.tgz#3c7b7275516028853e02f5c796e3365d4fb572ad"
+  integrity sha512-iBqvlbB6UVkU5yF4W9K/sqdPIbJ52VVeL7543G4IA3ARWhx6wdhfzcuGTCtUgV0XmkJu7vmPs+sC31aXjRa0Kg==
+  dependencies:
+    badgin "^1.1.5"
+    expo-application "~2.2.1"
+    expo-constants "9.1.1"
+    uuid "^3.4.0"
 
 expo-permissions@~9.0.1:
   version "9.0.1"
@@ -8469,6 +8479,11 @@ react-native-screens@~2.9.0:
   version "2.9.0"
   resolved "https://registry.yarnpkg.com/react-native-screens/-/react-native-screens-2.9.0.tgz#ead2843107ba00fee259aa377582e457c74f1f3b"
   integrity sha512-5MaiUD6HA3nzY3JbVI8l3V7pKedtxQF3d8qktTVI0WmWXTI4QzqOU8r8fPVvfKo3MhOXwhWBjr+kQ7DZaIQQeg==
+
+react-native-splash-screen@^3.2.0:
+  version "3.2.0"
+  resolved "https://registry.yarnpkg.com/react-native-splash-screen/-/react-native-splash-screen-3.2.0.tgz#d47ec8557b1ba988ee3ea98d01463081b60fff45"
+  integrity sha512-Ls9qiNZzW/OLFoI25wfjjAcrf2DZ975hn2vr6U9gyuxi2nooVbzQeFoQS5vQcbCt9QX5NY8ASEEAtlLdIa6KVg==
 
 react-native-unimodules@~0.10.1:
   version "0.10.1"

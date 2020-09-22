@@ -1,9 +1,12 @@
 import * as StoreReview from "expo-store-review";
+import * as Notifications from "expo-notifications";
 
+export { default as scheduleNotifications } from "./notifications";
 export { default as Constants } from "./constants";
 export { default as Store } from "./store";
 export { default as Analytics } from "./analytics";
 import convert from "color-convert";
+import Analytics from "./analytics";
 
 const mod = (n: number, m: number) => ((n % m) + m) % m;
 
@@ -18,12 +21,24 @@ export const rippleColor = (color: string) => {
 
 const requestReview = async () => {
   const status = StoreReview.isAvailableAsync();
-  if (status) StoreReview.requestReview();
+  Analytics.track(Analytics.events.ASK_REVIEW);
+  if (status) await StoreReview.requestReview();
+};
+
+const requestNotifications = async () => {
+  const result = await Notifications.requestPermissionsAsync({
+    ios: {
+      allowAlert: true,
+      allowBadge: true,
+    },
+  });
+  Analytics.track(Analytics.events.ASK_NOTIFICATION, result);
 };
 
 export const handleAction = (action: string) => {
-  action = action.replace("tldtdl://", "");
+  action = action.replace("ldtdl://", "");
   if (action === "review") requestReview();
+  if (action === "notif") requestNotifications();
 };
 
 const dateToString = (date: Date) =>
