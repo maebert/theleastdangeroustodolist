@@ -4,9 +4,9 @@ PODS:
   - CocoaAsyncSocket (7.6.4)
   - CocoaLibEvent (1.0.0)
   - DoubleConversion (1.1.6)
-  - EXApplication (2.2.1):
+  - EXApplication (2.3.0):
     - UMCore
-  - EXConstants (9.1.1):
+  - EXConstants (9.2.0):
     - UMConstantsInterface
     - UMCore
   - EXErrorRecovery (1.2.1):
@@ -33,7 +33,7 @@ PODS:
     - UMCore
     - UMPermissionsInterface
     - UMTaskManagerInterface
-  - EXNotifications (0.3.3):
+  - EXNotifications (0.7.2):
     - UMCore
     - UMPermissionsInterface
   - EXPermissions (9.0.1):
@@ -384,8 +384,8 @@ PODS:
 
 DEPENDENCIES:
   - DoubleConversion (from `../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec`)
-  - EXApplication (from `../node_modules/expo-application/ios`)
-  - EXConstants (from `../node_modules/expo-constants/ios`)
+  - EXApplication (from `../node_modules/expo-notifications/node_modules/expo-application/ios`)
+  - EXConstants (from `../node_modules/expo-notifications/node_modules/expo-constants/ios`)
   - EXErrorRecovery (from `../node_modules/expo-error-recovery/ios`)
   - EXFileSystem (from `../node_modules/expo-file-system/ios`)
   - EXFont (from `../node_modules/expo-font/ios`)
@@ -490,9 +490,9 @@ EXTERNAL SOURCES:
   DoubleConversion:
     :podspec: "../node_modules/react-native/third-party-podspecs/DoubleConversion.podspec"
   EXApplication:
-    :path: "../node_modules/expo-application/ios"
+    :path: "../node_modules/expo-notifications/node_modules/expo-application/ios"
   EXConstants:
-    :path: "../node_modules/expo-constants/ios"
+    :path: "../node_modules/expo-notifications/node_modules/expo-constants/ios"
   EXErrorRecovery:
     :path: "../node_modules/expo-error-recovery/ios"
   EXFileSystem:
@@ -620,8 +620,8 @@ SPEC CHECKSUMS:
   CocoaAsyncSocket: 694058e7c0ed05a9e217d1b3c7ded962f4180845
   CocoaLibEvent: 2fab71b8bd46dd33ddb959f7928ec5909f838e3f
   DoubleConversion: 5805e889d232975c086db112ece9ed034df7a0b2
-  EXApplication: d7ccb60c33fa4d506967ff6adde42a0f872d69ad
-  EXConstants: f907b3b6ce16e20d1750f22af1e095e924574bcb
+  EXApplication: c346c5ab7d1a4607f1863e93490b79fe838148b1
+  EXConstants: f486f6b4a36b86e47ab258d4d2b7b2699786fdce
   EXErrorRecovery: 500f1d4231c534f415e86caeb3fc677c7f5dd23c
   EXFileSystem: 76875135b61708b9afa7e6a89b72a60ba0fdfa20
   EXFont: d6cabb73989fc29296972c52915a023f46b2c7f5
@@ -631,7 +631,7 @@ SPEC CHECKSUMS:
   EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
   EXLinearGradient: 663bf3b9009a96567e98498016e40422631be81d
   EXLocation: e93020e255f52a1cc031e0f45b0a24eb20fc4b55
-  EXNotifications: 4066720495cdd6366d0178f853a93671d9ea11c6
+  EXNotifications: 0a1152ef2bd0f1cdd72a46bb256523a6ce5fa6e5
   EXPermissions: 80ac3acbdb145930079810fe5b08c022b3428aa8
   EXSegment: 7f9fd99f88f5b1ff06d323a153873d2105d390f4
   EXSensors: 761f6bd03eb13ff7dfffe955de7edce3b73306c4

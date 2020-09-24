@@ -22,7 +22,7 @@
     "expo-haptics": "~8.2.1",
     "expo-in-app-purchases": "^9.1.0",
     "expo-linear-gradient": "~8.2.1",
-    "expo-notifications": "~0.3.3",
+    "expo-notifications": "^0.7.2",
     "expo-sensors": "~9.0.1",
     "expo-status-bar": "^1.0.0",
     "expo-store-review": "~2.1.2",

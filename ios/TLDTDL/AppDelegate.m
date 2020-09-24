@@ -69,13 +69,17 @@ static void InitializeFlipper(UIApplication *application) {
 {
   RCTBridge *bridge = [[RCTBridge alloc] initWithDelegate:self launchOptions:self.launchOptions];
   RCTRootView *rootView = [[RCTRootView alloc] initWithBridge:bridge moduleName:@"main" initialProperties:nil];
-  rootView.backgroundColor = [[UIColor alloc] initWithRed:1.0f green:1.0f blue:1.0f alpha:1];
+  rootView.backgroundColor = [[UIColor alloc] initWithRed:0.68f green:0.36 blue:0.47f alpha:1];
 
   self.window = [[UIWindow alloc] initWithFrame:[UIScreen mainScreen].bounds];
   UIViewController *rootViewController = [UIViewController new];
   rootViewController.view = rootView;
   self.window.rootViewController = rootViewController;
   [self.window makeKeyAndVisible];
+  
+  UIStoryboard *sb = [UIStoryboard storyboardWithName:@"LaunchScreen" bundle:nil];
+  UIViewController *vc = [sb instantiateInitialViewController];
+  rootView.loadingView = vc.view;
 
   return bridge;
  }
