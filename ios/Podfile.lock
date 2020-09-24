@@ -23,7 +23,7 @@ PODS:
     - React-Core
     - UMCore
     - UMImageLoaderInterface
-  - EXInAppPurchases (8.2.1):
+  - EXInAppPurchases (9.1.0):
     - UMCore
   - EXKeepAwake (8.2.1):
     - UMCore
@@ -355,6 +355,12 @@ PODS:
     - React
   - RNScreens (2.9.0):
     - React
+  - RNSentry (1.8.2):
+    - React
+    - Sentry (~> 5.2.0)
+  - Sentry (5.2.2):
+    - Sentry/Core (= 5.2.2)
+  - Sentry/Core (5.2.2)
   - UMAppLoader (1.2.0)
   - UMBarCodeScannerInterface (5.2.1)
   - UMCameraInterface (5.2.1)
@@ -447,6 +453,7 @@ DEPENDENCIES:
   - RNIap (from `../node_modules/react-native-iap`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
   - RNScreens (from `../node_modules/react-native-screens`)
+  - "RNSentry (from `../node_modules/@sentry/react-native`)"
   - UMAppLoader (from `../node_modules/unimodules-app-loader/ios`)
   - UMBarCodeScannerInterface (from `../node_modules/unimodules-barcode-scanner-interface/ios`)
   - UMCameraInterface (from `../node_modules/unimodules-camera-interface/ios`)
@@ -476,6 +483,7 @@ SPEC REPOS:
     - Flipper-RSocket
     - FlipperKit
     - OpenSSL-Universal
+    - Sentry
     - YogaKit
 
 EXTERNAL SOURCES:
@@ -575,6 +583,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native-reanimated"
   RNScreens:
     :path: "../node_modules/react-native-screens"
+  RNSentry:
+    :path: "../node_modules/@sentry/react-native"
   UMAppLoader:
     :path: "../node_modules/unimodules-app-loader/ios"
   UMBarCodeScannerInterface:
@@ -617,7 +627,7 @@ SPEC CHECKSUMS:
   EXFont: d6cabb73989fc29296972c52915a023f46b2c7f5
   EXHaptics: 5428b344a216ca5d9df6ca8f65720b2a1ad9f109
   EXImageLoader: 02ca02c9cd5cc8a97b423207a73a791e0a86bea5
-  EXInAppPurchases: f20d1ae0f899ef5f868c95033da6656282a41e68
+  EXInAppPurchases: c647953e5e1dad71bbda2e3bb92966dac440ede4
   EXKeepAwake: 8b0f68242f036b971f9f8976341823cbe6f50812
   EXLinearGradient: 663bf3b9009a96567e98498016e40422631be81d
   EXLocation: e93020e255f52a1cc031e0f45b0a24eb20fc4b55
@@ -665,6 +675,8 @@ SPEC CHECKSUMS:
   RNIap: 6c6ab349cbafa161dded03556d1595c1a6bf224f
   RNReanimated: b5ccb50650ba06f6e749c7c329a1bc3ae0c88b43
   RNScreens: c526239bbe0e957b988dacc8d75ac94ec9cb19da
+  RNSentry: cff88174a0b2e0289b2efe5be1abba1f6c54269d
+  Sentry: 8fa58a051237554f22507fb483b9a1de0171a2dc
   UMAppLoader: 61049c8d55590b74e9ae1d5429bf68d96b4a2528
   UMBarCodeScannerInterface: e5e4c87797d3d01214e25cd1618866caf5d4f17f
   UMCameraInterface: 415ac060034edecacdbbaa739c223e3f276e0056

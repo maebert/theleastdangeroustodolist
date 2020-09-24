@@ -1,5 +1,7 @@
 <h1> <img src="https://github.com/maebert/theleastdangeroustodolist/raw/master/assets/icon.png" height=64 /> The Least Dangerous To Do List</h1>
 
+[!Build](https://build.appcenter.ms/v0.1/apps/acc48f92-e145-4c0f-90e6-77d9d35e4c94/branches/master/badge)
+
 ## Stack
 
 ### Crashes

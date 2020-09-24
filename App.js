@@ -6,6 +6,7 @@ import SplashScreen from "react-native-splash-screen";
 import { TodoList, Listeners } from "./src/components";
 import { ThemeProvider, SettingsProvider } from "./src/hooks";
 import { scheduleNotifications } from "./src/util";
+import * as Sentry from "@sentry/react-native";
 
 const IMAGES = [
   require("./assets/line1.png"),
@@ -56,7 +57,9 @@ const App = () => {
     <SettingsProvider>
       <Listeners>
         <ThemeProvider>
-          <TodoList />
+          <Sentry.TouchEventBoundary>
+            <TodoList />
+          </Sentry.TouchEventBoundary>
         </ThemeProvider>
       </Listeners>
     </SettingsProvider>

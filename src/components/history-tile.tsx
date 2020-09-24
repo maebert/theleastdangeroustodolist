@@ -65,7 +65,6 @@ const Tile = ({ color }: HTrops) => {
         "Are you even trying?",
         "Least Dangerous User",
         "You can do better than this. Maybe.",
-        "",
       ]);
     }
     if (doneToday === 5) {

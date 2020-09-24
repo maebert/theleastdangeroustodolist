@@ -1,9 +1,5 @@
-/**
- * @flow
- */
-
 import * as Segment from "expo-analytics-segment";
-// import * as Sentry from "sentry-expo";
+import * as Sentry from "@sentry/react-native";
 import * as Application from "expo-application";
 import * as manifest from "../../app.json";
 import Constants from "expo-constants";
@@ -30,13 +26,7 @@ let sentryInitialized = false;
 
 const segmentApiKey = "iM8Q5IFh4sxYndv8jayYX9wscSdxdghv";
 const sentryApiKey =
-  "https://6f7c52e459bd40318c91ed8fd4ab7382@sentry.io/2213171";
-
-// Sentry.init({
-//   dsn: sentryApiKey,
-//   enableInExpoDevelopment: false,
-//   debug: true,
-// });
+  "https://6f7c52e459bd40318c91ed8fd4ab7382@o348404.ingest.sentry.io/2213171";
 
 const initializesegment = () => {
   Segment.initialize({
@@ -47,11 +37,16 @@ const initializesegment = () => {
 };
 
 const initializeSentry = () => {
-  // Sentry.init({
-  //   dsn: sentryApiKey,
-  //   enableInExpoDevelopment: false,
-  //   debug: true,
-  // });
+  const sentryOptions = {
+    dsn: sentryApiKey,
+    debug: true,
+    enableAutoSessionTracking: true,
+  };
+  try {
+    Sentry.init(sentryOptions);
+  } catch {
+    Sentry.init({ enableNative: false, ...sentryOptions });
+  }
   sentryInitialized = true;
 };
 
@@ -82,7 +77,7 @@ const track = (event: string, options: any = null) => {
 
 const capture = (error: any) => {
   maybeInitialize();
-  // Sentry.captureException(error);
+  Sentry.captureException(error);
 };
 
 maybeInitialize();
