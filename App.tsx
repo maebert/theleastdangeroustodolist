@@ -7,6 +7,7 @@ import { TodoList, Listeners } from "./src/components";
 import { ThemeProvider, SettingsProvider } from "./src/hooks";
 import { scheduleNotifications } from "./src/util";
 import * as Sentry from "@sentry/react-native";
+import { ScrollView, Text, Button } from "react-native";
 
 const IMAGES = [
   require("./assets/line1.png"),
@@ -34,10 +35,6 @@ const App = () => {
   const [isReady, setIsReady] = useState(false);
 
   const loadAssetsAsync = async () => {
-    try {
-      await SplashScreen.preventAutoHideAsync();
-    } catch (e) {}
-
     const imageAssets = IMAGES.map((image) =>
       Asset.fromModule(image).downloadAsync()
     );
@@ -53,16 +50,44 @@ const App = () => {
   }, []);
   if (!isReady) return null;
 
+  type FCProps = {
+    error: string;
+    componentStack: string;
+    resetError: () => any;
+  };
+
+  const fallbackComponent = ({
+    error,
+    componentStack,
+    resetError,
+  }: FCProps) => (
+    <ScrollView
+      style={{
+        width: "100%",
+        height: "100%",
+        paddingHorizontal: 20,
+        paddingTop: 60,
+      }}
+    >
+      <Text>This is unfortunate.</Text>
+      <Text>{error}</Text>
+      <Text>{componentStack}</Text>
+      <Button onClick={resetError} title="Try again" />
+    </ScrollView>
+  );
+
   return (
-    <SettingsProvider>
-      <Listeners>
-        <ThemeProvider>
-          <Sentry.TouchEventBoundary>
-            <TodoList />
-          </Sentry.TouchEventBoundary>
-        </ThemeProvider>
-      </Listeners>
-    </SettingsProvider>
+    <Sentry.ErrorBoundary onError={console.error} fallback={fallbackComponent}>
+      <SettingsProvider>
+        <Listeners>
+          <ThemeProvider>
+            <Sentry.TouchEventBoundary>
+              <TodoList />
+            </Sentry.TouchEventBoundary>
+          </ThemeProvider>
+        </Listeners>
+      </SettingsProvider>
+    </Sentry.ErrorBoundary>
   );
 };
 

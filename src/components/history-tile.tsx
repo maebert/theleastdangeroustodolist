@@ -43,7 +43,7 @@ const Tile = ({ color }: HTrops) => {
   const [insult, setInsult] = useState<string>("");
 
   const showText = () => {
-    const doneToday = completionHistory[getDate()];
+    const doneToday = completionHistory ? completionHistory[getDate()] : 0;
     let insults: string[] = [];
     if (doneToday === 0) {
       insults = insults.concat([
@@ -80,7 +80,7 @@ const Tile = ({ color }: HTrops) => {
       ]);
     }
 
-    setInsult(sample(without(insults, insult)));
+    setInsult(sample(without(insults, insult)) || "");
     Animated.timing(opacity, {
       toValue: 1,
       duration: 600,
@@ -128,7 +128,7 @@ const Tile = ({ color }: HTrops) => {
             <Bar
               key={d}
               date={new Date(d)}
-              height={completionHistory[d] || 0}
+              height={completionHistory ? completionHistory[d] || 0 : 0}
             />
           ))}
         </Animated.View>

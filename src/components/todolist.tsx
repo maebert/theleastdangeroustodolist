@@ -55,10 +55,17 @@ const TodoList = () => {
     setLines((prev) => prev.filter((l) => l.todo !== idx));
 
     if (!isTutorial && data[idx].done) {
-      const numDone = (completionHistory[getDate()] || 0) - 1;
-      dispatch({
-        completionHistory: { ...completionHistory, [getDate()]: numDone },
-      });
+      if (!completionHistory) {
+        dispatch({ completionHistory: { [getDate()]: 0 } });
+      } else {
+        const numDone = (completionHistory[getDate()] || 0) - 1;
+        dispatch({
+          completionHistory: {
+            ...completionHistory,
+            [getDate()]: numDone,
+          },
+        });
+      }
     }
     setData((data) =>
       update(data, {
@@ -132,10 +139,14 @@ const TodoList = () => {
 
   const onMarkDone = (idx: number) => {
     if (!isTutorial && !data[idx].done) {
-      const numDone = (completionHistory[getDate()] || 0) + 1;
-      dispatch({
-        completionHistory: { ...completionHistory, [getDate()]: numDone },
-      });
+      if (!completionHistory) {
+        dispatch({ completionHistory: { [getDate()]: 1 } });
+      } else {
+        const numDone = (completionHistory[getDate()] || 0) + 1;
+        dispatch({
+          completionHistory: { ...completionHistory, [getDate()]: numDone },
+        });
+      }
     }
     setData((data) =>
       update(data, {
@@ -262,6 +273,7 @@ const TodoList = () => {
     if (!data) return;
     const allDone = data.map((d) => d.done).every(Boolean);
     if (allDone && isTutorial) {
+      console.info("Completed tutorial");
       Analytics.track(Analytics.events.COMPLETE_TUTORIAL);
       Store.save("tutorialCompleted", true);
       replaceTodos();

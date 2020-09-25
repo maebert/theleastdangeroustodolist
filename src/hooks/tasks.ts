@@ -13,6 +13,8 @@ type UseTasks = {
 const useTasks = (): UseTasks => {
   const { history, setNumber, dispatch } = useSettings();
   const checkConstraints = (picked: Todo[], other: Todo) => {
+    // First task has to be good!
+    if (picked.length === 0 && other.rating && other.rating < 4) return false;
     // no dupes
     if (picked.map((t) => t.id).includes(other.id)) return false;
 
@@ -66,19 +68,21 @@ const useTasks = (): UseTasks => {
     const tasks = shuffle(
       Data.filter((t) => t.pack === pack && !history?.includes(t.id))
     );
-    const topTask = tasks.find((t) => t.rating === 4) || tasks[0];
-    let picked: Todo[] = [topTask];
-    const onboardingTask = getOnBoardingTask(setNumber);
-    if (onboardingTask) {
-      picked.push(onboardingTask);
-    }
+
+    let picked: Todo[] = [];
+    const onboardingTask = getOnBoardingTask(setNumber || 0);
 
     for (
       let idx = 0;
       picked.length < Constants.todos && idx < tasks.length;
       idx++
     ) {
-      if (checkConstraints(picked, tasks[idx])) picked.push(tasks[idx]);
+      if (checkConstraints(picked, tasks[idx])) {
+        picked.push(tasks[idx]);
+        if (picked.length == 1 && onboardingTask) {
+          picked.push(onboardingTask);
+        }
+      }
     }
 
     const newHistory = (history || [])

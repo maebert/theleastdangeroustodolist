@@ -15,11 +15,12 @@ const Listeners = ({ children }: EEProps) => {
   const { init: initIAP, listener, errorListener } = useIAP();
 
   useEffect(() => {
-    console.info("Setting purchase listeer");
+    console.debug("Setting purchase listener");
     initIAP();
     const iapListener = purchaseUpdatedListener(listener);
     const iapErrorListener = purchaseErrorListener(errorListener);
 
+    console.debug("Setting Device Motion listener");
     DeviceMotion.addListener((event) => {
       if (!event.rotation || !event.rotation.beta) return;
       if (debug == 0 && event.rotation.beta <= -1) {
@@ -36,6 +37,8 @@ const Listeners = ({ children }: EEProps) => {
         alert("Debug mode off");
       }
     });
+    // throw "Whaaat?";
+    console.debug("Listener all set up");
 
     return () => {
       DeviceMotion.removeAllListeners();

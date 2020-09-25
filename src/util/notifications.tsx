@@ -25,7 +25,19 @@ const BODIES = [
   "It's not like you're going to do anything more meaningful with your day anyway.",
 ];
 
+const allowsNotificationsAsync = async () => {
+  const settings = await Notifications.getPermissionsAsync();
+  return (
+    settings.granted ||
+    settings.ios?.status === Notifications.IosAuthorizationStatus.PROVISIONAL
+  );
+};
+
 const scheduleNotifications = async () => {
+  if (!(await allowsNotificationsAsync())) {
+    console.debug("Notifications not enabled");
+  }
+  console.info("Scheduling new notifications");
   await Notifications.cancelAllScheduledNotificationsAsync();
   let next = new Date();
 
@@ -61,6 +73,7 @@ const scheduleNotifications = async () => {
     },
     trigger: next,
   });
+  console.debug("Notifications scheduled");
 };
 
 export default scheduleNotifications;
