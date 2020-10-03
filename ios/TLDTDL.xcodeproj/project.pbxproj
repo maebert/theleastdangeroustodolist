@@ -11,6 +11,7 @@
 		13B07FBD1A68108700A75B9A /* LaunchScreen.xib in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB11A68108700A75B9A /* LaunchScreen.xib */; };
 		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
+		321B4403251E175400DFF672 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 321B4402251E175400DFF672 /* StoreKit.framework */; };
 		3E461D99554A48A4959DE609 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = AA286B85B6C04FC6940260E9 /* LaunchScreen.storyboard */; };
 		95A2EFF6ED60DBA4392762D5 /* libPods-TLDTDL.a in Frameworks */ = {isa = PBXBuildFile; fileRef = A47052EA230549DFF16DDB42 /* libPods-TLDTDL.a */; };
 		B43E23C2BBDC420D94F70A11 /* SplashScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = E16DEE53AA0F463D9170FD08 /* SplashScreen.storyboard */; };
@@ -27,6 +28,8 @@
 		13B07FB61A68108700A75B9A /* Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; name = Info.plist; path = TLDTDL/Info.plist; sourceTree = "<group>"; };
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = TLDTDL/main.m; sourceTree = "<group>"; };
 		31A03291A6FF13487FF9D134 /* Pods-TLDTDL.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TLDTDL.debug.xcconfig"; path = "Target Support Files/Pods-TLDTDL/Pods-TLDTDL.debug.xcconfig"; sourceTree = "<group>"; };
+		321B4401251E174100DFF672 /* LDTDLRelease.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = LDTDLRelease.entitlements; path = TLDTDL/LDTDLRelease.entitlements; sourceTree = "<group>"; };
+		321B4402251E175400DFF672 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		A47052EA230549DFF16DDB42 /* libPods-TLDTDL.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-TLDTDL.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		A9867F1803B0C47C4AB44C23 /* Pods-TLDTDL.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-TLDTDL.release.xcconfig"; path = "Target Support Files/Pods-TLDTDL/Pods-TLDTDL.release.xcconfig"; sourceTree = "<group>"; };
 		AA286B85B6C04FC6940260E9 /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = TLDTDL/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -42,6 +45,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				95A2EFF6ED60DBA4392762D5 /* libPods-TLDTDL.a in Frameworks */,
+				321B4403251E175400DFF672 /* StoreKit.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -51,6 +55,7 @@
 		13B07FAE1A68108700A75B9A /* TLDTDL */ = {
 			isa = PBXGroup;
 			children = (
+				321B4401251E174100DFF672 /* LDTDLRelease.entitlements */,
 				BB2F792B24A3F905000567C9 /* Supporting */,
 				008F07F21AC5B25A0029DE68 /* main.jsbundle */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
@@ -68,6 +73,7 @@
 		2D16E6871FA4F8E400B85C8A /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				321B4402251E175400DFF672 /* StoreKit.framework */,
 				ED297162215061F000B7C4FE /* JavaScriptCore.framework */,
 				ED2971642150620600B7C4FE /* JavaScriptCore.framework */,
 				A47052EA230549DFF16DDB42 /* libPods-TLDTDL.a */,
@@ -157,7 +163,7 @@
 					13B07F861A680F5B00A75B9A = {
 						DevelopmentTeam = VU39PAUN65;
 						LastSwiftMigration = 1120;
-						ProvisioningStyle = Manual;
+						ProvisioningStyle = Automatic;
 					};
 				};
 			};
@@ -298,11 +304,11 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
 				CODE_SIGN_ENTITLEMENTS = TLDTDL/tldtdl.entitlements;
-				CODE_SIGN_IDENTITY = "iPhone Distribution";
-				CODE_SIGN_STYLE = Manual;
+				CODE_SIGN_IDENTITY = "Apple Development";
+				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 21;
 				DEAD_CODE_STRIPPING = YES;
-				DEVELOPMENT_TEAM = VU39PAUN65;
+				DEVELOPMENT_TEAM = "";
 				ENABLE_BITCODE = NO;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"$(inherited)",
@@ -318,7 +324,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = me.1450.tldtdl;
 				PRODUCT_NAME = LDTDL;
-				PROVISIONING_PROFILE_SPECIFIER = "LDTDL App Store";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_OPTIMIZATION_LEVEL = "-Onone";
 				SWIFT_VERSION = 5.0;
 				VERSIONING_SYSTEM = "apple-generic";
@@ -331,7 +337,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
-				CODE_SIGN_ENTITLEMENTS = TLDTDL/tldtdl.entitlements;
+				CODE_SIGN_ENTITLEMENTS = TLDTDL/LDTDLRelease.entitlements;
 				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 21;
