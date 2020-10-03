@@ -2,6 +2,8 @@ import React, { createContext, useContext, useState, useEffect } from "react";
 import { Theme, ThemeDef } from "../types";
 import { Store } from "../util";
 
+// Make more themes with colorcurves.app or Colorbox.io
+
 const colors: { [key in Theme]: ThemeDef } = {
   [Theme.Default]: [
     "#493D64",
@@ -50,6 +52,22 @@ const colors: { [key in Theme]: ThemeDef } = {
     "#5396BD",
     "#4988C4",
     "#3D75CD",
+  ],
+  [Theme.Nightvision]: [
+    "#275b2d",
+    "#296235",
+    "#2a6a40",
+    "#2b714d",
+    "#2c795d",
+    "#2c826f",
+  ],
+  [Theme.Machine]: [
+    "#3f3a39",
+    "#4b3a3a",
+    "#59393d",
+    "#683740",
+    "#783441",
+    "#893041",
   ],
   [Theme.NotOk]: [
     "#B8BE9D",

@@ -16,8 +16,10 @@ const AvailableThemes = [
   Theme.Clear,
   Theme.Haze,
   Theme.Floss,
+  Theme.Machine,
   Theme.NotOk,
   Theme.Pride,
+  Theme.Nightvision,
 ];
 
 type SingleSwatchProps = {
