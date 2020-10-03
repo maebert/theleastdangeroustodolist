@@ -1,5 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Store } from "../util";
+import { omit } from "underscore";
 
 type Settings = {
   debug?: boolean;
@@ -11,11 +12,15 @@ type Settings = {
   history?: string[];
   setNumber?: number;
   completionHistory?: { [key: string]: number };
+  showIAP?: boolean;
+  showThemes?: boolean;
 };
 
 type SettingsState = Settings & {
   dispatch: (settings: Settings) => any;
 };
+
+const LOCAL_SETTINGS = ["showIAP", "showThemes"];
 
 const defaults: Settings = {
   debug: false,
@@ -27,6 +32,8 @@ const defaults: Settings = {
   hardcore: false,
   hardcorePrice: "$90",
   showTutorial: true,
+  showIAP: false,
+  showThemes: false,
 };
 
 const SettingsContext = createContext<SettingsState>({
@@ -44,7 +51,7 @@ const SettingsProvider = ({ children }: UPProps) => {
   const dispatch = (settings: Settings) => {
     setSettings((prev) => {
       const s = { ...prev, ...settings };
-      Store.save("settings", s);
+      Store.save("settings", omit(s, ...LOCAL_SETTINGS));
       return s;
     });
   };

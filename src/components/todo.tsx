@@ -1,7 +1,7 @@
 import React from "react";
 import { Animated, Linking, TouchableOpacity, StyleSheet } from "react-native";
-import { useTheme } from "../hooks";
-import { Constants, handleAction } from "../util";
+import { useTheme, useSettings } from "../hooks";
+import { Constants, requestReview, requestNotifications } from "../util";
 
 const URL_REGEX = /((https?|ldtdl):\/\/[^\s]+)/g;
 
@@ -16,6 +16,7 @@ type TodoProps = {
 
 const Todo = ({ onUndo, done, text, index, fade, onTap }: TodoProps) => {
   const { theme, greys } = useTheme();
+  const { dispatch } = useSettings();
   const color = theme[index];
   const urlMatch = text.match(URL_REGEX);
   let url: string | null = null,
@@ -42,6 +43,14 @@ const Todo = ({ onUndo, done, text, index, fade, onTap }: TodoProps) => {
       inputRange: [0, 0.2, 0.2],
       outputRange: [color, greys[index], greys[index]],
     });
+  };
+
+  const handleAction = (action: string) => {
+    action = action.replace("ldtdl://", "");
+    if (action === "review") requestReview();
+    else if (action === "notif") requestNotifications();
+    else if (action === "themes") dispatch({ showThemes: true });
+    else if (action === "iap") dispatch({ showIAP: true });
   };
 
   const computedColor = getColor();

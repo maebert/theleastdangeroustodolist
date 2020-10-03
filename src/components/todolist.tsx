@@ -32,15 +32,14 @@ const TodoList = () => {
     customTodo,
     completionHistory,
     dispatch,
+    showThemes,
+    showIAP,
   } = useSettings();
 
   const ActiveMarker = marker.render;
   const { conceal, Mask } = useMask();
   const { getTodos, getTutorial } = useTasks();
   const { theme, setTheme } = useTheme();
-
-  const [showThemes, setShowThemes] = useState(false);
-  const [showIAP, setShowIAP] = useState(false);
 
   const [data, setData] = useState<TodoData[] | null>(null);
   const [isTutorial, setIsTutorial] = useState(false);
@@ -224,10 +223,11 @@ const TodoList = () => {
   };
 
   const save = () => {
-    Store.save(Constants.namespace, { data, lines, date, theme });
+    Store.save(Constants.namespace, { data, lines, date });
   };
 
   const load = async () => {
+    dispatch({ hardcore: true });
     const tutorialCompleted = await Store.get("tutorialCompleted");
     if (!tutorialCompleted) {
       loadTutorial();
@@ -292,7 +292,7 @@ const TodoList = () => {
 
   const openIAP = () => {
     Analytics.track(Analytics.events.OPEN_IAP);
-    setShowIAP(true);
+    dispatch({ showIAP: true });
   };
 
   return (
@@ -308,7 +308,7 @@ const TodoList = () => {
             refreshTodos();
             onEndPull();
           }}
-          onShowThemes={() => setShowThemes(true)}
+          onShowThemes={() => dispatch({ showThemes: true })}
           onShowIAP={openIAP}
         />
         {renderTodos()}
@@ -323,13 +323,13 @@ const TodoList = () => {
           onClick={hardcore ? refreshTodos : openIAP}
         />
         <SwatchModal
-          visible={showThemes}
-          onHide={() => setShowThemes(false)}
+          visible={!!showThemes}
+          onHide={() => dispatch({ showThemes: false })}
           color={theme[2]}
         />
         <IAPModal
-          visible={showIAP}
-          onHide={() => setShowIAP(false)}
+          visible={!!showIAP}
+          onHide={() => dispatch({ showIAP: false })}
           color={theme[3]}
         />
       </Animated.View>
