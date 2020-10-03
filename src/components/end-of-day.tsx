@@ -13,6 +13,7 @@ type EODProps = {
 
 const EndOfDay = ({ visible, onClick }: EODProps) => {
   const [shouldRender, setRender] = useState(visible);
+  const [showConfetti, setShowConfetti] = useState(true);
   const opacity = useRef(new Animated.Value(0)).current;
   const translateMore = useRef(new Animated.Value(140)).current;
 
@@ -21,6 +22,8 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
 
   useEffect(() => {
     if (visible) {
+      setShowConfetti(true);
+      setTimeout(() => setShowConfetti(false), 5200);
       Animated.timing(opacity, {
         toValue: 1,
         duration: 1500,
@@ -30,7 +33,7 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
         toValue: 0,
         easing: Easing.elastic(1.1),
         duration: 3000,
-        delay: 8000,
+        delay: 4000,
         useNativeDriver: true,
       }).start();
       setRender(true);
@@ -70,13 +73,16 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
         colors={[greys[0], greys[5]]}
         style={styles.container}
       >
-        <ConfettiCannon
-          count={300}
-          origin={{ x: Constants.screenWidth / 2, y: 0 }}
-          colors={theme}
-          explosionSpeed={1000}
-          fallSpeed={6000}
-        />
+        {showConfetti && (
+          <ConfettiCannon
+            count={300}
+            origin={{ x: Constants.screenWidth / 2, y: 0 }}
+            colors={theme}
+            explosionSpeed={500}
+            fallSpeed={4000}
+            fadeOut={true}
+          />
+        )}
         <View style={{ flex: 1 }} />
         <Text style={styles.text}>
           You're done for today.{"\n"}Check back tomorrow.

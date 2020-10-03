@@ -19,6 +19,8 @@ export enum Theme {
   Dark = "Darkwad",
   NotOk = "Ok,\nnot Ok",
   Greys = "Why bother",
+  Nightvision = "Nightvision",
+  Machine = "Killing\nMachine",
 }
 export type ThemeDef = [string, string, string, string, string, string];
 
