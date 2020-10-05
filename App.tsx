@@ -1,8 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { Asset } from "expo-asset";
 import * as Font from "expo-font";
-import SplashScreen from "react-native-splash-screen";
-
 import { TodoList, Listeners } from "./src/components";
 import { ThemeProvider, SettingsProvider } from "./src/hooks";
 import { scheduleNotifications } from "./src/util";
@@ -41,7 +39,6 @@ const App = () => {
     const fontAssets = Font.loadAsync(FONTS);
     await Promise.all([...imageAssets, fontAssets]);
     setIsReady(true);
-    SplashScreen.hide();
   };
 
   useEffect(() => {

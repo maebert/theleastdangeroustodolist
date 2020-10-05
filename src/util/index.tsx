@@ -19,13 +19,13 @@ export const rippleColor = (color: string) => {
   return "#" + convert.hsl.hex(mod(h - 15, 360), s, l * 1.25);
 };
 
-const requestReview = async () => {
+export const requestReview = async () => {
   const status = StoreReview.isAvailableAsync();
   Analytics.track(Analytics.events.ASK_REVIEW);
   if (status) await StoreReview.requestReview();
 };
 
-const requestNotifications = async () => {
+export const requestNotifications = async () => {
   const result = await Notifications.requestPermissionsAsync({
     ios: {
       allowAlert: true,
@@ -33,12 +33,6 @@ const requestNotifications = async () => {
     },
   });
   Analytics.track(Analytics.events.ASK_NOTIFICATION, result);
-};
-
-export const handleAction = (action: string) => {
-  action = action.replace("ldtdl://", "");
-  if (action === "review") requestReview();
-  if (action === "notif") requestNotifications();
 };
 
 const dateToString = (date: Date) =>

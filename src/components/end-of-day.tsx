@@ -49,6 +49,15 @@ const EndOfDay = ({ visible, onClick }: EODProps) => {
     }
   }, [visible]);
 
+  useEffect(() => {
+    if (visible) {
+      setRender(true);
+      translateMore.setValue(0);
+      opacity.setValue(1);
+      setShowConfetti(false);
+    }
+  }, []);
+
   if (!shouldRender) return null;
 
   const getMore = () => {

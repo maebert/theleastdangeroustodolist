@@ -19,6 +19,7 @@ import EndOfDay from "./end-of-day";
 import { Line, TodoData, Theme } from "../types";
 import { Constants, Store, Analytics, getDate } from "../util";
 import { useMarker, useTheme, useMask, useTasks, useSettings } from "../hooks";
+import SplashScreen from "react-native-splash-screen";
 
 const TodoList = () => {
   const fade = useRef(new Animated.Value(0)).current;
@@ -227,7 +228,6 @@ const TodoList = () => {
   };
 
   const load = async () => {
-    dispatch({ hardcore: true });
     const tutorialCompleted = await Store.get("tutorialCompleted");
     if (!tutorialCompleted) {
       loadTutorial();
@@ -236,12 +236,17 @@ const TodoList = () => {
     const result = await Store.get(Constants.namespace);
     if (result && result.date === getDate()) {
       const { data, date, lines } = result;
+      const allDone = data.map((d) => d.done).every(Boolean);
+      if (allDone) {
+        setDoneForToday(true);
+      }
       setData(data);
       setDate(date);
       setLines(lines);
     } else {
       replaceTodos();
     }
+    SplashScreen.hide();
   };
 
   const loadTutorial = () => {
@@ -250,6 +255,7 @@ const TodoList = () => {
     setDate(getDate());
     setIsTutorial(true);
     setTheme(Theme.Default);
+    SplashScreen.hide();
   };
 
   const refreshTodos = () => {
@@ -266,7 +272,7 @@ const TodoList = () => {
     if (data !== null) return;
     load();
     Analytics.identify();
-  });
+  }, []);
 
   useEffect(() => {
     // all todos done
@@ -294,7 +300,6 @@ const TodoList = () => {
     Analytics.track(Analytics.events.OPEN_IAP);
     dispatch({ showIAP: true });
   };
-
   return (
     <PanGestureHandler
       onGestureEvent={handleGesture}
@@ -318,10 +323,13 @@ const TodoList = () => {
 
         <ActiveMarker />
         <Mask />
-        <EndOfDay
-          visible={doneForToday}
-          onClick={hardcore ? refreshTodos : openIAP}
-        />
+        {/* Don't render until we have data so that we don't change visibilty after load */}
+        {data && (
+          <EndOfDay
+            visible={doneForToday}
+            onClick={hardcore ? refreshTodos : openIAP}
+          />
+        )}
         <SwatchModal
           visible={!!showThemes}
           onHide={() => dispatch({ showThemes: false })}
