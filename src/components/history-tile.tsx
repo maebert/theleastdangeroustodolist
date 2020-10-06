@@ -4,6 +4,7 @@ import { LinearGradient } from "expo-linear-gradient";
 import { rippleColor, fadeColor, getDates, getDate } from "../util";
 import { useSettings } from "../hooks";
 import Ripple from "react-native-material-ripple";
+import * as Haptics from "expo-haptics";
 import { sample, without } from "lodash";
 
 type HTrops = {
@@ -43,6 +44,7 @@ const Tile = ({ color }: HTrops) => {
   const [insult, setInsult] = useState<string>("");
 
   const showText = () => {
+    Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     const doneToday = completionHistory ? completionHistory[getDate()] : 0;
     let insults: string[] = [];
     if (doneToday === 0) {

@@ -9,6 +9,7 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { fadeColor, rippleColor } from "../util";
 import Ripple from "react-native-material-ripple";
+import * as Haptics from "expo-haptics";
 
 type TileProps = {
   title: string;
@@ -47,7 +48,15 @@ const Tile = ({ title, color, text, img, onClick }: TileProps) => {
         rippleOpacity={1}
         rippleCentered={true}
         rippleDuration={600}
-        onPress={onClick || wobble}
+        onPress={() => {
+          if (onClick) {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
+            onClick();
+          } else {
+            Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Heavy);
+            wobble();
+          }
+        }}
       >
         <Text style={styles.title}>{title}</Text>
 
