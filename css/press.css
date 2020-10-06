@@ -1,0 +1,74 @@
+.img {
+  border-radius: 5px;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 0 0 0px white;
+  transition: all 150ms ease-out;
+  cursor: pointer;
+  overflow: hidden;
+  width: calc(100% - 20px);
+  max-height: 400px;
+  height: 60%;
+  background-size: cover;
+  background-position: center;
+  display: block;
+  margin: 0 10px;
+}
+
+.img:hover {
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05), inset 0 0 0 6px white;
+  opacity: 0.8;
+}
+
+p.caption {
+  font-style: italic;
+  opacity: 0.8;
+  text-align: center;
+  font-family: Merriweather;
+}
+
+span.gray {
+  opacity: 0.5;
+}
+
+#screenshots,
+#assets {
+  display: flex;
+  flex-direction: row;
+}
+#screenshots .img,
+#assets .img {
+  box-shadow: none;
+}
+
+#screenshots div {
+  width: 25%;
+}
+#screenshots div .img {
+  height: 320px;
+}
+#assets div {
+  flex: 1;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+}
+#assets div:first-child {
+  flex: 0;
+}
+#assets div:first-child .img {
+  height: 140px;
+  width: 140px;
+}
+#assets div:last-child .img {
+  height: 40px;
+}
+
+#screenshots div p.caption {
+  font-size: 80%;
+}
+
+@media only screen and (max-width: 680px) {
+  #screenshots div {
+    width: 50% !important;
+  }
+}

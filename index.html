@@ -56,7 +56,7 @@
     />
     <link rel="stylesheet" href="css/todo.css" />
     <link rel="stylesheet" href="css/bubbles.css" />
-    <link rel="stylesheet" href="css/base.css" />
+    <link rel="stylesheet" href="css/base.css?v=19" />
   </head>
   <body>
     <section id="hero">
@@ -73,15 +73,19 @@
         <span class="bubble"></span>
       </div>
       <div class="container">
-        <a class="logotype white" href="https://www.theleastdangeroustodolist.com/">
-          <div class="logo"></div>
-          <h1>The Least <strong>Dangerous</strong> To-Do List</h1>
-        </a>
-        <p class="tagline"><span>Get stuff done</span></p>
-        <p class="title">Check things off.</p>
-        <a href="http://apple.com" class="appstore" onclick="plausible('appstore'); return true;">
-          <img src="img/appstore.svg" alt="Download The Least Dangerous To-Do List on the App Store" />
-        </a>
+        <div class="left">
+          <a class="logotype white" href="https://www.theleastdangeroustodolist.com/">
+            <div class="logo"></div>
+            <h1>The Least <strong>Dangerous</strong> To-Do List</h1>
+          </a>
+          <p class="tagline"><span>Get stuff done</span></p>
+          <p class="title">Check things off.</p>
+          <div>
+            <a href="http://apple.com" class="appstore" onclick="plausible('appstore'); return true;">
+              <img src="img/appstore.svg" alt="Download The Least Dangerous To-Do List on the App Store" />
+            </a>
+          </div>
+        </div>
         <div id="app"></div>
       </div>
     </section>
