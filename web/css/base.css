@@ -3,38 +3,46 @@ body {
   background-color: #fffefa;
   color: #2a3541;
   font-weight: 400;
-  font-size: 62.5%;
 }
 #hero {
   background-image: linear-gradient(150deg, #f12c62 30%, #ec313c 100%);
   position: relative;
+  height: 100vh;
 }
+
 #hero .background {
-  width: 100%;
-  height: 100%;
+  width: 100vw;
   position: absolute;
   overflow: hidden;
   transform: translate3d(0, 0, 0);
 }
 #hero .container {
-  padding: 20px 20px 120px 20px;
   transform: translate3d(0, 0, 0);
   overflow: hidden;
+
+  height: 100vh;
+  display: flex;
+  flex-direction: row;
+}
+
+#hero .container .appstore {
+  margin-top: 4rem;
+}
+#hero .container .left {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
 }
 
 #hero .container .logotype {
-  margin-bottom: 100px;
+  margin-bottom: 60px;
   display: block;
 }
 
 #app {
-  background: url(../img/app.png) top left no-repeat;
-  background-size: 100%;
-  width: 400px;
-  height: 600px;
-  position: absolute;
-  right: 10%;
-  bottom: -30%;
+  background: url(../img/app.png?v=2) center center no-repeat;
+  background-size: 250px 550px;
+  flex: 1;
   transition: all 0.5s ease;
 }
 .container {
@@ -233,7 +241,7 @@ a:active {
 }
 
 a.logotype {
-  transition: all 30ms ease;
+  transition: all 300ms ease;
   opacity: 0.8;
 }
 a.logotype:hover {
@@ -286,17 +294,12 @@ footer {
   margin-top: 0;
 }
 
-@media only screen and (max-width: 1024px) {
+@media only screen and (max-width: 760px) {
   #app {
-    right: -20px;
+    /* display: none; */
   }
 }
 
-@media only screen and (max-width: 760px) {
-  #app {
-    display: none;
-  }
-}
 @media only screen and (max-width: 680px) {
   .row {
     flex-direction: column-reverse;
@@ -312,6 +315,14 @@ footer {
   .features,
   .cta {
     padding: 20px 0;
+  }
+
+  #hero .left {
+    text-align: center;
+    width: 100%;
+  }
+  #app {
+    display: none;
   }
   .appstore {
     text-align: center;

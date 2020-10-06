@@ -4,7 +4,9 @@
     "scheme": "tldtdl",
     "slug": "theleastdangeroustodolist",
     "privacy": "public",
-    "platforms": ["ios"],
+    "platforms": [
+      "ios"
+    ],
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -16,7 +18,9 @@
     "updates": {
       "fallbackToCacheTimeout": 0
     },
-    "assetBundlePatterns": ["**/*"],
+    "assetBundlePatterns": [
+      "**/*"
+    ],
     "ios": {
       "supportsTablet": true,
       "buildNumber": "25",
@@ -29,6 +33,7 @@
     "android": {
       "package": "com.theleastdangeroustodolist.app"
     },
-    "entryPoint": "node_modules/expo/AppEntry.js"
-  }
+    "entryPoint": ".vscode/exponentIndex.js"
+  },
+  "name": "theleastdangeroustodolist"
 }
