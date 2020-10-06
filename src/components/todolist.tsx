@@ -32,6 +32,7 @@ const TodoList = () => {
     addTodo,
     customTodo,
     completionHistory,
+    showTutorial,
     dispatch,
     showThemes,
     showIAP,
@@ -43,7 +44,6 @@ const TodoList = () => {
   const { theme, setTheme } = useTheme();
 
   const [data, setData] = useState<TodoData[] | null>(null);
-  const [isTutorial, setIsTutorial] = useState(false);
   const [doneForToday, setDoneForToday] = useState(false);
   const [date, setDate] = useState(getDate());
   const [lines, setLines] = useState<Line[]>([]);
@@ -54,7 +54,7 @@ const TodoList = () => {
     Analytics.track(Analytics.events.UNDO);
     setLines((prev) => prev.filter((l) => l.todo !== idx));
 
-    if (!isTutorial && data[idx].done) {
+    if (!showTutorial && data[idx].done) {
       if (!completionHistory) {
         dispatch({ completionHistory: { [getDate()]: 0 } });
       } else {
@@ -138,7 +138,7 @@ const TodoList = () => {
   };
 
   const onMarkDone = (idx: number) => {
-    if (!isTutorial && !data[idx].done) {
+    if (!showTutorial && !data[idx].done) {
       if (!completionHistory) {
         dispatch({ completionHistory: { [getDate()]: 1 } });
       } else {
@@ -228,8 +228,7 @@ const TodoList = () => {
   };
 
   const load = async () => {
-    const tutorialCompleted = await Store.get("tutorialCompleted");
-    if (!tutorialCompleted) {
+    if (showTutorial) {
       loadTutorial();
       return;
     }
@@ -253,13 +252,11 @@ const TodoList = () => {
     setData(getTutorial());
     setLines([]);
     setDate(getDate());
-    setIsTutorial(true);
     setTheme(Theme.Default);
     SplashScreen.hide();
   };
 
   const refreshTodos = () => {
-    setIsTutorial(false);
     setDoneForToday(false);
     setData(getTodos("Basic"));
     dispatch({ customTodo: "" });
@@ -278,10 +275,10 @@ const TodoList = () => {
     // all todos done
     if (!data) return;
     const allDone = data.map((d) => d.done).every(Boolean);
-    if (allDone && isTutorial) {
+    if (allDone && showTutorial) {
       console.info("Completed tutorial");
+      dispatch({ showTutorial: false });
       Analytics.track(Analytics.events.COMPLETE_TUTORIAL);
-      Store.save("tutorialCompleted", true);
       replaceTodos();
     } else if (allDone) {
       setDoneForToday(true);

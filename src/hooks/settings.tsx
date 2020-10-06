@@ -21,6 +21,7 @@ type SettingsState = Settings & {
 };
 
 const LOCAL_SETTINGS = ["showIAP", "showThemes"];
+const KEY = "settings1";
 
 const defaults: Settings = {
   debug: false,
@@ -51,14 +52,14 @@ const SettingsProvider = ({ children }: UPProps) => {
   const dispatch = (settings: Settings) => {
     setSettings((prev) => {
       const s = { ...prev, ...settings };
-      Store.save("settings", omit(s, ...LOCAL_SETTINGS));
+      Store.save(KEY, omit(s, ...LOCAL_SETTINGS));
       return s;
     });
   };
 
   useEffect(() => {
     const load = async () => {
-      const result = (await Store.get("settings")) as Settings;
+      const result = (await Store.get(KEY)) as Settings;
       setSettings(result);
     };
     load();
