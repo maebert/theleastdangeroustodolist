@@ -36,6 +36,7 @@ const allowsNotificationsAsync = async () => {
 const scheduleNotifications = async () => {
   if (!(await allowsNotificationsAsync())) {
     console.debug("Notifications not enabled");
+    return;
   }
   console.info("Scheduling new notifications");
   await Notifications.cancelAllScheduledNotificationsAsync();

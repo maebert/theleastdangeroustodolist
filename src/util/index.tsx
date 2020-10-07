@@ -5,7 +5,9 @@ export { default as scheduleNotifications } from "./notifications";
 export { default as Constants } from "./constants";
 export { default as Store } from "./store";
 export { default as Analytics } from "./analytics";
+
 import convert from "color-convert";
+import scheduleNotifications from "./notifications";
 import Analytics from "./analytics";
 
 const mod = (n: number, m: number) => ((n % m) + m) % m;
@@ -33,6 +35,7 @@ export const requestNotifications = async () => {
     },
   });
   Analytics.track(Analytics.events.ASK_NOTIFICATION, result);
+  scheduleNotifications();
 };
 
 const dateToString = (date: Date) =>
