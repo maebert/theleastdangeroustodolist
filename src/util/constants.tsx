@@ -8,7 +8,7 @@ export default {
   todos: 6,
   historyLenth: 84,
   debug: false,
-  namespace: "TLDTLD-7",
+  namespace: "LDTLD",
   screenWidth,
   screenHeight,
   itemHeight: (screenHeight - Constants.statusBarHeight) / 6,

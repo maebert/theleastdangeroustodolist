@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
-import { Store } from "../util";
-import { omit } from "underscore";
+import { Store, Constants } from "../util";
+import { omit, defaults } from "underscore";
 
 type Settings = {
   debug?: boolean;
@@ -21,9 +21,9 @@ type SettingsState = Settings & {
 };
 
 const LOCAL_SETTINGS = ["showIAP", "showThemes"];
-const KEY = "settings1";
+const KEY = `${Constants.namespace}-settings`;
 
-const defaults: Settings = {
+const DEFAULTS: Settings = {
   debug: false,
   setNumber: 0,
   customTodo: "",
@@ -38,7 +38,7 @@ const defaults: Settings = {
 };
 
 const SettingsContext = createContext<SettingsState>({
-  ...defaults,
+  ...DEFAULTS,
   dispatch: () => {},
 });
 
@@ -47,7 +47,7 @@ type UPProps = {
 };
 
 const SettingsProvider = ({ children }: UPProps) => {
-  const [settings, setSettings] = useState<Settings>(defaults);
+  const [settings, setSettings] = useState<Settings>(DEFAULTS);
 
   const dispatch = (settings: Settings) => {
     setSettings((prev) => {
@@ -60,7 +60,7 @@ const SettingsProvider = ({ children }: UPProps) => {
   useEffect(() => {
     const load = async () => {
       const result = (await Store.get(KEY)) as Settings;
-      setSettings(result);
+      setSettings(defaults(result, DEFAULTS));
     };
     load();
   }, []);

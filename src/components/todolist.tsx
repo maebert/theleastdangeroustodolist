@@ -228,10 +228,7 @@ const TodoList = () => {
   };
 
   const load = async () => {
-    if (showTutorial) {
-      loadTutorial();
-      return;
-    }
+    if (showTutorial) return loadTutorial();
     const result = await Store.get(Constants.namespace);
     if (result && result.date === getDate()) {
       const { data, date, lines } = result;
@@ -276,7 +273,6 @@ const TodoList = () => {
     if (!data) return;
     const allDone = data.map((d) => d.done).every(Boolean);
     if (allDone && showTutorial) {
-      console.info("Completed tutorial");
       dispatch({ showTutorial: false });
       Analytics.track(Analytics.events.COMPLETE_TUTORIAL);
       replaceTodos();
