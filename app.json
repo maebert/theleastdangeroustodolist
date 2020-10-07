@@ -29,7 +29,6 @@
         "usesNonExemptEncryption": false
       }
     },
-    "sdkVersion": "38.0.0",
     "android": {
       "package": "com.theleastdangeroustodolist.app"
     },
