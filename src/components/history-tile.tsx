@@ -39,15 +39,20 @@ const Bar = ({ height, date }: BarProps) => (
 );
 
 const Tile = ({ color }: HTrops) => {
-  const { completionHistory } = useSettings();
+  const { completionHistory, showTutorial } = useSettings();
   const opacity = useRef(new Animated.Value(0)).current;
   const [insult, setInsult] = useState<string>("");
 
   const showText = () => {
     Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
-    const doneToday = completionHistory ? completionHistory[getDate()] : 0;
+    const doneToday = completionHistory[getDate()] || 0;
     let insults: string[] = [];
-    if (doneToday === 0) {
+    if (showTutorial) {
+      insults = [
+        "Swipe up to get back to your tasks",
+        "Swipe right on all tasks to finish the tutorial",
+      ];
+    } else if (doneToday === 0) {
       insults = insults.concat([
         "Brand new day!",
         "Rise and shine, slacker",

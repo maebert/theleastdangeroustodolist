@@ -28,6 +28,7 @@ const TodoList = () => {
   const marker = useMarker();
 
   const {
+    loading,
     hardcore,
     addTodo,
     customTodo,
@@ -231,6 +232,7 @@ const TodoList = () => {
     if (showTutorial) return loadTutorial();
     const result = await Store.get(Constants.namespace);
     if (result && result.date === getDate()) {
+      console.log("Continuing current to-do list");
       const { data, date, lines } = result;
       const allDone = data.map((d) => d.done).every(Boolean);
       if (allDone) {
@@ -240,6 +242,7 @@ const TodoList = () => {
       setDate(date);
       setLines(lines);
     } else {
+      console.log("Getting new to-dos");
       replaceTodos();
     }
     SplashScreen.hide();
@@ -262,11 +265,11 @@ const TodoList = () => {
   };
 
   useEffect(() => {
-    // load
-    if (data !== null) return;
+    if (loading) return;
+    console.log("Settings loaded, loading to-dos");
     load();
     Analytics.identify();
-  }, []);
+  }, [loading]);
 
   useEffect(() => {
     // all todos done

@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React from "react";
 import { Text, View, Button, StyleSheet } from "react-native";
-import { Constants } from "../util";
+import { Constants, fadeColor } from "../util";
+import { LinearGradient } from "expo-linear-gradient";
 import { useSettings, useTheme } from "../hooks";
 import Tile from "./tile";
 import HistoryTile from "./history-tile";
@@ -16,7 +17,12 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
   const { theme, themeName } = useTheme();
 
   return (
-    <View style={{ ...styles.container, backgroundColor: theme[0] }}>
+    <LinearGradient
+      start={[0, 0]}
+      end={[1, 1]}
+      colors={[fadeColor(theme[0]), theme[0]]}
+      style={styles.container}
+    >
       <View
         style={{
           marginTop: Constants.statusBarHeight + 40,
@@ -44,7 +50,6 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
 
       <View
         style={{
-          // flex: 1,
           height: Constants.screenWidth,
           flexWrap: "wrap",
           flexDirection: "column",
@@ -75,7 +80,7 @@ const Settings = ({ onReshuffle, onShowThemes, onShowIAP }: SettingsProps) => {
         />
         <HistoryTile color={theme[5]} />
       </View>
-    </View>
+    </LinearGradient>
   );
 };
 

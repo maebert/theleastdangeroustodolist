@@ -1,4 +1,4 @@
-import { Dimensions, Platform } from "react-native";
+import { Dimensions } from "react-native";
 import Constants from "expo-constants";
 
 const screenWidth = Math.round(Dimensions.get("window").width);
@@ -8,7 +8,7 @@ export default {
   todos: 6,
   historyLenth: 84,
   debug: false,
-  namespace: "LDTLD",
+  namespace: "LDTLD-1.0",
   screenWidth,
   screenHeight,
   itemHeight: (screenHeight - Constants.statusBarHeight) / 6,

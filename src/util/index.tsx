@@ -14,11 +14,11 @@ const mod = (n: number, m: number) => ((n % m) + m) % m;
 
 export const fadeColor = (color: string) => {
   const [h, s, l] = convert.hex.hsl(color);
-  return "#" + convert.hsl.hex(mod(h - 5, 360), s, l * 1.05);
+  return "#" + convert.hsl.hex([mod(h - 5, 360), s, l * 1.05 + 3]);
 };
 export const rippleColor = (color: string) => {
   const [h, s, l] = convert.hex.hsl(color);
-  return "#" + convert.hsl.hex(mod(h - 15, 360), s, l * 1.25);
+  return "#" + convert.hsl.hex([mod(h - 15, 360), s, l * 1.25]);
 };
 
 export const requestReview = async () => {
