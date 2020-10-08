@@ -10,7 +10,7 @@
   animation-iteration-count: infinite;
 }
 .background .bubble:nth-child(1) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 55%;
   left: 65%;
   animation-duration: 13.4s;
@@ -19,7 +19,7 @@
   box-shadow: -80vmin 0 13.3196890631vmin currentColor;
 }
 .background .bubble:nth-child(2) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 64%;
   left: 38%;
   animation-duration: 12.1s;
@@ -28,7 +28,7 @@
   box-shadow: -80vmin 0 17.0924736461vmin currentColor;
 }
 .background .bubble:nth-child(3) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 24%;
   left: 50%;
   animation-duration: 18.8s;
@@ -37,7 +37,7 @@
   box-shadow: 80vmin 0 15.687564688vmin currentColor;
 }
 .background .bubble:nth-child(4) {
-  color: #df3f49;
+  color: #f02d5b;
   top: 65%;
   left: 48%;
   animation-duration: 21s;
@@ -46,7 +46,7 @@
   box-shadow: 80vmin 0 24.7560146149vmin currentColor;
 }
 .background .bubble:nth-child(5) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 47%;
   left: 28%;
   animation-duration: 19.6s;
@@ -55,7 +55,7 @@
   box-shadow: 80vmin 0 17.1864381647vmin currentColor;
 }
 .background .bubble:nth-child(6) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 58%;
   left: 71%;
   animation-duration: 22.3s;
@@ -64,7 +64,7 @@
   box-shadow: -80vmin 0 17.8747197408vmin currentColor;
 }
 .background .bubble:nth-child(7) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 90%;
   left: 17%;
   animation-duration: 17.5s;
@@ -73,7 +73,7 @@
   box-shadow: 80vmin 0 22.1993314431vmin currentColor;
 }
 .background .bubble:nth-child(8) {
-  color: #df3f49;
+  color: #f02d5b;
   top: 99%;
   left: 96%;
   animation-duration: 27.9s;
@@ -82,7 +82,7 @@
   box-shadow: -80vmin 0 13.7762364268vmin currentColor;
 }
 .background .bubble:nth-child(9) {
-  color: #fa7272;
+  color: #f65d6c;
   top: 60%;
   left: 56%;
   animation-duration: 15.7s;
@@ -91,7 +91,7 @@
   box-shadow: -80vmin 0 27.2781308194vmin currentColor;
 }
 .background .bubble:nth-child(10) {
-  color: #df3f49;
+  color: #f02d5b;
   top: 45%;
   left: 62%;
   animation-duration: 10.6s;
