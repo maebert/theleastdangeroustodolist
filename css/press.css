@@ -33,6 +33,7 @@ span.gray {
 #assets {
   display: flex;
   flex-direction: row;
+  flex-wrap: wrap;
 }
 #screenshots .img,
 #assets .img {
@@ -69,6 +70,20 @@ span.gray {
 
 @media only screen and (max-width: 680px) {
   #screenshots div {
-    width: 50% !important;
+    width: 50%;
+  }
+  #assets {
+    display: block;
+  }
+  #assets div:nth-child(2) {
+    height: 140px;
+  }
+  #assets div .img {
+    background-size: contain;
+    background-repeat: no-repeat;
+    width: 100% !important;
+  }
+  .img.banner {
+    height: 180px;
   }
 }

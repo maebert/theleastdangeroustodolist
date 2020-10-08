@@ -56,7 +56,7 @@
     />
     <link rel="stylesheet" href="css/todo.css" />
     <link rel="stylesheet" href="css/bubbles.css" />
-    <link rel="stylesheet" href="css/base.css?v=19" />
+    <link rel="stylesheet" href="css/base.css?v=23" />
   </head>
   <body>
     <section id="hero">
@@ -86,11 +86,27 @@
             </a>
           </div>
         </div>
-        <div id="app"></div>
+        <div id="phone-wrapper">
+          <div id="iphone">
+            <div class="apple"></div>
+            <div id="frame">
+              <div id="screen"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </section>
     <section class="main">
       <div class="container">
+        <div id="press">
+          <svg fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z"
+              clip-rule="evenodd"
+            ></path></svg
+          >Want the whole story? Check our <a href="press.html">Press Kit</a>.
+        </div>
         <p class="makers">From the makers of <strong>The Most Dangerous Writing App</strong> comes</p>
         <h1>The Least <span class="red">Dangerous</span> To-Do List</h1>
       </div>
@@ -159,8 +175,20 @@
     </section>
     <footer>
       <div class="container">
-        <p>&copy; Manuel Ebert. All Rights Reserverd. Please at least pretend you read the <a href="privacy.html">Privacy Policy</a> and <a href="tos.html">Terms of Service</a>.</p>
+        <p>&copy; 2020 Manuel Ebert. All Rights Reserverd. Please at least pretend you read the <a href="privacy.html">Privacy Policy</a> and <a href="tos.html">Terms of Service</a>.</p>
       </div>
     </footer>
+    <script>
+      window.onload = () => {
+        document.captureEvents(Event.MOUSEMOVE);
+        document.onmousemove = (e) => {
+          const x = ((e.pageX / window.innerWidth - 0.5) * 20).toFixed(2);
+          const y = Math.max(0, ((1 - e.pageY / window.innerHeight) * 10).toFixed(2));
+          document.getElementById("iphone").style.transform = `rotateY(${x}deg) rotateX(${y}deg) translateX(${x}px) translateY(${-y}px)`;
+          document.getElementById("screen").style.transform = `translateX(${x * 0.5}px) translateY(${y * -0.5}px)`;
+          document.getElementById("iphone").style.boxShadow = `${-2 * x}px ${2 * y}px ${10 + Math.abs(2 * x) + Math.abs(2 * y)}px 15px #0002`;
+        };
+      };
+    </script>
   </body>
 </html>
