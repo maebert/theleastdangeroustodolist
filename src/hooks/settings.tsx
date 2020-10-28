@@ -32,7 +32,7 @@ const DEFAULTS: Settings = {
   history: [],
   addTodo: false,
   hardcore: false,
-  hardcorePrice: "$90",
+  hardcorePrice: "$19.99",
   showTutorial: true,
   showIAP: false,
   showThemes: false,

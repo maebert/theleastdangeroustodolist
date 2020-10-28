@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useState } from "react";
 import RNIap, {
   PurchaseError,
   finishTransaction,
@@ -57,10 +57,10 @@ const useIap = () => {
     console.log("purchaseUpdatedListener", purchase);
     const receipt = purchase.transactionReceipt;
     if (receipt) {
-      dispatch({ hardcore: true });
       try {
         const ackResult = await finishTransaction(purchase);
         console.log("ackResult", ackResult);
+        dispatch({ hardcore: true });
       } catch (ackErr) {
         console.warn("ackErr", ackErr);
       }
