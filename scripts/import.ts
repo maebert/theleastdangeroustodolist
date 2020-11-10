@@ -89,6 +89,7 @@ export type Todo = {
 
 const importTodos = async () => {
   const data = await importData();
+  data.sort((a, b) => a.id < b.id ? -1 : 1)
   const tags = getTags(data);
   const packs = getPacks(data);
 
