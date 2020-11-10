@@ -43,6 +43,9 @@ const CustomTodo = ({ onUndo, done, index, fade }: TodoProps) => {
 
   const expand = () => {
     if (done) return;
+    if (expanded) {
+      Analytics.track(Analytics.events.WRITE, { customTodo });
+    }
     Animated.timing(grow, {
       toValue: expanded ? 0 : 1,
       duration: 250,
@@ -101,7 +104,7 @@ const CustomTodo = ({ onUndo, done, index, fade }: TodoProps) => {
   };
 
   const setTodo = (customTodo: string) => {
-    Analytics.track(Analytics.events.COMPLETE, { customTodo });
+    Analytics.track(Analytics.events.COMPLETE_CUSTOM, { customTodo });
     dispatch({ customTodo });
   };
 

@@ -1,6 +1,6 @@
 import React, { createContext, useContext, useState, useEffect } from "react";
 import { Theme, ThemeDef } from "../types";
-import { Store } from "../util";
+import { Analytics, Store } from "../util";
 
 // Make more themes with colorcurves.app or Colorbox.io
 
@@ -111,6 +111,7 @@ const ThemeProvider = ({ children }: UPProps) => {
   const [theme, setTheme] = useState<Theme>(Theme.Default);
 
   const setPersistedTheme = async (theme: Theme) => {
+    Analytics.track(Analytics.events.PICK_THEME, { theme });
     await Store.save("theme", theme);
     setTheme(theme);
   };

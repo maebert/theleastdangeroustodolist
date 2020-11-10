@@ -7,7 +7,7 @@ import RNIap, {
 import { Alert } from "react-native";
 import DeviceInfo from "react-native-device-info";
 import { useSettings } from "./settings";
-import { AsyncAlert } from "../util";
+import { Analytics, AsyncAlert } from "../util";
 const IAPItems = ["hardcore"];
 
 const useIap = () => {
@@ -71,6 +71,7 @@ const useIap = () => {
       console.info("Purchasing...");
       try {
         await RNIap.requestPurchase(item);
+        Analytics.track(Analytics.events.PURCHASE_IAP);
         return true;
       } catch (err) {
         console.warn(err.code, err.message);

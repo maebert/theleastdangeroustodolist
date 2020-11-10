@@ -3,6 +3,7 @@ import * as Sentry from "@sentry/react-native";
 import * as Application from "expo-application";
 import * as manifest from "../../app.json";
 import Constants from "expo-constants";
+import DeviceInfo from "react-native-device-info";
 
 if (!Constants.manifest) {
   Constants.manifest = manifest.expo;
@@ -10,10 +11,12 @@ if (!Constants.manifest) {
 
 const events = {
   OPEN_IAP: "open IAP",
+  PURCHASE_IAP: "Purchase Hardcore Pass",
   WRITE: "Write To-Do",
   GET_MORE: "Get more todos",
   SETTINGS: "Open Settings",
   COMPLETE: "Complete To-Do",
+  COMPLETE_CUSTOM: "Complete custom To-Do",
   UNDO: "Undo To-Do",
   PICK_THEME: "Pick Theme",
   COMPLETE_TUTORIAL: "Complete Tutorial",
@@ -58,7 +61,8 @@ const maybeInitialize = () => {
 const identify = async (id?: string) => {
   const idForVendor = await Application.getIosIdForVendorAsync();
   maybeInitialize();
-  Segment.identify(id || idForVendor || "anonymous");
+  const isSimulator = await DeviceInfo.isEmulator();
+  Segment.identifyWithTraits(id || idForVendor || "anonymous", { isSimulator });
 };
 
 const alias = (id: string) => {
@@ -70,7 +74,7 @@ const track = (event: string, options: any = null) => {
   maybeInitialize();
   Sentry.captureMessage(event);
   if (options) {
-    Segment.trackWithProperties(event, options);
+    Segment.trackWithProperties(event, options || {});
   } else {
     Segment.track(event);
   }
