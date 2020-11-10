@@ -15,8 +15,22 @@ type BarProps = {
   date: Date;
 };
 
-const NUMBERS = ["zero", "one", "two", "three", "four", "five", "six"];
-const UNUMBERS = ["Zero", "One", "Two", "Three", "Four", "Five", "Six"];
+const UNUMBERS = [
+  "Zero",
+  "One",
+  "Two",
+  "Three",
+  "Four",
+  "Five",
+  "Six",
+  "Seven",
+  "Eight",
+  "Nine",
+  "Ten",
+  "Eleven",
+  "Twelve",
+];
+const NUMBERS = UNUMBERS.map((n) => n.toLowerCase());
 const Bar = ({ height, date }: BarProps) => (
   <View style={styles.bar}>
     {height >= 6 && (
@@ -67,23 +81,42 @@ const Tile = ({ color }: HTrops) => {
       ]);
     } else if (doneToday < 6) {
       insults = insults.concat([
-        `${UNUMBERS[doneToday]} down, ${NUMBERS[6 - doneToday]} to go.`,
-        `Only ${NUMBERS[6 - doneToday]} left`,
+        `${UNUMBERS[doneToday % 6]} down, ${
+          NUMBERS[6 - (doneToday % 6)]
+        } to go.`,
+        `Only ${NUMBERS[6 - (doneToday % 6)]} left`,
+        `${UNUMBERS[6 - (doneToday % 6)]} more. You can do this. I think.`,
+        `One more task. And then ${NUMBERS[5 - (doneToday % 6)]} more.`,
         "Are you even trying?",
+        `Those ${
+          NUMBERS[6 - (doneToday % 6)]
+        } tasks are not going to do themselves`,
+        `Your mom already did ${NUMBERS[doneToday + 1]} tasks today.`,
         "Least Dangerous User",
         "You can do better than this. Maybe.",
       ]);
-    }
-    if (doneToday === 5) {
-      insults = insults.concat(["One more. You can do this."]);
-    }
-    if (doneToday === 6) {
+    } else if (doneToday % 6 === 0) {
       insults = insults.concat([
         "Gold Star ⭐️⭐️⭐️",
         "Look at you!",
         "Good job you!",
+        "Get a life",
+        "Don't let this go to your head",
         "You're trying way too hard.",
+        "Are you trying to impress someone?",
+        "Ryan Reynolds completed seven tasks today",
         "Who's dynamite? You're dynamite!",
+      ]);
+    } else if (doneToday > 6) {
+      insults = insults.concat([
+        "Going for bonus points?",
+        "You already won, get a life!",
+        "Go ahead, show off.",
+        `Your mom already did ${NUMBERS[doneToday + 1]} tasks today.`,
+        `One more task. And then ${NUMBERS[5 - (doneToday % 6)]} more.`,
+        `Round ${UNUMBERS[Math.floor(1 + doneToday / 6)]}!`,
+        `Checking off tasks increases your sex appeal`,
+        `${UNUMBERS[6 - (doneToday % 6)]} more. You can do this. I think.`,
       ]);
     }
 
