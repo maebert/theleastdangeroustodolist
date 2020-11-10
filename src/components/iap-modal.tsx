@@ -1,5 +1,12 @@
-import React from "react";
-import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
+import React, { useState } from "react";
+import {
+  Text,
+  View,
+  Image,
+  StyleSheet,
+  TouchableOpacity,
+  ActivityIndicator,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import { useIAP, useSettings } from "../hooks";
 import { fadeColor, rippleColor, Constants } from "../util";
@@ -16,6 +23,22 @@ type ModalType = {
 const IAPModal = ({ visible, onHide, color }: ModalType) => {
   const { purchase, restorePurchases } = useIAP();
   const { hardcorePrice } = useSettings();
+  const [isPurchasing, setIsPurchasing] = useState(false);
+
+  const handlePress = async () => {
+    setIsPurchasing(true);
+    const success = await purchase("hardcore");
+    setIsPurchasing(false);
+    if (success) onHide();
+  };
+
+  const handleRestore = async () => {
+    setIsPurchasing(true);
+    const success = await restorePurchases();
+    setIsPurchasing(false);
+    if (success) onHide();
+  };
+
   return (
     <Modal
       isVisible={visible}
@@ -90,24 +113,24 @@ const IAPModal = ({ visible, onHide, color }: ModalType) => {
         </Ripple>
         <View style={{ flex: 1 }} />
         <Ripple
-          style={styles.button}
+          style={[styles.button, isPurchasing ? styles.disabled : null]}
           rippleColor={rippleColor(color)}
           rippleOpacity={1}
           rippleCentered={true}
           rippleDuration={600}
-          onPress={async () => {
-            if (await purchase("hardcore")) onHide();
-          }}
+          onPress={handlePress}
         >
-          <Text style={styles.buttonText}>Go all in</Text>
+          {isPurchasing ? (
+            <ActivityIndicator color="#36494E" />
+          ) : (
+            <Text style={styles.buttonText}>Go all in</Text>
+          )}
         </Ripple>
-        <TouchableOpacity
-          onPress={async () => {
-            await restorePurchases();
-          }}
-        >
+        <TouchableOpacity onPress={handleRestore}>
           <Text style={styles.restore}>
-            Already Hardcore? Restore Purchase ➜
+            {isPurchasing
+              ? "Working hard..."
+              : "Already Hardcore? Restore Purchase ➜"}
           </Text>
         </TouchableOpacity>
       </LinearGradient>
@@ -205,10 +228,15 @@ const styles = StyleSheet.create({
     elevation: 12,
     marginHorizontal: 20,
   },
+  disabled: {
+    opacity: 0.7,
+    height: 44,
+  },
   buttonText: {
     color: "#36494E",
     fontFamily: "Lato Black",
     fontSize: 20,
+    lineHeight: 20,
     textAlign: "center",
   },
 });
