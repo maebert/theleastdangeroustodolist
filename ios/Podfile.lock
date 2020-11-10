@@ -46,9 +46,6 @@ PODS:
   - EXSensors (9.1.0):
     - UMCore
     - UMSensorsInterface
-  - EXSplashScreen (0.6.2):
-    - React
-    - UMCore
   - EXSQLite (8.4.0):
     - UMCore
     - UMFileSystemInterface
@@ -352,6 +349,8 @@ PODS:
     - React-Core (= 0.63.3)
     - React-cxxreact (= 0.63.3)
     - React-jsi (= 0.63.3)
+  - RNDeviceInfo (7.0.2):
+    - React-Core
   - RNGestureHandler (1.7.0):
     - React
   - RNIap (4.6.0):
@@ -404,7 +403,6 @@ DEPENDENCIES:
   - EXPermissions (from `../node_modules/expo-permissions/ios`)
   - EXSegment (from `../node_modules/expo-analytics-segment/ios`)
   - EXSensors (from `../node_modules/expo-sensors/ios`)
-  - EXSplashScreen (from `../node_modules/expo-splash-screen/ios`)
   - EXSQLite (from `../node_modules/expo-sqlite/ios`)
   - EXStoreReview (from `../node_modules/expo-store-review/ios`)
   - EXUpdates (from `../node_modules/expo-updates/ios`)
@@ -454,6 +452,7 @@ DEPENDENCIES:
   - React-RCTText (from `../node_modules/react-native/Libraries/Text`)
   - React-RCTVibration (from `../node_modules/react-native/Libraries/Vibration`)
   - ReactCommon/turbomodule/core (from `../node_modules/react-native/ReactCommon`)
+  - RNDeviceInfo (from `../node_modules/react-native-device-info`)
   - RNGestureHandler (from `../node_modules/react-native-gesture-handler`)
   - RNIap (from `../node_modules/react-native-iap`)
   - RNReanimated (from `../node_modules/react-native-reanimated`)
@@ -524,8 +523,6 @@ EXTERNAL SOURCES:
     :path: "../node_modules/expo-analytics-segment/ios"
   EXSensors:
     :path: "../node_modules/expo-sensors/ios"
-  EXSplashScreen:
-    :path: "../node_modules/expo-splash-screen/ios"
   EXSQLite:
     :path: "../node_modules/expo-sqlite/ios"
   EXStoreReview:
@@ -582,6 +579,8 @@ EXTERNAL SOURCES:
     :path: "../node_modules/react-native/Libraries/Vibration"
   ReactCommon:
     :path: "../node_modules/react-native/ReactCommon"
+  RNDeviceInfo:
+    :path: "../node_modules/react-native-device-info"
   RNGestureHandler:
     :path: "../node_modules/react-native-gesture-handler"
   RNIap:
@@ -642,7 +641,6 @@ SPEC CHECKSUMS:
   EXPermissions: 30cbe5b72bd209b65c00884180ad058a60bb413d
   EXSegment: a354d6e65fad4dbb97701a24db763ea425d783e9
   EXSensors: 352c8d17c066765517e9e73c05d68491f2cfa7b6
-  EXSplashScreen: 7ea40b8524f27e7444e3892411c8a4782ab6b4ce
   EXSQLite: d0d8677c13e60d5db2812387f059c697be27d3fb
   EXStoreReview: e847ad9367e8d9ab0d856e6aa21e16c1d30f118e
   EXUpdates: 74b39409f68eca207075d87b0077bdf37865a8bf
@@ -679,6 +677,7 @@ SPEC CHECKSUMS:
   React-RCTText: 65a6de06a7389098ce24340d1d3556015c38f746
   React-RCTVibration: 8e9fb25724a0805107fc1acc9075e26f814df454
   ReactCommon: 4167844018c9ed375cc01a843e9ee564399e53c3
+  RNDeviceInfo: e1d82a27d0c1ea6278e3b141784dc38e51fc90f4
   RNGestureHandler: b6b359bb800ae399a9c8b27032bdbf7c18f08a08
   RNIap: 6c6ab349cbafa161dded03556d1595c1a6bf224f
   RNReanimated: dd8c286ab5dd4ba36d3a7fef8bff7e08711b5476
@@ -701,6 +700,6 @@ SPEC CHECKSUMS:
   Yoga: 7d13633d129fd179e01b8953d38d47be90db185a
   YogaKit: f782866e155069a2cca2517aafea43200b01fd5a
 
-PODFILE CHECKSUM: e2376412105ec3457e2b0e8e67e116ebcf640762
+PODFILE CHECKSUM: 1e97d56e37dc7db913e06c96bba87ef543736c12
 
 COCOAPODS: 1.8.4

@@ -6,7 +6,7 @@ platform :ios, '12.0'
 
 target 'TLDTDL' do
   config = use_native_modules!
-  use_unimodules!
+  use_unimodules!(exclude: ['expo-splash-screen'])
   use_react_native!(:path => config["reactNativePath"])
   # Enables Flipper.
   #
@@ -18,6 +18,7 @@ target 'TLDTDL' do
 
     installer.pods_project.targets.each do |t|
       t.build_configurations.each do |config|
+        config.build_settings['ONLY_ACTIVE_ARCH'] = 'YES'
         config.build_settings['IPHONEOS_DEPLOYMENT_TARGET'] = '12.0'
       end
     end

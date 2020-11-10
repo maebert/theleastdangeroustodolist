@@ -5,11 +5,13 @@ import RNIap, {
   InAppPurchase,
 } from "react-native-iap";
 import { Alert } from "react-native";
+import DeviceInfo from "react-native-device-info";
 import { useSettings } from "./settings";
+import { AsyncAlert } from "../util";
 const IAPItems = ["hardcore"];
 
 const useIap = () => {
-  const { hardcore, dispatch } = useSettings();
+  const { dispatch } = useSettings();
   const [price, setPrice] = useState("");
 
   const getPrice = () => {
@@ -17,17 +19,31 @@ const useIap = () => {
   };
 
   const restorePurchases = async () => {
+    if (DeviceInfo.isEmulatorSync()) {
+      await AsyncAlert(
+        "Can't restore purchases on the iOS Simulator",
+        "Please use a real device to test In-App Purchases"
+      );
+      return;
+    }
+    console.info("Trying to restore purchases");
     const purchases = await RNIap.getAvailablePurchases();
+    console.info(`getAvailablePurchases returned ${purchases}`);
+    if (!purchases) return;
     purchases.forEach((purchase) => {
       if (purchase.productId === "hardcore") {
         console.info("Restoring hardcore mode");
-        Alert.alert("Restore successful", "You're so hardcore again.");
         dispatch({ hardcore: true });
+        Alert.alert("Restore successful", "You're so hardcore again.");
       }
     });
   };
 
   const getItems = async () => {
+    if (DeviceInfo.isEmulatorSync()) {
+      console.info("Skip getting products on emulator");
+      return;
+    }
     console.log("Get price for IAP");
     try {
       const products = await RNIap.getProducts(IAPItems);
@@ -40,16 +56,26 @@ const useIap = () => {
         }
       });
     } catch (err) {
-      console.warn(err.code, err.message);
+      console.warn(`Couldn't get products: ${err}`);
     }
   };
 
-  const purchase = async (item: string) => {
-    console.info("Purchasing...");
-    try {
-      RNIap.requestPurchase(item);
-    } catch (err) {
-      console.warn(err.code, err.message);
+  const purchase = async (item: string): Promise<boolean> => {
+    if (DeviceInfo.isEmulatorSync()) {
+      await AsyncAlert(
+        "Can't buy stuff on the iOS Simulator",
+        "Please use a real device to test In-App Purchases"
+      );
+      return false;
+    } else {
+      console.info("Purchasing...");
+      try {
+        await RNIap.requestPurchase(item);
+        return true;
+      } catch (err) {
+        console.warn(err.code, err.message);
+        return false;
+      }
     }
   };
 
@@ -67,7 +93,7 @@ const useIap = () => {
     }
   };
 
-  const errorListener = (error: PurchaseError) => {
+  const errorListener = async (error: PurchaseError) => {
     console.warn("purchaseErrorListener", error);
     if (error.code === "E_USER_ERRO") {
       Alert.alert("Never mind then.", "You chickened out, didn't you?");

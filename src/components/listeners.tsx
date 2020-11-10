@@ -37,7 +37,6 @@ const Listeners = ({ children }: EEProps) => {
         alert("Debug mode off");
       }
     });
-    // throw "Whaaat?";
     console.debug("Listener all set up");
 
     return () => {

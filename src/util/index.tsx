@@ -5,6 +5,7 @@ export { default as scheduleNotifications } from "./notifications";
 export { default as Constants } from "./constants";
 export { default as Store } from "./store";
 export { default as Analytics } from "./analytics";
+import { Alert as NativeAlert } from "react-native";
 
 import convert from "color-convert";
 import scheduleNotifications from "./notifications";
@@ -67,3 +68,22 @@ export const getDates = (days: number) => {
 
   return dates.map(dateToString);
 };
+
+export const AsyncAlert = (title: string, msg: string) =>
+  new Promise((resolve, reject) => {
+    NativeAlert.alert(
+      title,
+      msg,
+      [
+        {
+          text: "OK",
+          onPress: () => {
+            resolve();
+          },
+        },
+      ],
+      {
+        cancelable: false,
+      }
+    );
+  });

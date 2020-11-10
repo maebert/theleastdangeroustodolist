@@ -96,8 +96,7 @@ const IAPModal = ({ visible, onHide, color }: ModalType) => {
           rippleCentered={true}
           rippleDuration={600}
           onPress={async () => {
-            await purchase("hardcore");
-            onHide();
+            if (await purchase("hardcore")) onHide();
           }}
         >
           <Text style={styles.buttonText}>Go all in</Text>
