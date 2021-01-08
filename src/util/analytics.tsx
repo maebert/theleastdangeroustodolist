@@ -72,7 +72,8 @@ const alias = (id: string) => {
 
 const track = (event: string, options: any = null) => {
   maybeInitialize();
-  Sentry.captureMessage(event);
+  // Nope. Too much.
+  // Sentry.captureMessage(event);
   if (options) {
     Segment.trackWithProperties(event, options || {});
   } else {
